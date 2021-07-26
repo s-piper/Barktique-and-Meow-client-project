@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './LandingPage.css';
+import { 
+  Button,
+  Typography, } from '@material-ui/core';
+
 
 // CUSTOM COMPONENTS
 import RegisterForm from '../RegisterForm/RegisterForm';
@@ -19,7 +23,7 @@ function LandingPage() {
 
       <div className="grid">
         <div className="grid-col grid-col_8">
-          <p>
+          <Typography>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
             id felis metus. Vestibulum et pulvinar tortor. Morbi pharetra lacus
             ut ex molestie blandit. Etiam et turpis sit amet risus mollis
@@ -28,8 +32,8 @@ function LandingPage() {
             elementum eget. Praesent efficitur eros vitae nunc interdum, eu
             interdum justo facilisis. Sed pulvinar nulla ac dignissim efficitur.
             Quisque eget eros metus. Vestibulum bibendum fringilla nibh a
-            luctus. Duis a sapien metus.
-          </p>
+            luctus. Duis a sapien metus. 
+          </Typography>
 
           <p>
             Praesent consectetur orci dui, id elementum eros facilisis id. Sed
@@ -56,9 +60,11 @@ function LandingPage() {
 
           <center>
             <h4>Already a Member?</h4>
-            <button className="btn btn_sizeSm" onClick={onLogin}>
+            <Button
+            color="primary"
+            onClick={onLogin}>
               Login
-            </button>
+            </Button>
           </center>
         </div>
       </div>

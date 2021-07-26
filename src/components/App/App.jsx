@@ -23,12 +23,33 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 
 import './App.css';
+import { fontWeight } from '@material-ui/system';
 const theme = createTheme({
+  root: {
+
+  },
   palette: {
     primary: {
-      main: 
+      main: "#000000"
+    },
+    secondary: {
+      main: "#ef3e47"
     }
-  }
+  },
+  typography: {
+    h1: {
+      fontFamily: "Yantramanav",
+      fontWeightBold:  700,
+    },
+    button: {
+      textTransform: 'uppercase',
+    
+    fontFamily: "Yantramanav",
+    fontWeightBold: 700,
+    },
+    
+  },
+  
 })
 
 function App() {
@@ -39,6 +60,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    <ThemeProvider theme = {theme}>
     <Router>
       <div>
         <Nav />
@@ -119,6 +141,7 @@ function App() {
         <Footer />
       </div>
     </Router>
+    </ThemeProvider>
   );
 }
 
