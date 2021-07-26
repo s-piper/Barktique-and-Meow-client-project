@@ -94,6 +94,13 @@ function App() {
           </ProtectedRoute>
 
           <ProtectedRoute
+            exact
+            path="/admin"
+          >
+            <Admin />
+          </ProtectedRoute>
+
+          <ProtectedRoute
             // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows LandingPage at "/home"
