@@ -9,6 +9,7 @@ import {
 import { useDispatch } from 'react-redux';
 
 import Nav from '../Nav/Nav';
+import EmployeeHeader from '../EmployeeHeader/EmployeeHeader';
 import Footer from '../Footer/Footer';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -33,6 +34,7 @@ function App() {
     <Router>
       <div>
         <Nav />
+        <EmployeeHeader />
         <Switch>
           {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
           <Redirect exact from="/" to="/home" />
