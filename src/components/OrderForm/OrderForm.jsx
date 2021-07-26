@@ -17,6 +17,9 @@ function OrderForm() {
     const[email, setEmail]=useState('');
     const[image, setImage]=useState([]);
     const[notes, setNotes]=useState('');
+    const[rights, setRights]=useState(false);
+    const[social, setSocial]=useState(false);
+
 
 
 //Packages inputs for dispatch
@@ -29,6 +32,8 @@ function OrderForm() {
             cus_email: email,
             cus_image: image,
             cus_notes: notes,
+            cus_image_owner_rights: rights,
+            cus_social_permission: social,
         }
 
         dispatch({type: 'ADD_ORDER', payload:newOrder})
@@ -38,43 +43,45 @@ function OrderForm() {
 
     return (
 
-        <div className={classes.root}>
+        <div>
 
             <FormControl>
                 <TextField
-                    onChange="do something"
+                    onChange={(event) => setOrder(event.target.value)}
                     id="outline-basic"
                     variant="outlined"
                     label="Order Number"
                     required />
                 <TextField
-                    onChange="do something"
+                    onChange={(event) => setFirstName(event.target.value)}
                     id="outline-basic"
                     variant="outlined"
                     label="First Name"
                     required />
                 <TextField
-                    onChange="do something"
+                    onChange={(event) => setLastName(event.target.value)}
                     id="outline-basic"
                     variant="outlined"
                     label="Last Name"
                     required />
                 <TextField
-                    onChange="do something"
+                    onChange={(event) => setPhone(event.target.value)}
                     id="outline-basic"
                     variant="outlined"
                     label="Phone Number"
                     required />
                 <TextField
-                    onChange="do something"
+                    onChange={(event) => setEmail(event.target.value)}
                     id="outline-basic"
                     variant="outlined"
                     label="Email"
                     required />
-
-           
-
             </FormControl>
+
+            <br></br>
+
+            
+
 
         </div>
     )
