@@ -3,6 +3,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 const {
   rejectUnauthenticated,
+  rejectNonAdmins,
 } = require('../modules/authentication-middleware');
 const axios = require('axios');
 
@@ -10,7 +11,7 @@ const axios = require('axios');
 
 router.put(
   '/editEmployee/firstName/v1/:employeeID',
-  rejectUnauthenticated,
+  rejectUnauthenticated, rejectNonAdmins,
   async (req, res) => {
     console.log(
       `Full route and body => /api/admin/editEmployee/firstName/v1/:employeeID`
@@ -61,6 +62,7 @@ router.put(
 router.put(
   '/editEmployee/lastName/v1/:employeeID',
   rejectUnauthenticated,
+  rejectNonAdmins,
   async (req, res) => {
     console.log(
       `Full route and body => /api/admin/editEmployee/lastName/v1/:employeeID`
@@ -92,10 +94,7 @@ router.put(
         await client.query('COMMIT');
         res.sendStatus(201);
       } catch (error) {
-        console.log(
-          `Sorry we had a problem editing Employee Last Name`,
-          error
-        );
+        console.log(`Sorry we had a problem editing Employee Last Name`, error);
         // Send back a Lost in the Ether Code
         res.sendStatus(500);
       } finally {
@@ -110,7 +109,7 @@ router.put(
 
 router.put(
   '/editEmployee/phoneNumber/v1/:employeeID',
-  rejectUnauthenticated,
+  rejectUnauthenticated, rejectNonAdmins,
   async (req, res) => {
     console.log(
       `Full route and body => /api/admin/editEmployee/phoneNumber/v1/:employeeID`

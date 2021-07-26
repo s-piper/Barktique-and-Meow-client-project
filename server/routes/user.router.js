@@ -1,6 +1,7 @@
 const express = require('express');
 const {
   rejectUnauthenticated,
+  rejectNonAdmins,
 } = require('../modules/authentication-middleware');
 const encryptLib = require('../modules/encryption');
 const pool = require('../modules/pool');
@@ -17,7 +18,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 // Handles POST request with new user data
 // The only thing different from this and every other post we've seen
 // is that the password gets encrypted before being inserted
-router.post('/register', (req, res, next) => {
+router.post('/register', rejectNonAdmins, (req, res, next) => {
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
   const accessLevel = req.body.accessLevel;
