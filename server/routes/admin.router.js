@@ -108,5 +108,52 @@ router.put(
   }
 );
 
+router.put(
+  '/editEmployee/phoneNumber/v1/:employeeID',
+  rejectUnauthenticated,
+  async (req, res) => {
+    console.log(
+      `Full route and body => /api/admin/editEmployee/phoneNumber/v1/:employeeID`
+    );
+
+    // Prepare the client to get some work done
+    const client = await pool.connect();
+    // deconstruct the body!
+    const { employee_phone_number } = req.body;
+    console.log(`Params => `, req.params);
+    console.log(`Data coming in => `, String(employee_phone_number));
+    // employee id from user table column id!
+    const emp_id = Number(req.params.employeeID);
+    // Query Area
+    const updateEmployeePhoneNumber = `
+      UPDATE "user" SET employee_phone_number=$1
+      WHERE id=$2
+      ;`;
+
+    // Make sure they belong to this realm!
+    if (req.isAuthenticated) {
+      try {
+        // Welcome
+        await client.query('BEGIN');
+        const putPhoneNumber = await pool.query(updateEmployeePhoneNumber, [
+          employee_phone_number,
+          Number(emp_id),
+        ]);
+        await client.query('COMMIT');
+        res.sendStatus(201);
+      } catch (error) {
+        console.log(`Sorry we had a problem editing Employee Phone Number`, error);
+        // Send back a Lost in the Ether Code
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
+      res.sendStatus(403);
+    }
+  }
+);
+
 
 module.exports = router;
