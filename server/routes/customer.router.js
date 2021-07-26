@@ -51,14 +51,15 @@ router.post('/order/v1/form/:orderNumber', async (req, res) => {
       cus_order_number,
     ]);
 
+    console.log(`What we get from response`, awaitingGetResponse.rows)
     // Check to see if the row exist
-    if (awaitingGetResponse.rows !== []) {
+    if (awaitingGetResponse.rows.length !== 0) {
       // If this order number exists, We send back a -1 to the SAGA to handle as an error
       // that this order exists, handle error message there.
       console.log(`We got a match`, awaitingGetResponse.rows);
       await client.query('COMMIT');
       res.send([-1]);
-    } else {
+    } else if (awaitingGetResponse.rows !== []) {
       console.log(`Our response is => `, awaitingGetResponse.rows);
       // If order number doesn't exist, we get to proceed and make a POST request
       const createPostResponse = await pool.query(postOrderTable, [
@@ -74,7 +75,7 @@ router.post('/order/v1/form/:orderNumber', async (req, res) => {
       ]);
       await client.query('COMMIT');
       // Send back a CREATED html status code
-      res.sendStatus(200);
+      res.sendStatus(201);
     }
   } catch (error) {
     console.log(
