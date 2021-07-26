@@ -49,6 +49,7 @@ router.put(
         // Send back a Lost in the Ether Code
         res.sendStatus(500);
       } finally {
+        client.release();
       }
     } else {
       // Forbidden
