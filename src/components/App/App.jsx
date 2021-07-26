@@ -5,6 +5,7 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@material-ui/core';
 
 import { useDispatch } from 'react-redux';
 
@@ -21,6 +22,13 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 
 import './App.css';
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: 
+    }
+  }
+})
 
 function App() {
   const dispatch = useDispatch();
