@@ -9,6 +9,7 @@ import {
 import { useDispatch } from 'react-redux';
 
 import Nav from '../Nav/Nav';
+import EmployeeHeader from '../EmployeeHeader/EmployeeHeader';
 import Footer from '../Footer/Footer';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
