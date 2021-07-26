@@ -154,5 +154,56 @@ router.put(
   }
 );
 
+router.put(
+  '/editEmployee/accessLevel/v1/:employeeID',
+  rejectUnauthenticated,
+  rejectNonAdmins,
+  async (req, res) => {
+    console.log(
+      `Full route and body => /api/admin/editEmployee/accessLevel/v1/:employeeID`
+    );
+
+    // Prepare the client to get some work done
+    const client = await pool.connect();
+    // deconstruct the body!
+    const { employee_access_level } = req.body;
+    console.log(`Params => `, req.params);
+    console.log(`Data coming in => `, String(employee_access_level));
+    // employee id from user table column id!
+    const emp_id = Number(req.params.employeeID);
+    // Query Area
+    const updateEmployeeAccessLevel = `
+      UPDATE "user" SET employee_access_level=$1
+      WHERE id=$2
+      ;`;
+
+    // Make sure they belong to this realm!
+    if (req.isAuthenticated) {
+      try {
+        // Welcome
+        await client.query('BEGIN');
+        const putAccessLevel = await pool.query(updateEmployeeAccessLevel, [
+          employee_access_level,
+          Number(emp_id),
+        ]);
+        await client.query('COMMIT');
+        res.sendStatus(201);
+      } catch (error) {
+        console.log(
+          `Sorry we had a problem editing Employee Access Level.`,
+          error
+        );
+        // Send back a Lost in the Ether Code
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
+      res.sendStatus(403);
+    }
+  }
+);
+
 
 module.exports = router;
