@@ -93,7 +93,7 @@ router.put(
         res.sendStatus(201);
       } catch (error) {
         console.log(
-          `Sorry we had a problem editing Employee First Name`,
+          `Sorry we had a problem editing Employee Last Name`,
           error
         );
         // Send back a Lost in the Ether Code
