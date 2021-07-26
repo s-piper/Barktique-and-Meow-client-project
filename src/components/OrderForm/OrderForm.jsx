@@ -45,7 +45,7 @@ function OrderForm() {
     return (
 
         <div>
-
+{/* User Inputs */}
             <FormControl>
                 <TextField
                     onChange={(event) => setOrder(event.target.value)}
@@ -78,7 +78,7 @@ function OrderForm() {
                     label="Email"
                     required />
 
-
+{/* Upload Button and Iframe */}
                 <iframe src={image.file} height="250px" width="350px" />
 
                 <Button
@@ -91,7 +91,7 @@ function OrderForm() {
                         hidden />
                 </Button>
 
-
+{/* Creates the checkboxes for social */}
                 <FormControlLabel
                     control={
                         <Checkbox
