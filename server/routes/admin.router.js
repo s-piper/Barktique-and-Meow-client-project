@@ -205,5 +205,56 @@ router.put(
   }
 );
 
+router.put(
+  '/editEmployee/email/v1/:employeeID',
+  rejectUnauthenticated,
+  rejectNonAdmins,
+  async (req, res) => {
+    console.log(
+      `Full route and body => /api/admin/editEmployee/email/v1/:employeeID`
+    );
+
+    // Prepare the client to get some work done
+    const client = await pool.connect();
+    // deconstruct the body!
+    const { username } = req.body;
+    console.log(`Params => `, req.params);
+    console.log(`Data coming in => `, String(username));
+    // employee id from user table column id!
+    const emp_id = Number(req.params.employeeID);
+    // Query Area
+    const updateEmployeeEmail = `
+      UPDATE "user" SET username=$1
+      WHERE id=$2
+      ;`;
+
+    // Make sure they belong to this realm!
+    if (req.isAuthenticated) {
+      try {
+        // Welcome
+        await client.query('BEGIN');
+        const putEmail = await pool.query(updateEmployeeEmail, [
+          username,
+          Number(emp_id),
+        ]);
+        await client.query('COMMIT');
+        res.sendStatus(201);
+      } catch (error) {
+        console.log(
+          `Sorry we had a problem editing Employee "Email" username.`,
+          error
+        );
+        // Send back a Lost in the Ether Code
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
+      res.sendStatus(403);
+    }
+  }
+);
+
 
 module.exports = router;
