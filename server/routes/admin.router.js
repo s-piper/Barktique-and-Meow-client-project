@@ -40,7 +40,7 @@ router.put(
           Number(emp_id)
         ]);
         await client.query('COMMIT');
-        res.send(201);
+        res.sendStatus(201);
       } catch (error) {
         console.log(
           `Sorry we had a problem editing Employee First Name`,
