@@ -12,17 +12,40 @@ router.put(
   '/startOrder/v1/:employeeID',
   rejectUnauthenticated,
   async (req, res) => {
-    console.log(`Full route => /api/employee/startOver/v1/:employeeID`);
+    console.log(`Full route => /api/employee/startOrder/v1/:employeeID`);
 
     // Prepare the client to get some work done
     const client = await pool.connect();
-
+    console.log(`What's are params => `, req.params.employeeID)
+    console.log(`What are data coming from body => `, req.body)
     // Query Area
     const updateStartOrder = `
-      UPDATE order_table SET user_id_ref=$1 and cus_order_isStarted=$2 and cus_progress_status=$3
+      UPDATE order_table SET "user_id_ref"=$1, "cus_order_isStarted"=$2, "cus_progress_status"=$3
+      WHERE "cus_order_number"=$4
     ;`;
 
+    // Prepare thy self!
     if (req.isAuthenticated) {
+      try {
+        // Did you grab bring your shield?
+        await client.query('BEGIN');
+        const putOrderStatusResponse = await pool.query(updateStartOrder, [
+          req.params.employeeID,
+          req.body.cus_order_isStarted,
+          req.body.cus_progress_status,
+          req.body.cus_order_number,
+        ]);
+
+        await client.query('COMMIT');
+        res.sendStatus(201);
+        
+      } catch (error) {
+        console.log(`Whoa.. Lookin' like we can't start this order`, error);
+        // Send back a Lost in the Ether Code
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
     } else {
       // Forbidden
       res.sendStatus(403);
