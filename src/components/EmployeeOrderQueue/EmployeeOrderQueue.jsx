@@ -17,10 +17,21 @@ function EmployeeOrderQueue(){
     const history = useHistory();
     const dispatch = useDispatch();
     const classes = useStyles();
+    const employee = useSelector ((store) => store.employeeReducer.employee) 
 
     useEffect(() => {
-        dispatch({ type: })
-    })
+        dispatch({ type: "FETCH_EMPLOYEE"})
+    }, []);
+
+
+
+    //data grid table
+
+    const columns = [
+    {},
+    {},
+    ]
+
 }
 
 export default EmployeeOrderQueue;
