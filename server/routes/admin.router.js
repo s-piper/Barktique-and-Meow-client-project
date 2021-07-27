@@ -6,12 +6,14 @@ const {
   rejectNonAdmins,
 } = require('../modules/authentication-middleware');
 const axios = require('axios');
+const { get } = require('./user.router');
 
 // PUT routes Edit employee info
 
 router.put(
   '/editEmployee/firstName/v1/:employeeID',
-  rejectUnauthenticated, rejectNonAdmins,
+  rejectUnauthenticated,
+  rejectNonAdmins,
   async (req, res) => {
     console.log(
       `Full route and body => /api/admin/editEmployee/firstName/v1/:employeeID`
@@ -38,7 +40,7 @@ router.put(
         await client.query('BEGIN');
         const putFirstName = await pool.query(updateEmployeeFirst, [
           employee_first_name,
-          Number(emp_id)
+          Number(emp_id),
         ]);
         await client.query('COMMIT');
         res.sendStatus(201);
@@ -109,7 +111,8 @@ router.put(
 
 router.put(
   '/editEmployee/phoneNumber/v1/:employeeID',
-  rejectUnauthenticated, rejectNonAdmins,
+  rejectUnauthenticated,
+  rejectNonAdmins,
   async (req, res) => {
     console.log(
       `Full route and body => /api/admin/editEmployee/phoneNumber/v1/:employeeID`
@@ -141,7 +144,10 @@ router.put(
         await client.query('COMMIT');
         res.sendStatus(201);
       } catch (error) {
-        console.log(`Sorry we had a problem editing Employee Phone Number`, error);
+        console.log(
+          `Sorry we had a problem editing Employee Phone Number`,
+          error
+        );
         // Send back a Lost in the Ether Code
         res.sendStatus(500);
       } finally {
@@ -256,5 +262,60 @@ router.put(
   }
 );
 
+// DELETE route
+// ****** This route needs an Employee Assigned to an order to test
+router.delete(
+  '/delete/v1/:employeeID',
+  rejectUnauthenticated,
+  rejectNonAdmins,
+  async (req, res) => {}
+);
+
+// GET routes for all employee's
+router.get(
+  '/getArtists/v1',
+  rejectUnauthenticated,
+  rejectNonAdmins,
+  async (req, res) => {
+    console.log(`Full route => /api/admin/getArtists/v1`);
+    // Prepare the client to get some work done
+    const client = await pool.connect();
+    // Query Area
+    // We DO NOT want to send back a password, HASHED OR NOT!
+    const fetchAllEmployees = `
+      SELECT 
+      id,
+      username,
+      employee_access_level,
+      employee_first_name,
+      employee_last_name,
+      employee_phone_number  FROM "user"
+      ;`;
+
+    // Make sure they belong to this realm!
+    if (req.isAuthenticated) {
+      try {
+        // Welcome to the Shadow Realm, begin your work!
+        await client.query('BEGIN');
+        const getAllEmployees = await pool.query(fetchAllEmployees);
+        console.log(`All employees => `, getAllEmployees.rows);
+        // Send the rows for our Database.
+        res.send(getAllEmployees.rows);
+      } catch (error) {
+        console.log(
+          `We had a problem fetching the Employee list from database...`,
+          error
+        );
+        // Send back we can't find our way outta here, http status code....
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
+      res.sendStatus(403);
+    }
+  }
+);
 
 module.exports = router;
