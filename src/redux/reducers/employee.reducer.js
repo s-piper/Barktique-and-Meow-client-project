@@ -9,13 +9,6 @@ const employee = (state = [], action) => {
     }
 }
 
-const newEmployee = (state = [], action) => {
-    switch (action.type) {
-        case 'ADD_EMPLOYEE':
-            return action.payload;
-            default:
-                return state;
-    }
-}
 
-export default combineReducers({employee, newEmployee})
+
+export default combineReducers({employee})
