@@ -1,4 +1,5 @@
 import './AdminHeader.css';
+import AdminCreateButton from '../AdminCreateButton/AdminCreateButton';
 
 function AdminHeader() {
     return (
@@ -9,9 +10,6 @@ function AdminHeader() {
                         className="admin_bark_logo"
                         src="./images/Barktique-and-meow-logo-final-color.png" 
                     />
-                </div>
-                <div>
-                    {/* <AdminLogout /> */}
                 </div>
             </header>
         </div>

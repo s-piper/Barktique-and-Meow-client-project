@@ -1,0 +1,9 @@
+.admin-buttons {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.admin-button-align {
+    text-align: right;
+    margin-right: 10px;
+}
