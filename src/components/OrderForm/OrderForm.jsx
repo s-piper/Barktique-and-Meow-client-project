@@ -61,7 +61,7 @@ function OrderForm() {
         }
     }
 
-    // Validates the image size
+    // Validates the image size and alerts yah or nah
     const validateImage = () => {
         var img = document.getElementById('imageID')
         var width = img.naturalWidth;
@@ -75,7 +75,7 @@ function OrderForm() {
             alert("Please select a higher quality image");
 
             setImage([]);
-        } else { }
+        } else { alert("Looks Good! Our Artists will be happy!!!")}
     }
 
 
