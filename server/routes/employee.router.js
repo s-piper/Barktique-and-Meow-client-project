@@ -16,8 +16,8 @@ router.put(
 
     // Prepare the client to get some work done
     const client = await pool.connect();
-    console.log(`What's are params => `, req.params.employeeID)
-    console.log(`What are data coming from body => `, req.body)
+    console.log(`What's are params => `, req.params.employeeID);
+    console.log(`What are data coming from body => `, req.body);
     // Query Area
     const updateStartOrder = `
       UPDATE order_table SET "user_id_ref"=$1, "cus_order_isStarted"=$2, "cus_progress_status"=$3
@@ -38,7 +38,6 @@ router.put(
 
         await client.query('COMMIT');
         res.sendStatus(201);
-        
       } catch (error) {
         console.log(`Whoa.. Lookin' like we can't start this order`, error);
         // Send back a Lost in the Ether Code
@@ -90,5 +89,46 @@ router.get('/getAllOrders/v1', rejectUnauthenticated, async (req, res) => {
     res.sendStatus(403);
   }
 });
+
+router.get(
+  '/productOrder/v1/:employeeID/:orderNumber',
+  rejectUnauthenticated,
+  async (req, res) => {
+    console.log(
+      `Full route => /api/employee/productOrder/v1/:employeeID/:orderNumber`
+    );
+      console.log(`What params we got coming in =>`, req.params)
+    const client = await pool.connect();
+    // Query Area
+    const fetchProductOrder = `
+    SELECT * FROM order_table
+    WHERE cus_order_number=$1
+  ;`;
+
+    // Prepare the client to get some Pool time in
+    if (req.isAuthenticated) {
+      try {
+        // Did you grab you're swim trunks?
+        await client.query('BEGIN');
+        const fetchOrderResponse = await pool.query(fetchProductOrder, [
+          req.params.orderNumber,
+        ]);
+
+        console.log(`Order that we've got for you => `, fetchOrderResponse.rows);
+        await client.query('COMMIT');
+        res.send(fetchOrderResponse.rows);
+      } catch (error) {
+        console.log(`Hey, we can't grab that product order... `, error);
+        // Couldn't find the pool status code.
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
+      res.sendStatus(403);
+    }
+  }
+);
 
 module.exports = router;
