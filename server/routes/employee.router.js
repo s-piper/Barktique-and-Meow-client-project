@@ -6,9 +6,9 @@ const {
 } = require('../modules/authentication-middleware');
 const axios = require('axios');
 
-// GET route Area
+// Put route Area
 
-router.get(
+router.put(
   '/startOrder/v1/:employeeID',
   rejectUnauthenticated,
   async (req, res) => {
@@ -19,7 +19,7 @@ router.get(
     // Query Area
     const updateStartOrder = `
       UPDATE order_table SET user_id_ref=$1 and cus_order_isStarted=$2 and cus_progress_status=$3
-      ;`;
+    ;`;
       
     if (req.isAuthenticated) {
     } else {
