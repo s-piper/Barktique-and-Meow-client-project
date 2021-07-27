@@ -22,6 +22,7 @@ import InfoPage from '../InfoPage/InfoPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import OrderPage from '../OrderPage/OrderPage';
 
 import './App.css';
 import { fontWeight } from '@material-ui/system';
@@ -76,6 +77,13 @@ function App() {
             path="/about"
           >
             <AboutPage />
+          </Route>
+
+          <Route
+            exact
+            path="/order"
+          >
+            <OrderPage />
           </Route>
 
           {/* For protected routes, the view could show one of several things on the same route.
@@ -145,6 +153,7 @@ function App() {
           <Route>
             <h1>404</h1>
           </Route>
+
         </Switch>
         <Footer />
       </div>
