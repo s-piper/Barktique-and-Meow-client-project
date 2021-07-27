@@ -84,7 +84,6 @@ router.put(
 
         await client.query('COMMIT');
         res.sendStatus(201);
-        
       } catch (error) {
         console.log(
           `Looks like we couldn't change the Customer Error button status`,
@@ -97,6 +96,55 @@ router.put(
       }
     } else {
       // Forbidden From This Place
+      res.sendStatus(403);
+    }
+  }
+);
+
+router.put(
+  '/productOrder/orderCompleteButton/v1/:employeeID/:orderNumber',
+  rejectUnauthenticated,
+  async (req, res) => {
+    console.log(
+      `Full route => /api/employee/productOrder/orderCompleteButton/v1/:employeeID/:orderNumber`
+    );
+
+    // Prepare the client, Got an Order to complete
+    const client = await pool.connect();
+    console.log(`What's are params => `, req.params.employeeID);
+    console.log(`What data coming from the body => `, req.body);
+
+    // Query Area
+    const updateCompleteButton = `
+      UPDATE order_table SET cus_progress_status=$1
+      WHERE user_id_ref=$2 and cus_order_number=$3
+    ;`;
+
+    // The zone is restricted
+    if (req.isAuthenticated) {
+      try {
+        // Glad you brought a hardhat
+        await client.query('BEGIN');
+        const putOrderCompleteResponse = await pool.query(
+          updateCompleteButton,
+          [
+            req.body.cus_progress_status,
+            req.params.employeeID,
+            req.params.orderNumber,
+          ]
+        );
+
+        await client.query('COMMIT');
+        res.sendStatus(200);
+      } catch (error) {
+        console.log(`Apparently we couldn't complete the order `, error);
+        // Send back a Wandering Aimlessly status code
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
       res.sendStatus(403);
     }
   }
