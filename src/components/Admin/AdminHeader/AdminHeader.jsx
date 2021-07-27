@@ -1,6 +1,6 @@
-import './AdminHeader.css';
-import AdminCreateButton from '../AdminCreateButton/AdminCreateButton';
+import '../Admin.css';
 
+// function for admin header component
 function AdminHeader() {
     return (
         <div>
