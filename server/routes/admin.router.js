@@ -243,7 +243,7 @@ router.put(
           username,
           Number(emp_id),
         ]);
-        await client.query('COMMIT');
+        await client.query('COMMIT'); 
         res.sendStatus(201);
       } catch (error) {
         console.log(
