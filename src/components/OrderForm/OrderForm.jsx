@@ -45,7 +45,7 @@ function OrderForm() {
     return (
 
         <div>
-{/* User Inputs */}
+            {/* User Inputs */}
             <FormControl>
                 <TextField
                     onChange={(event) => setOrder(event.target.value)}
@@ -78,7 +78,7 @@ function OrderForm() {
                     label="Email"
                     required />
 
-{/* Upload Button and Iframe */}
+                {/* Upload Button and Iframe */}
                 <iframe src={image.file} height="250px" width="350px" />
 
                 <Button
@@ -91,7 +91,7 @@ function OrderForm() {
                         hidden />
                 </Button>
 
-{/* Creates the checkboxes for social */}
+                {/* Creates the checkboxes for social */}
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -99,8 +99,7 @@ function OrderForm() {
                             color="primary" />
                     }
                     label="Yes, I own the rights to the image I am submitting and I give permission to Barktique + Meow 
-                    to use the file in order to produce the product"
-                />
+                    to use the file in order to produce the product"/>
                 <FormControlLabel
                     control={
                         <Checkbox
