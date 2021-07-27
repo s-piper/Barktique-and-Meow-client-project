@@ -41,6 +41,27 @@ function OrderForm() {
 
     }
 
+    console.log('Rights', rights);
+    console.log('Social', social);
+
+    const rightsCheck = () => {
+        if(rights==false) {
+            setRights(true);
+        } else {
+            setRights(false)
+        }
+    }
+
+    const socialCheck = () => {
+        if(social==false) {
+            setSocial(true);
+        } else {
+            setSocial(false)
+        }
+    }
+
+    
+
 
     return (
 
@@ -99,18 +120,20 @@ function OrderForm() {
                     required />
 
                 {/* Creates the checkboxes for social. Still needs check box logic */}
+                {/* Image Rights */}
                 <FormControlLabel
                     control={
                         <Checkbox
-                            onChange={(event) => setRights(true)}
+                            onChange={rightsCheck}
                             color="primary" />
                     }
                     label="Yes, I own the rights to the image I am submitting and I give permission to Barktique + Meow 
                     to use the file in order to produce the product"/>
+                {/* Social Permission */}
                 <FormControlLabel
                     control={
                         <Checkbox
-                            onChange={(event) => setSocial(true)}
+                            onChange={socialCheck}
                             color="primary" />
                     }
                     label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
