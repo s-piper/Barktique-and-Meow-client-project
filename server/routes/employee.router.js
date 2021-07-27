@@ -37,7 +37,7 @@ router.put(
         ]);
 
         await client.query('COMMIT');
-        res.sendStatus(201);
+        res.sendStatus(200);
       } catch (error) {
         console.log(`Whoa.. Lookin' like we can't start this order`, error);
         // Send back a Lost in the Ether Code
@@ -83,7 +83,7 @@ router.put(
         ]);
 
         await client.query('COMMIT');
-        res.sendStatus(201);
+        res.sendStatus(200);
       } catch (error) {
         console.log(
           `Looks like we couldn't change the Customer Error button status`,
@@ -139,6 +139,54 @@ router.put(
       } catch (error) {
         console.log(`Apparently we couldn't complete the order `, error);
         // Send back a Wandering Aimlessly status code
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
+      res.sendStatus(403);
+    }
+  }
+);
+
+router.put(
+  '/productOrder/unassignOrderButton/v1/:employeeID/:orderNumber',
+  rejectUnauthenticated,
+  async (req, res) => {
+    console.log(
+      `Full route => /api/productOrder/unassignOrderButton/v1/:employeeID/:orderNumber`
+    );
+
+    // Prepare the client, Got an Order to complete
+    const client = await pool.connect();
+    console.log(`What's are params => `, req.params);
+    console.log(`What data is coming from the body => `, req.body);
+
+    // Query Area
+    const updateUnassignButton = `
+      UPDATE order_table SET cus_progress_status=$1, "cus_order_isStarted"=$2, "user_id_ref"=$3
+      WHERE user_id_ref=$4 and cus_order_number=$5
+    ;`;
+    
+
+    // Gonna need some ID to get in here
+    if (req.isAuthenticated) {
+      try {
+        // Now stay out the way and let the client get some work done.
+        const putUnassignResponse = await pool.query(updateUnassignButton, [
+          req.body.cus_progress_status,
+          req.body.cus_order_isStarted,
+          req.body.user_id_ref,
+          req.params.employeeID,
+          req.params.orderNumber,
+        ]);
+
+        await client.query('COMMIT');
+        res.sendStatus(200);
+      } catch (error) {
+        console.log(`Ships going down, we couldn't un-assign anything `, error);
+        // Send back we're lost at sea status code
         res.sendStatus(500);
       } finally {
         client.release();
