@@ -91,7 +91,14 @@ function OrderForm() {
                         hidden />
                 </Button>
 
-                {/* Creates the checkboxes for social */}
+                <TextField
+                    onChange={(event) => setNotes(event.target.value)}
+                    id="outline-basic"
+                    variant="outlined"
+                    label="Notes"
+                    required />
+
+                {/* Creates the checkboxes for social. Still needs check box logic */}
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -108,6 +115,14 @@ function OrderForm() {
                     }
                     label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
                 />
+
+                <Button 
+                    onClick="DO SOMETHING"
+                    variant="outlined" 
+                    size="large" 
+                    color="primary">
+                    Submit
+                </Button>
             </FormControl>
 
         </div>
