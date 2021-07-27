@@ -38,7 +38,7 @@ CREATE TABLE "order_table" (
 	"cus_notes" VARCHAR(500),
 	"cus_image_owner_rights" BOOLEAN DEFAULT TRUE NOT NULL,
 	"cus_social_permission" BOOLEAN,
-	"cus_progress_status" VARCHAR(20),
+	"cus_progress_status" VARCHAR(20) DEFAULT 'Not Started',
 	"cus_upload_date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	"cus_order_isStarted" BOOLEAN DEFAULT 'FALSE',
 	"cus_error_image" BOOLEAN DEFAULT 'FALSE'
