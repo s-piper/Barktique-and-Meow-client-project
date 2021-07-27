@@ -5,6 +5,7 @@ import {
   Redirect,
   Switch,
 } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@material-ui/core';
 
 import { useDispatch } from 'react-redux';
 
@@ -24,6 +25,34 @@ import RegisterPage from '../RegisterPage/RegisterPage';
 import OrderPage from '../OrderPage/OrderPage';
 
 import './App.css';
+import { fontWeight } from '@material-ui/system';
+const theme = createTheme({
+  root: {
+
+  },
+  palette: {
+    primary: {
+      main: "#000000"
+    },
+    secondary: {
+      main: "#ef3e47"
+    }
+  },
+  typography: {
+    h1: {
+      fontFamily: "Yantramanav",
+      fontWeightBold:  700,
+    },
+    button: {
+      textTransform: 'uppercase',
+    
+    fontFamily: "Yantramanav",
+    fontWeightBold: 700,
+    },
+    
+  },
+  
+})
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +62,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    <ThemeProvider theme = {theme}>
     <Router>
       <div>
         <Nav />
@@ -128,6 +158,7 @@ function App() {
         <Footer />
       </div>
     </Router>
+    </ThemeProvider>
   );
 }
 
