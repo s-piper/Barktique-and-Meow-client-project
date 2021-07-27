@@ -44,6 +44,7 @@ function OrderForm() {
     console.log('Rights', rights);
     console.log('Social', social);
 
+// Checks the checkboxes
     const rightsCheck = () => {
         if (rights == false) {
             setRights(true);
@@ -60,6 +61,7 @@ function OrderForm() {
         }
     }
 
+    // Validates the image size
     const validateImage = () => {
         var img = document.getElementById('imageID')
         var width = img.naturalWidth;
@@ -73,9 +75,7 @@ function OrderForm() {
             alert("Please select a higher quality image");
 
             setImage([]);
-        } else {
-
-        }
+        } else { }
     }
 
 
@@ -126,8 +126,6 @@ function OrderForm() {
                     Upload Picture
                     <input
                         onChange={(event) => setImage({ file: URL.createObjectURL(event.target.files[0]) })}
-                        // onChange={(event) => setImage(event.target.files[0])}
-
                         type="file"
                         hidden />
                 </Button>
