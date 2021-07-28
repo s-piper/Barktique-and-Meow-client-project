@@ -1,18 +1,18 @@
-
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 // function for create employee button
 function AdminCreateButton() {
-
-    // function to handle add employee click
-    const handleClick = () => {
-        // console log to see button fires on click
-        console.log('Clicked Add Employee');
-    }
+    
+    // set useHistory variable
+    const history = useHistory();
 
     return (
         <div>
             <button
-                onClick={handleClick}
+                onClick={() => {
+                    history.push('/createEmployee');
+                }}
             >
                 Create Employee
             </button>

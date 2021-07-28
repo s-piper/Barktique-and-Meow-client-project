@@ -23,6 +23,7 @@ import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import OrderPage from '../OrderPage/OrderPage';
+import AdminCreateEmployee from '../Admin/AdminCreateEmployee/AdminCreateEmployee';
 
 import './App.css';
 import { fontWeight } from '@material-ui/system';
@@ -136,6 +137,13 @@ function App() {
             path="/admin"
           >
             <Admin />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/createEmployee"
+          >
+            <AdminCreateEmployee />
           </ProtectedRoute>
 
           <ProtectedRoute

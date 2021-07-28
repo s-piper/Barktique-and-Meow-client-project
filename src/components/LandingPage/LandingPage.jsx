@@ -6,8 +6,8 @@ import {
   Typography, } from '@material-ui/core';
 
 
-// CUSTOM COMPONENTS
-import RegisterForm from '../RegisterForm/RegisterForm';
+// // CUSTOM COMPONENTS
+// import RegisterForm from '../RegisterForm/RegisterForm';
 
 function LandingPage() {
   const [heading, setHeading] = useState('Welcome');
