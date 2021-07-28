@@ -81,6 +81,12 @@ function OrderForm() {
         } else { alert("Looks Good! Our Artists will be happy!!!")}
     }
 
+    const checkRights = () => {
+        if(rights != true) {
+           return(alert("You must own the image on your order."))
+        }
+    }
+
 
     return (
 
