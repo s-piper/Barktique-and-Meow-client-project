@@ -64,6 +64,9 @@ function AdminCreateEmployee() {
         // dispatch newEmployee
         dispatch({ type: 'REGISTER', payload: {newEmployee} });
 
+        // push admin to dashboard
+        history.push('/admin');
+
     } // end saveEmployee
 
     // function to handle dropdown selection and set Access Level
