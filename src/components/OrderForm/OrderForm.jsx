@@ -23,6 +23,9 @@ function OrderForm() {
 
 
 
+
+
+
     //Packages inputs for dispatch
     const saveOrder = () => {
         const newOrder = {
@@ -44,8 +47,9 @@ function OrderForm() {
     console.log('Rights', rights);
     console.log('Social', social);
 
+// Checks the checkboxes
     const rightsCheck = () => {
-        if(rights==false) {
+        if (rights == false) {
             setRights(true);
         } else {
             setRights(false)
@@ -53,14 +57,29 @@ function OrderForm() {
     }
 
     const socialCheck = () => {
-        if(social==false) {
+        if (social == false) {
             setSocial(true);
         } else {
             setSocial(false)
         }
     }
 
-    
+    // Validates the image size and alerts yah or nah
+    const validateImage = () => {
+        var img = document.getElementById('imageID')
+        var width = img.naturalWidth;
+        var height = img.naturalHeight;
+        console.log("width, height", width, height)
+
+        var area = width*height;
+        console.log("area", area);
+
+        if(area<2_160_000){
+            alert("Please select a higher quality image");
+
+            setImage([]);
+        } else { alert("Looks Good! Our Artists will be happy!!!")}
+    }
 
 
     return (
@@ -100,7 +119,13 @@ function OrderForm() {
                     required />
 
                 {/* Upload Button and Iframe */}
-                <iframe src={image.file} height="250px" width="350px" />
+                {/* <iframe id="imageID" src={image.file}height="250px" width="350px" /> */}
+                <img id="imageID" onLoad={validateImage} src={image.file} height="250px" width="350px" />
+                {/* <iframe src={imageUpload.file} height="250px" width="350px" /> */}
+
+                {/* {image.length ? "" : (
+                    <iframe id="imageID" src={image.file} height="250px" width="350px" />
+                )} */}
 
                 <Button
                     variant="contained"
@@ -108,6 +133,7 @@ function OrderForm() {
                     Upload Picture
                     <input
                         onChange={(event) => setImage({ file: URL.createObjectURL(event.target.files[0]) })}
+                        // onChange={(event) => handleUpload(event)}
                         type="file"
                         hidden />
                 </Button>
@@ -139,10 +165,10 @@ function OrderForm() {
                     label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
                 />
 
-                <Button 
+                <Button
                     onClick="DO SOMETHING"
-                    variant="outlined" 
-                    size="large" 
+                    variant="outlined"
+                    size="large"
                     color="primary">
                     Submit
                 </Button>
