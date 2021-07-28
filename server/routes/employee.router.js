@@ -4,7 +4,7 @@ const router = express.Router();
 const {
   rejectUnauthenticated,
 } = require('../modules/authentication-middleware');
-const axios = require('axios');
+
 
 // PUT route Area
 
@@ -174,6 +174,7 @@ router.put(
     if (req.isAuthenticated) {
       try {
         // Now stay out the way and let the client get some work done.
+        await client.query('BEGIN');
         const putUnassignResponse = await pool.query(updateUnassignButton, [
           req.body.cus_progress_status,
           req.body.cus_order_isStarted,
