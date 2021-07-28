@@ -5,8 +5,9 @@ import AdminHeader from '../AdminHeader/AdminHeader';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { FormControl } from '@material-ui/core';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox'
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+
 
 // AdminCreateEmployee function
 function AdminCreateEmployee() {
@@ -18,9 +19,9 @@ function AdminCreateEmployee() {
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [phone, setPhone] = useState('');
+    const [phone, setPhone] = useState(0);
     const [password, setPassword] = useState('');
-    const [accessLevel, setAccessLevel] = useState(1);
+    const [accessLevel, setAccessLevel] = useState(0);
 
     // set variable for inputs to dispatch
     const saveEmployee = () => {
@@ -32,6 +33,9 @@ function AdminCreateEmployee() {
             password: password,
             employee_access_level: accessLevel
         }
+
+        // console log to see captured data
+        console.log('New Employee is:', newEmployee);
     }
     
     return (
@@ -51,6 +55,56 @@ function AdminCreateEmployee() {
                     required
                     onChange={(event) => setEmail(event.target.value)}
                 />
+                <TextField 
+                    id="outline-basic"
+                    variant="outlined"
+                    label="First Name"
+                    required
+                    onChange={(event) => setFirstName(event.target.value)}
+                />
+                <TextField 
+                    id="outline-basic"
+                    variant="outlined"
+                    label="Last Name"
+                    required
+                    onChange={(event) => setLastName(event.target.value)}
+                />
+                <TextField 
+                    id="outline-basic"
+                    variant="outlined"
+                    label="Phone Number"
+                    required
+                    onChange={(event) => setPhone(event.target.value)}
+                />
+                <TextField 
+                    id="outline-basic"
+                    variant="outlined"
+                    label="Password"
+                    required
+                    onChange={(event) => setPassword(event.target.value)}
+                />
+                <FormControl variant="outlined">
+                    <InputLabel>Access Level</InputLabel>
+                    <Select
+                        defaultValue={accessLevel}
+                        label="Access Level"
+                        required
+                        onChange={(event) => setAccessLevel(event.target.value)}
+                    >
+                        {/* <option value={0}></option> */}
+                        <option value={1}>Artist/Employee</option>
+                        <option value={2}>Admin</option>
+                    </Select>
+                </FormControl>
+                <Button
+                    size="medium"
+                    variant="contained"
+                    color="primary"
+                    type="button"
+                    onClick={saveEmployee}
+                >
+                    Add Employee
+                </Button>
             </FormControl>
         </>
     )
