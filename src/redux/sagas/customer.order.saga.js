@@ -3,13 +3,13 @@ import axios from 'axios';
 
 // POST route to backend
 function* postCustomerOrderFormSaga(action) {
-  console.log(`Data coming from client =>`, action.payload);
+  console.log(`Data coming from client =>`, action.payload.newOrder);
 
   try {
     // Send back our Order to backend => Database
     const postCustomerOrderResponse = yield axios.post(
-      `/api/customer/order/v1/form/${action.payload.cus_order_number}`
-    );
+      `/api/customer/order/v1/form/${action.payload.newOrder.cus_order_number}`, action.payload.newOrder)
+    ;
   } catch (error) {
     console.log(`Hey, We had a problem with Customer Order =>`, error);
   }

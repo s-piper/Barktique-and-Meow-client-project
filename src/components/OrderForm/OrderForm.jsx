@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -52,15 +53,32 @@ function OrderForm() {
         console.log("area", area);
 
         if (area < 2_160_000) {
-            alert("Please select a higher quality image");
+            Swal.fire({
+                title: "Sorry",
+                text: "Please select a higher quality image",
+                icon: "error"
+            });
 
             setImage([]);
-        } else { alert("Looks Good! Our Artists will be happy!!!") }
+        } else {
+            Swal.fire({
+                title: "Looks Good!",
+                text: "Our Artists will be happy!!!",
+                icon: "success"
+            })
+
+        }
     }
 
     const checkRights = () => {
         if (rights != true) {
-            return (alert("You must own the image on your order."))
+
+            Swal.fire({
+                title: "Sorry",
+                text: "You must own the picture",
+                icon: "error"
+            })
+
         } else {
             saveOrder();
         }
@@ -82,7 +100,7 @@ function OrderForm() {
 
         console.log("newOrder", newOrder);
 
-        dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: newOrder });
+        dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: {newOrder} });
 
     }
 
