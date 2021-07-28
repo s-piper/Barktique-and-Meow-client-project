@@ -23,6 +23,9 @@ function OrderForm() {
 
 
 
+
+
+
     //Packages inputs for dispatch
     const saveOrder = () => {
         const newOrder = {
@@ -71,7 +74,7 @@ function OrderForm() {
         var area = width*height;
         console.log("area", area);
 
-        if(area<2160000){
+        if(area<2_160_000){
             alert("Please select a higher quality image");
 
             setImage([]);
@@ -118,7 +121,11 @@ function OrderForm() {
                 {/* Upload Button and Iframe */}
                 {/* <iframe id="imageID" src={image.file}height="250px" width="350px" /> */}
                 <img id="imageID" onLoad={validateImage} src={image.file} height="250px" width="350px" />
+                {/* <iframe src={imageUpload.file} height="250px" width="350px" /> */}
 
+                {/* {image.length ? "" : (
+                    <iframe id="imageID" src={image.file} height="250px" width="350px" />
+                )} */}
 
                 <Button
                     variant="contained"
@@ -126,6 +133,7 @@ function OrderForm() {
                     Upload Picture
                     <input
                         onChange={(event) => setImage({ file: URL.createObjectURL(event.target.files[0]) })}
+                        // onChange={(event) => handleUpload(event)}
                         type="file"
                         hidden />
                 </Button>
