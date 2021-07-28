@@ -5,7 +5,6 @@ const {
   rejectUnauthenticated,
   rejectNonAdmins,
 } = require('../modules/authentication-middleware');
-const axios = require('axios');
 const { get } = require('./user.router');
 
 // PUT routes Edit employee info
@@ -268,7 +267,53 @@ router.delete(
   '/delete/v1/:employeeID',
   rejectUnauthenticated,
   rejectNonAdmins,
-  async (req, res) => {}
+  async (req, res) => {
+    console.log(`Full route => /api/admin/delete/v1/:employeeID`);
+    console.log(`We data is body sending us? => `, req.body)
+    // Prepare the client for DELETION!
+    const client = await pool.connect();
+
+    // Query Area
+    const reinstateOrders = `
+      UPDATE order_table SET cus_progress_status=$1, "cus_order_isStarted"=$2, "user_id_ref"=$3
+      WHERE user_id_ref=$4
+    ;`;
+
+    const deleteEmployee = `
+      DELETE FROM "user"
+      WHERE "user".id=$1
+    ;`;
+
+    // Do you have what it takes?
+    if(req.isAuthenticated) {
+      try {
+        // We're going to find out
+        await client.query('BEGIN');
+        const unAssignEmployeeOrders = await pool.query(reinstateOrders, [
+          req.body.cus_progress_status,
+          req.body.cus_order_isStarted,
+          req.body.user_id_ref,
+          req.body.id,
+        ]);
+
+        const deleteEmployeeResponse = await pool.query(deleteEmployee, [
+          req.body.id,
+        ]);
+
+         await client.query('COMMIT');
+         res.sendStatus(200);
+      } catch(error) {
+        console.log(`Looks like you missed the correct delete `, error)
+        // Send back that they couldn't find the ring status code
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
+      res.sendStatus(403)
+    }
+  }
 );
 
 // GET routes for all employee's
