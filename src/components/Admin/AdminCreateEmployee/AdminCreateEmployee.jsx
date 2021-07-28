@@ -51,18 +51,18 @@ function AdminCreateEmployee() {
     const saveEmployee = () => {
         const newEmployee = {
             username: email,
-            employee_first_name: firstName,
-            employee_last_name: lastName,
-            employee_phone_number: phone,
+            firstName: firstName,
+            lastName: lastName,
+            phoneNumber: phone,
             password: password,
-            employee_access_level: accessLevel
+            accessLevel: accessLevel
         }
 
         // console log to see captured data
         console.log('New Employee is:', newEmployee);
 
         // dispatch newEmployee
-        dispatch({ type: 'ADD_EMPLOYEE', payload: newEmployee});
+        dispatch({ type: 'REGISTER', payload: {newEmployee} });
 
     } // end saveEmployee
 
@@ -131,6 +131,7 @@ function AdminCreateEmployee() {
                         variant="outlined"
                         label="Password"
                         required
+                        type="password"
                         className={classes.textField}
                         onChange={(event) => setPassword(event.target.value)}
                     />
