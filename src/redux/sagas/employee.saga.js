@@ -1,21 +1,22 @@
 import { put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 
-// GET route fetchEmployee
-function* fetchEmployee() {
-  console.log('In fetchEmployee');
+// GET route fetch all orders
+function* fetchAllProductOrders() {
+  console.log('In fetchAllProductOrders');
 
   try {
-    const employee = yield axios.get("/api/employee/getAllOrders/v1");
-    
-    yield put({ type: "SET_EMPLOYEE", payload: employee.data });
+    // Hit the backend with a get route to grab all orders
+    const getAllOrdersResponse = yield axios.get("/api/employee/getAllOrders/v1");
+    // Set our reducer with all orders from database
+    yield put({ type: "SET_ALL_PRODUCT_ORDERS", payload: getAllOrdersResponse.data });
   } catch(error) {
-    console.log("ERROR in fetchEmployee", error);
+    console.log('ERROR in fetchAllProductOrders => ', error);
   }
 }
 
 function* employeeSaga() {
-  yield takeLatest("FETCH_EMPLOYEE", fetchEmployee);
+  yield takeLatest("FETCH_ALL_PRODUCT_ORDERS", fetchAllProductOrders);
 }
 
 export default employeeSaga;
