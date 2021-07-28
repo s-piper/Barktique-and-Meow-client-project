@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -21,33 +22,10 @@ function OrderForm() {
     const [rights, setRights] = useState(false);
     const [social, setSocial] = useState(false);
 
-
-
-
-
-
-    //Packages inputs for dispatch
-    const saveOrder = () => {
-        const newOrder = {
-            cus_order_number: order,
-            cus_first_name: firstName,
-            cus_last_name: lastName,
-            cus_phone_number: phone,
-            cus_email: email,
-            cus_image: image,
-            cus_notes: notes,
-            cus_image_owner_rights: rights,
-            cus_social_permission: social,
-        }
-
-        dispatch({ type: 'ADD_ORDER', payload: newOrder })
-
-    }
-
     console.log('Rights', rights);
     console.log('Social', social);
 
-// Checks the checkboxes
+    // Checks the checkboxes
     const rightsCheck = () => {
         if (rights == false) {
             setRights(true);
@@ -71,14 +49,59 @@ function OrderForm() {
         var height = img.naturalHeight;
         console.log("width, height", width, height)
 
-        var area = width*height;
+        var area = width * height;
         console.log("area", area);
 
-        if(area<2_160_000){
-            alert("Please select a higher quality image");
+        if (area < 2_160_000) {
+            Swal.fire({
+                title: "Sorry",
+                text: "Please select a higher quality image",
+                icon: "error"
+            });
 
             setImage([]);
-        } else { alert("Looks Good! Our Artists will be happy!!!")}
+        } else {
+            Swal.fire({
+                title: "Looks Good!",
+                text: "Our Artists will be happy!!!",
+                icon: "success"
+            })
+
+        }
+    }
+
+    const checkRights = () => {
+        if (rights != true) {
+
+            Swal.fire({
+                title: "Sorry",
+                text: "You must own the picture",
+                icon: "error"
+            })
+
+        } else {
+            saveOrder();
+        }
+    }
+
+    //Packages inputs for dispatch
+    const saveOrder = () => {
+        const newOrder = {
+            cus_order_number: order,
+            cus_first_name: firstName,
+            cus_last_name: lastName,
+            cus_phone_number: phone,
+            cus_email: email,
+            cus_image: image,
+            cus_notes: notes,
+            cus_image_owner_rights: rights,
+            cus_social_permission: social,
+        }
+
+        console.log("newOrder", newOrder);
+
+        dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: {newOrder} });
+
     }
 
 
@@ -166,7 +189,7 @@ function OrderForm() {
                 />
 
                 <Button
-                    onClick="DO SOMETHING"
+                    onClick={checkRights}
                     variant="outlined"
                     size="large"
                     color="primary">
