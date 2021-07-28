@@ -1,16 +1,16 @@
 import { put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 
-// GetEmployee SAGA
+// GET route fetchEmployee
 function* fetchEmployee() {
-  console.log("in fetch employee");
+  console.log('In fetchEmployee');
 
   try {
     const employee = yield axios.get("/api/employee/getAllOrders/v1");
-    console.log(`in fetch employee generator`);
+    
     yield put({ type: "SET_EMPLOYEE", payload: employee.data });
-  } catch {
-    console.log("ERROR in fetchEmployeeSaga");
+  } catch(error) {
+    console.log("ERROR in fetchEmployee", error);
   }
 }
 
