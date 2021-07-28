@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import { FormControl } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 // AdminCreateEmployee function
@@ -37,7 +38,7 @@ function AdminCreateEmployee() {
         // console log to see captured data
         console.log('New Employee is:', newEmployee);
     }
-    
+
     return (
         <>
             <div>
@@ -55,28 +56,28 @@ function AdminCreateEmployee() {
                     required
                     onChange={(event) => setEmail(event.target.value)}
                 />
-                <TextField 
+                <TextField
                     id="outline-basic"
                     variant="outlined"
                     label="First Name"
                     required
                     onChange={(event) => setFirstName(event.target.value)}
                 />
-                <TextField 
+                <TextField
                     id="outline-basic"
                     variant="outlined"
                     label="Last Name"
                     required
                     onChange={(event) => setLastName(event.target.value)}
                 />
-                <TextField 
+                <TextField
                     id="outline-basic"
                     variant="outlined"
                     label="Phone Number"
                     required
                     onChange={(event) => setPhone(event.target.value)}
                 />
-                <TextField 
+                <TextField
                     id="outline-basic"
                     variant="outlined"
                     label="Password"
@@ -91,9 +92,11 @@ function AdminCreateEmployee() {
                         required
                         onChange={(event) => setAccessLevel(event.target.value)}
                     >
-                        {/* <option value={0}></option> */}
-                        <option value={1}>Artist/Employee</option>
-                        <option value={2}>Admin</option>
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={1}>Artist</MenuItem>
+                        <MenuItem value={2}>Admin</MenuItem>
                     </Select>
                 </FormControl>
                 <Button
