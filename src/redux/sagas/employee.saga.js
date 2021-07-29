@@ -93,7 +93,8 @@ function* putOrderCompleteButton(action) {
     // Inform the backend we have a completed order for them.
     // ${user.id here}/${cus_order_number here}
     const productOrderCompleteResponse = yield axios.put(
-      `/api/employee/productOrder/orderCompleteButton/v1/${action.payload.id}/${action.payload.cus_order_number}`
+      `/api/employee/productOrder/orderCompleteButton/v1/${action.payload.id}/${action.payload.cus_order_number}`,
+      action.payload.data
     );
     // Need to do a GET request to get updated info for DOM
     // stating that this order is complete
@@ -103,11 +104,41 @@ function* putOrderCompleteButton(action) {
   }
 }
 
+// PUT route for un-assigning orders
+function* putUnassignProductOrder(action) {
+  console.log(`Data we need for this route => `, action.payload.data);
+  // table "user" SET id => action.payload.id
+  // This Saga payload needs to contain this info!
+  /**
+   * data = {
+   *  cus_progress_status: 'Not Started',
+   *  cus_order_isStarted: false,
+   *  cus_order_number: 'Order Number Here',
+   *  user_id_ref: Number here for user.id that is assigned to order!
+   *  id: 'employee id here'
+   * }
+   */
+  try {
+    // Inform the backend we have a product order to un-assign.
+    // ${user.id here}/${cus_order_number here}
+    const productOrderUnassignButton = yield axios.put(
+      `/api/productOrder/unassignOrderButton/v1/${action.payload.id}/${action.payload.cus_order_number}`,
+      action.payload.data
+    );
+    // Need to do a GET request to get updated info for DOM
+    // stating that this order is complete
+    yield put({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
+  } catch (error) {
+    console.log(``);
+  }
+}
+
 function* employeeSaga() {
   yield takeLatest('FETCH_ALL_PRODUCT_ORDERS', fetchAllProductOrders);
   yield takeLatest('START_ORDER_BUTTON', putProductOrderIsStarted);
   yield takeLatest('IMAGE_ERROR_BUTTON', putImageErrorButton);
   yield takeLatest('PRODUCT_ORDER_COMPLETE_BUTTON', putOrderCompleteButton);
+  yield takeLatest('PRODUCT_UNASSIGN_ORDER_BUTTON', putUnassignProductOrder)
 }
 
 export default employeeSaga;
