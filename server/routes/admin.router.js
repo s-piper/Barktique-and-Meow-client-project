@@ -226,7 +226,7 @@ router.put(
     console.log(`Params => `, req.params);
     console.log(`Data coming in => `, String(username));
     // employee id from user table column id!
-    const emp_id = Number(req.params.employeeID);
+    const emp_id = Number(req.body.id);
     // Query Area
     const updateEmployeeEmail = `
       UPDATE "user" SET username=$1

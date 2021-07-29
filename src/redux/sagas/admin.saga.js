@@ -122,7 +122,7 @@ function* putEmployeeAccessLevel(action) {
   try {
     // Let the backend know we got a access level change coming in.
     // ${id of employee here!}
-    const employeePhoneNumberResponse = yield axios.put(
+    const employeeAccessLevelResponse = yield axios.put(
       `/api/admin/editEmployee/accessLevel/v1/${action.payload.data.id}`,
       action.payload.data
     );
@@ -134,6 +134,32 @@ function* putEmployeeAccessLevel(action) {
   }
 }
 
+// PUT route to edit employee email
+function* putEmployeeEmail(action) {
+  console.log(`Data we need for this route => `, action.payload.data);
+  // table "user" SET id => action.payload.id
+  // This Saga payload needs to contain this info!
+  /**
+   * data = {
+   *  id:'employee id' This is who's name will change
+   *  username: 'new email IE username'
+   * }
+   */
+  try {
+    // Let the backend know we got a email change coming in.
+    // ${id of employee here!}
+    const employeeEmailResponse = yield axios.put(
+      `/api/admin/editEmployee/email/v1/${action.payload.data.id}`,
+      action.payload.data
+    );
+
+    // Need to do a GET request to get updated info for DOM
+    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+  } catch (error) {
+    console.log(`Hmm, something went wrong with the email... `, error);
+  }
+}
+
 // Watcher SAGA for admin
 function* adminWatcherSaga() {
   yield takeLatest('FETCH_EMPLOYEES_FROM_SERVER', fetchAllEmployees);
@@ -141,6 +167,7 @@ function* adminWatcherSaga() {
   yield takeLatest('UPDATE_EMPLOYEE_LAST_NAME', putEmployeeLastName)
   yield takeLatest('UPDATE_EMPLOYEE_PHONE_NUMBER', putEmployeePhoneNumber)
   yield takeLatest('UPDATE_EMPLOYEE_ACCESS_LEVEL', putEmployeeAccessLevel)
+  yield takeLatest('UPDATE_EMPLOYEE_EMAIL', putEmployeeEmail)
 }
 
 export default adminWatcherSaga;
