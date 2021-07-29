@@ -3,6 +3,7 @@ import errors from './errors.reducer';
 import user from './user.reducer';
 import employeeReducer from './employee.reducer';
 import {productOrderReducer} from './customerProduct.order.reducer'
+import {adminEmployeeInfoReducer} from './admin.reducer'
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   employeeReducer,
   productOrderReducer, // Reducer to handle order from customer
+  adminEmployeeInfoReducer, // Reducer to handle employee info
 });
 
 export default rootReducer;
