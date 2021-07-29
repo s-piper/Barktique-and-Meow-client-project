@@ -1,6 +1,7 @@
 import React from 'react';
 
 // import material-ui
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -50,12 +51,12 @@ function AdminArtistTable() {
                             <Typography
                                 className={classes.secondaryHeading}
                             >
-                                Edit Artist
+                                <Button variant="contained" color="primary">Edit Artist</Button>
                             </Typography>
                             <Typography
                                 className={classes.secondaryHeading}
                             >
-                                Delete Artist
+                                <Button variant="contained" color="secondary">Delete Artist</Button>
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
