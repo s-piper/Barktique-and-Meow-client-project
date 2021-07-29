@@ -2,8 +2,9 @@ import { all } from 'redux-saga/effects';
 import loginSaga from './login.saga';
 import registrationSaga from './registration.saga';
 import userSaga from './user.saga';
-import customerWatcherSaga from './customer.order.saga'
-
+import customerWatcherSaga from './customer.order.saga';
+import employeeWatcherSaga from './employee.saga';
+import adminWatcherSaga from './admin.saga'
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
 // This is imported in index.js as rootSaga
@@ -17,5 +18,7 @@ export default function* rootSaga() {
     registrationSaga(), // Saga to watch registering user
     userSaga(), // Saga to watch user
     customerWatcherSaga(), // Saga to watch customer order form
+    employeeWatcherSaga(), // Saga to watch employee needs
+    adminWatcherSaga(), // Saga to watch admin needs
   ]);
 }

@@ -133,12 +133,13 @@ function* putUnassignProductOrder(action) {
   }
 }
 
-function* employeeSaga() {
+// Watcher SAGA for employee
+function* employeeWatcherSaga() {
   yield takeLatest('FETCH_ALL_PRODUCT_ORDERS', fetchAllProductOrders);
   yield takeLatest('START_ORDER_BUTTON', putProductOrderIsStarted);
   yield takeLatest('IMAGE_ERROR_BUTTON', putImageErrorButton);
   yield takeLatest('PRODUCT_ORDER_COMPLETE_BUTTON', putOrderCompleteButton);
-  yield takeLatest('PRODUCT_UNASSIGN_ORDER_BUTTON', putUnassignProductOrder)
+  yield takeLatest('PRODUCT_UNASSIGN_ORDER_BUTTON', putUnassignProductOrder);
 }
 
-export default employeeSaga;
+export default employeeWatcherSaga;
