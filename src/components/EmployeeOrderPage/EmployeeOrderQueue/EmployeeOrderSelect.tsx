@@ -12,9 +12,8 @@ import { createStyles, makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
 import  createTheme  from '@material-ui/core/styles'
 import { blue, green, lightBlue, orange, pink, purple, red } from '@material-ui/core/colors';
+import { STATUS_OPTIONS } from "./StaticData";
 
-
-const STATUS_OPTIONS = ['Not Started', 'In Progress', 'Complete', 'Image Rejected']
 const useStyles = makeStyles(
   (theme: Theme) =>
     createStyles({
