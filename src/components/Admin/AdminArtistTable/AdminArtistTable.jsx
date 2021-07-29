@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // import material-ui
@@ -48,9 +48,9 @@ function AdminArtistTable() {
     return (
         <>
             <div>
-                {artists[0]?.map(((artist) => {
+                {artists[0]?.map(((artist, i) => {
                     return (
-                        <div className={classes.root}>
+                        <div key={i} className={classes.root}>
                             <Accordion>
                                 <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
