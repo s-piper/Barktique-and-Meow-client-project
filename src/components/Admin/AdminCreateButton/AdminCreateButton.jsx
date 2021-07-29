@@ -1,6 +1,9 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+// material-ui imports
+import Button from '@material-ui/core/Button';
+
 // function for create employee button
 function AdminCreateButton() {
     
@@ -9,13 +12,16 @@ function AdminCreateButton() {
 
     return (
         <div>
-            <button
+            <Button
+                size="medium"
+                variant="contained"
+                color="primary"
                 onClick={() => {
                     history.push('/createEmployee');
                 }}
             >
-                Create Employee
-            </button>
+                Create Artist
+            </Button>
         </div>
     )
 } // end AdminCreateButton
