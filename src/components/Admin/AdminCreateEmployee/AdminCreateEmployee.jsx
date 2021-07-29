@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 import AdminHeader from '../AdminHeader/AdminHeader';
 
 // material-ui imports
@@ -38,6 +39,7 @@ function AdminCreateEmployee() {
 
     // set dispatch variable
     const dispatch = useDispatch();
+    const history = useHistory();
 
     // local state for inputs
     const [email, setEmail] = useState('');
@@ -71,6 +73,8 @@ function AdminCreateEmployee() {
 
     // function to handle dropdown selection and set Access Level
     const handleSelect = (event) => {
+
+        event.preventDefault();
 
         // set local state to value (1 or 2) selected by user
         setAccessLevel(event.target.value);

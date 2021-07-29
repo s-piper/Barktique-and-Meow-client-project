@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 // material-ui imports
 import Button from '@material-ui/core/Button';
 
+// AdminLogOutButton component function
 function AdminLogOutButton(props) {
 
     // set dispatch variable
