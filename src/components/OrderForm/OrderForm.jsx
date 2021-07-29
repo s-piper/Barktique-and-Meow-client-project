@@ -35,6 +35,7 @@ function OrderForm() {
     const classes = useStyles();
 
     const dispatch = useDispatch();
+    
     //Captures inputs
     const [order, setOrder] = useState('');
     const [firstName, setFirstName] = useState('');
@@ -125,7 +126,7 @@ function OrderForm() {
         console.log("newOrder", newOrder);
 
         dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: { newOrder } });
-
+        //Fires alert and pushes to main website
         Swal.fire({
             title: "Success",
             text: "Thank You For Your Order",
@@ -185,32 +186,24 @@ function OrderForm() {
                         className={classes.textField}
                         required />
 
-                    {/* Upload Button and Iframe */}
-                    {/* <iframe id="imageID" src={image.file}height="250px" width="350px" /> */}
+                    {/* Uploaded Image */}
 
                     <img id="imageID"
                         onLoad={validateImage}
-                        src={image.file}
-                        height="250px" width="350px"
+                        src={image.file}                       
                         class="center" />
 
-                    {/* <iframe src={imageUpload.file} height="250px" width="350px" /> */}
-
-                    {/* {image.length ? "" : (
-                    <iframe id="imageID" src={image.file} height="250px" width="350px" />
-                )} */}
-
+                    {/* Upload Button and State Setter*/}
                     <Button
                         className={classes.textField}
                         variant="contained"
+                        color="primary"
                         component="label">
                         Upload Picture
 
                         <input
                             onChange={(event) => setImage({ file: URL.createObjectURL(event.target.files[0]) })}
-                            // onChange={(event) => handleUpload(event)}
                             type="file"
-
                             hidden />
                     </Button>
 
@@ -219,8 +212,7 @@ function OrderForm() {
                         id="outline-basic"
                         variant="outlined"
                         label="Notes"
-                        className={classes.textField}
-                        required />
+                        className={classes.textField}/>
 
                     {/* Creates the checkboxes for social. Still needs check box logic */}
                     {/* Image Rights */}
@@ -233,6 +225,7 @@ function OrderForm() {
                         }
                         label="Yes, I own the rights to the image I am submitting and I give permission to Barktique + Meow 
                     to use the file in order to produce the product"/>
+
                     {/* Social Permission */}
                     <FormControlLabel
                         control={
@@ -243,10 +236,11 @@ function OrderForm() {
                         label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
                     />
 
+                    {/* Submit Button */}
                     <Button
                         className={classes.textField}
                         onClick={checkRights}
-                        variant="outlined"
+                        variant="contained"
                         size="large"
                         color="primary">
                         Submit
