@@ -84,7 +84,7 @@ function AdminCreateEmployee() {
             </div>
             <br />
             <div>
-                <h2>Create Employee</h2>
+                <h2>Create Artist</h2>
             </div>
 
             <Grid
@@ -96,7 +96,7 @@ function AdminCreateEmployee() {
                 <Grid item>
                     <TextField
                         variant="outlined"
-                        label="Employee Email"
+                        label="Email"
                         required
                         className={classes.textField}
                         onChange={(event) => setEmail(event.target.value)}
@@ -166,7 +166,7 @@ function AdminCreateEmployee() {
                         className={classes.button}
                         onClick={saveEmployee}
                     >
-                        Add Employee
+                        Add Artist
                     </Button>
                 </Grid>
             </Grid>

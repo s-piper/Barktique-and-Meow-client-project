@@ -24,6 +24,7 @@ import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
 import OrderPage from '../OrderPage/OrderPage';
 import AdminCreateEmployee from '../Admin/AdminCreateEmployee/AdminCreateEmployee';
+import AdminArtistTable from '../Admin/AdminArtistTable/AdminArtistTable';
 
 import './App.css';
 import { fontWeight } from '@material-ui/system';
@@ -66,7 +67,7 @@ function App() {
     <ThemeProvider theme = {theme}>
     <Router>
       <div>
-        <Nav />
+        {/* <Nav /> */}
         <Switch>
           {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
           <Redirect exact from="/" to="/home" />
@@ -144,6 +145,13 @@ function App() {
             path="/createEmployee"
           >
             <AdminCreateEmployee />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/artists"
+          >
+            <AdminArtistTable />
           </ProtectedRoute>
 
           <ProtectedRoute
