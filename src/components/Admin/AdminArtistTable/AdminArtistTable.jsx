@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // import material-ui
 import Button from '@material-ui/core/Button';
@@ -13,6 +14,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
+        marginTop: 10,
+        marginBottom: 20,
     },
     heading: {
         fontSize: theme.typography.pxToRem(15),
@@ -32,40 +35,53 @@ function AdminArtistTable() {
 
     // variable for material-ui classes
     const classes = useStyles();
+    // set dispatch variable
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({ type: 'FETCH_EMPLOYEES_FROM_SERVER' })
+    }, []);
+
+    // get artist info from store
+    const artists = useSelector(store => store.adminEmployeeInfoReducer);
 
     return (
         <>
             <div>
-                <div className={classes.root}>
-                    <Accordion>
-                        <AccordionSummary
-                            expandIcon={<ExpandMoreIcon />}
-                            aria-controls="panel1a-content"
-                            id="panel1a-header"
-                        >
-                            <Typography
-                                className={classes.heading}
-                            >
-                                Artist Name
-                            </Typography>
-                            <Typography
-                                className={classes.secondaryHeading}
-                            >
-                                <Button variant="contained" color="primary">Edit Artist</Button>
-                            </Typography>
-                            <Typography
-                                className={classes.secondaryHeading}
-                            >
-                                <Button variant="contained" color="secondary">Delete Artist</Button>
-                            </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>
-                                Artist Information (Email Address and Phone Number)
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion>
-                </div>
+                {artists[0]?.map(((artist) => {
+                    return (
+                        <div className={classes.root}>
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-controls="panel1a-content"
+                                    id="panel1a-header"
+                                >
+                                    <Typography
+                                        className={classes.heading}
+                                    >
+                                        {artist.employee_first_name} {artist.employee_last_name}
+                                    </Typography>
+                                    <Typography
+                                        className={classes.secondaryHeading}
+                                    >
+                                        <Button variant="contained" color="primary">Edit Artist</Button>
+                                    </Typography>
+                                    <Typography
+                                        className={classes.secondaryHeading}
+                                    >
+                                        <Button variant="contained" color="secondary">Delete Artist</Button>
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography>
+                                        {artist.username} {artist.employee_phone_number}
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+                        </div>
+                    )
+                }))}
             </div>
         </>
     )
