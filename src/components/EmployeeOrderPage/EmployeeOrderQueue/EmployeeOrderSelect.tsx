@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { GridCellParams } from '@material-ui/data-grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -36,7 +36,7 @@ function EditStatus(props: GridCellParams) {
   const classes = useStyles();
   const { id, value, api, field } = props;
 
-  const handleChange = (event) => {
+  const handleChange = (event: any = null) => {
     const editProps = { value: event.target.value };
     api.setEditCellProps({ id, field, props: editProps }, event);
     if (!event.key) {
@@ -65,13 +65,13 @@ function EditStatus(props: GridCellParams) {
     >
       {STATUS_OPTIONS.map((option) => {
         let IconComponent: any = null;
-        if (option === 'Not Started') {
+        if (option === 'Image Rejected') {
           IconComponent = ReportProblemIcon;
-        } else if (option === 'In Progress') {
+        } else if (option === 'Not Started') {
           IconComponent = InfoIcon;
-        } else if (option === 'Complete') {
+        } else if (option === 'In Progress') {
           IconComponent = AutorenewIcon;
-        } else if (option === 'Image Rejected') {
+        } else if (option === 'Complete') {
           IconComponent = DoneIcon;
         }
 
