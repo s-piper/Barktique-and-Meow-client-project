@@ -28,7 +28,7 @@ function* putEmployeeFirstName(action) {
   // This Saga payload needs to contain this info!
   /**
    * data = {
-   *  id:'employee id' This is who's name will change
+   *  id:'employee id' This is who's first name will change
    *  employee_first_name: 'Name to be changed here'
    * }
    */
@@ -57,7 +57,7 @@ function* putEmployeeLastName(action) {
   // This Saga payload needs to contain this info!
   /**
    * data = {
-   *  id:'employee id' This is who's name will change
+   *  id:'employee id' This is who's last name will change
    *  employee_last_name: 'Name to be changed here'
    * }
    */
@@ -86,7 +86,7 @@ function* putEmployeePhoneNumber(action) {
   // This Saga payload needs to contain this info!
   /**
    * data = {
-   *  id:'employee id' This is who's name will change
+   *  id:'employee id' This is who's phone number will change
    *  employee_phone_number: 'phone number to be changed'
    * }
    */
@@ -115,7 +115,7 @@ function* putEmployeeAccessLevel(action) {
   // This Saga payload needs to contain this info!
   /**
    * data = {
-   *  id:'employee id' This is who's name will change
+   *  id:'employee id' This is who's access level will change
    *  employee_access_level: 1 for non admin, 2 for admin
    * }
    */
@@ -141,7 +141,7 @@ function* putEmployeeEmail(action) {
   // This Saga payload needs to contain this info!
   /**
    * data = {
-   *  id:'employee id' This is who's name will change
+   *  id:'employee id' This is who's email will change
    *  username: 'new email IE username'
    * }
    */
@@ -160,14 +160,43 @@ function* putEmployeeEmail(action) {
   }
 }
 
+// DELETE route to deleting employee from database
+function* deleteEmployee(action) {
+  console.log(`Data we need for this route => `, action.payload.data);
+  // table "user" SET id => action.payload.id
+  // This Saga payload needs to contain this info!
+  /**
+   * data = {
+   *  cus_progress_status: 'Not Started', <= needs to change to not started
+   *  cus_order_isStarted: false, <= needs to false, no employee assigned now
+   *  user_id_ref: null, <= needs to be set to null now, no employee assigned now
+   *  id:'employee id' This is who's getting deleted
+   * }
+   */
+  try {
+    // Looks like we have an employee to delete
+    // ${id of employee here!}
+    const employeeDeleteResponse = yield axios.delete(
+      `/api/admin/delete/v1/${action.payload.data.id}`,
+      action.payload.data
+    );
+
+    // Need to do a GET request to get updated info for DOM
+    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+  } catch (error) {
+    console.log(`Can't process that employee deletion... `, error);
+  }
+}
+
 // Watcher SAGA for admin
 function* adminWatcherSaga() {
   yield takeLatest('FETCH_EMPLOYEES_FROM_SERVER', fetchAllEmployees);
   yield takeLatest('UPDATE_EMPLOYEE_FIRST_NAME', putEmployeeFirstName);
-  yield takeLatest('UPDATE_EMPLOYEE_LAST_NAME', putEmployeeLastName)
-  yield takeLatest('UPDATE_EMPLOYEE_PHONE_NUMBER', putEmployeePhoneNumber)
-  yield takeLatest('UPDATE_EMPLOYEE_ACCESS_LEVEL', putEmployeeAccessLevel)
-  yield takeLatest('UPDATE_EMPLOYEE_EMAIL', putEmployeeEmail)
+  yield takeLatest('UPDATE_EMPLOYEE_LAST_NAME', putEmployeeLastName);
+  yield takeLatest('UPDATE_EMPLOYEE_PHONE_NUMBER', putEmployeePhoneNumber);
+  yield takeLatest('UPDATE_EMPLOYEE_ACCESS_LEVEL', putEmployeeAccessLevel);
+  yield takeLatest('UPDATE_EMPLOYEE_EMAIL', putEmployeeEmail);
+  yield takeLatest('DELETE_EMPLOYEE_FROM_DATABASE', deleteEmployee);
 }
 
 export default adminWatcherSaga;
