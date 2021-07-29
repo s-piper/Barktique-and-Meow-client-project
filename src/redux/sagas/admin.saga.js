@@ -28,8 +28,7 @@ function* putEmployeeFirstName(action) {
   // This Saga payload needs to contain this info!
   /**
    * data = {
-   *  id: 'admin id here!', <= this id gets you into route
-   *  employee_id: 'employee id' This is who's name will change
+   *  id:'employee id' This is who's name will change
    *  employee_first_name: 'Name to be changed here'
    * }
    */

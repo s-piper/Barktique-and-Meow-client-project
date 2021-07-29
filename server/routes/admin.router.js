@@ -21,11 +21,11 @@ router.put(
     // Prepare the client to get some work done
     const client = await pool.connect();
     // deconstruct the body!
-    const { employee_first_name, employee_id } = req.body;
+    const { employee_first_name } = req.body;
     console.log(`Params => `, req.params);
     console.log(`Data coming in => `, req.body);
     // employee id from user table column id!
-    const emp_id = Number(req.body.employee_id);
+    const emp_id = Number(req.body.id);
     // Query Area
     const updateEmployeeFirst = `
       UPDATE "user" SET employee_first_name=$1
