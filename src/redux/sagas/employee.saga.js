@@ -37,7 +37,7 @@ function* putProductOrderIsStarted(action) {
   try {
     // Inform the backend that employee is ready to start order
     const startOrderButtonResponse = yield axios.put(
-      `/api/employee/startOrder/v1/${action.payload.id}`,
+      `/api/employee/startOrder/v1/${action.payload.data.id}`,
       action.payload.data
     );
     // Need to do a GET request to get updated info for DOM
@@ -64,7 +64,7 @@ function* putImageErrorButton(action) {
     // Let the backend know we got a problem with IMAGE
     // ${user.id here}/${cus_order_number here}
     const errorWithImageButtonResponse = yield axios.put(
-      `/api/employee/productOrder/errorButton/v1/${action.payload.id}/${action.payload.cus_order_number}`,
+      `/api/employee/productOrder/errorButton/v1/${action.payload.data.id}/${action.payload.data.cus_order_number}`,
       action.payload.data
     );
     // Need to do a GET request to get updated info for DOM
@@ -93,7 +93,7 @@ function* putOrderCompleteButton(action) {
     // Inform the backend we have a completed order for them.
     // ${user.id here}/${cus_order_number here}
     const productOrderCompleteResponse = yield axios.put(
-      `/api/employee/productOrder/orderCompleteButton/v1/${action.payload.id}/${action.payload.cus_order_number}`,
+      `/api/employee/productOrder/orderCompleteButton/v1/${action.payload.data.id}/${action.payload.data.cus_order_number}`,
       action.payload.data
     );
     // Need to do a GET request to get updated info for DOM
@@ -122,7 +122,7 @@ function* putUnassignProductOrder(action) {
     // Inform the backend we have a product order to un-assign.
     // ${user.id here}/${cus_order_number here}
     const productOrderUnassignButton = yield axios.put(
-      `/api/productOrder/unassignOrderButton/v1/${action.payload.id}/${action.payload.cus_order_number}`,
+      `/api/productOrder/unassignOrderButton/v1/${action.payload.data.id}/${action.payload.data.cus_order_number}`,
       action.payload.data
     );
     // Need to do a GET request to get updated info for DOM
