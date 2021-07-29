@@ -107,6 +107,7 @@ function* employeeSaga() {
   yield takeLatest('FETCH_ALL_PRODUCT_ORDERS', fetchAllProductOrders);
   yield takeLatest('START_ORDER_BUTTON', putProductOrderIsStarted);
   yield takeLatest('IMAGE_ERROR_BUTTON', putImageErrorButton);
+  yield takeLatest('PRODUCT_ORDER_COMPLETE_BUTTON', putOrderCompleteButton);
 }
 
 export default employeeSaga;
