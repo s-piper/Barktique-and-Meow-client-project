@@ -50,7 +50,10 @@ function EditStatus(props: GridCellParams) {
       api.setCellMode(id, field, 'view');
     }
   };
-
+  // label	Styles applied to the label span element`.
+// deleteIcon	Styles applied to the deleteIcon element.
+// deleteIconColorPrimary	Styles applied to the deleteIcon element if color="primary".
+// deleteIconColorSecondary	Styles applied to the deleteIcon element if color="secondary".
   return (
     <Select
       value={value}
