@@ -175,7 +175,7 @@ router.put(
     console.log(`Params => `, req.params);
     console.log(`Data coming in => `, String(employee_access_level));
     // employee id from user table column id!
-    const emp_id = Number(req.params.employeeID);
+    const emp_id = Number(req.body.id);
     // Query Area
     const updateEmployeeAccessLevel = `
       UPDATE "user" SET employee_access_level=$1

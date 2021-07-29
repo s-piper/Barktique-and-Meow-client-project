@@ -44,7 +44,7 @@ function* putEmployeeFirstName(action) {
     yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
   } catch (error) {
     console.log(
-      `Hmm, doesn't look like we could change their first name... `,
+      `Hmm, doesn't look like we couldn't change their first name... `,
       error
     );
   }
@@ -73,7 +73,7 @@ function* putEmployeeLastName(action) {
     yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
   } catch (error) {
     console.log(
-      `Hmm, doesn't look like we could change their last name... `,
+      `Hmm, doesn't look like we couldn't change their last name... `,
       error
     );
   }
@@ -102,9 +102,35 @@ function* putEmployeePhoneNumber(action) {
     yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
   } catch (error) {
     console.log(
-      `Hmm, doesn't look like we could change their phone number... `,
+      `Hmm, doesn't look like we couldn't change their phone number... `,
       error
     );
+  }
+}
+
+// PUT route to edit employee access level
+function* putEmployeeAccessLevel(action) {
+  console.log(`Data we need for this route => `, action.payload.data);
+  // table "user" SET id => action.payload.id
+  // This Saga payload needs to contain this info!
+  /**
+   * data = {
+   *  id:'employee id' This is who's name will change
+   *  employee_access_level: 1 for non admin, 2 for admin
+   * }
+   */
+  try {
+    // Let the backend know we got a access level change coming in.
+    // ${id of employee here!}
+    const employeePhoneNumberResponse = yield axios.put(
+      `/api/admin/editEmployee/accessLevel/v1/${action.payload.data.id}`,
+      action.payload.data
+    );
+
+    // Need to do a GET request to get updated info for DOM
+    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+  } catch (error) {
+    console.log(`Hmm, access level denied apparently... `, error);
   }
 }
 
@@ -114,6 +140,7 @@ function* adminWatcherSaga() {
   yield takeLatest('UPDATE_EMPLOYEE_FIRST_NAME', putEmployeeFirstName);
   yield takeLatest('UPDATE_EMPLOYEE_LAST_NAME', putEmployeeLastName)
   yield takeLatest('UPDATE_EMPLOYEE_PHONE_NUMBER', putEmployeePhoneNumber)
+  yield takeLatest('UPDATE_EMPLOYEE_ACCESS_LEVEL', putEmployeeAccessLevel)
 }
 
 export default adminWatcherSaga;
