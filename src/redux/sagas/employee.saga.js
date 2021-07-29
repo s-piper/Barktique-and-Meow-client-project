@@ -4,6 +4,7 @@ import axios from 'axios';
 // GET route fetch all orders
 function* fetchAllProductOrders() {
   console.log('In fetchAllProductOrders');
+  // No data needs to go back to this route
 
   try {
     // Hit the backend with a get route to grab all orders
@@ -22,7 +23,7 @@ function* fetchAllProductOrders() {
 
 // PUT route to start an ORDER
 function* putProductOrderIsStarted(action) {
-  console.log(`Data for putProductOrderIsStarted => `, action.payload);
+  console.log(`Data for putProductOrderIsStarted => `, action.payload.data);
   // table "user" SET id => action.payload.id
   // This Saga payload needs to contain this info!
   /**
@@ -36,7 +37,8 @@ function* putProductOrderIsStarted(action) {
   try {
     // Inform the backend that employee is ready to start order
     const startOrderButtonResponse = yield axios.put(
-      `/api/employee/startOrder/v1/${action.payload.id}`
+      `/api/employee/startOrder/v1/${action.payload.id}`,
+      action.payload.data
     );
     // Need to do a GET request to get updated info for DOM
     // stating that this order is started
@@ -48,7 +50,7 @@ function* putProductOrderIsStarted(action) {
 
 // PUT route for Image Error Button on Order
 function* putImageErrorButton(action) {
-  console.log(`Data for putImageErrorButton => `, action.payload);
+  console.log(`Data for putImageErrorButton => `, action.payload.data);
   // table "user" SET id => action.payload.id
   // This Saga payload needs to contain this info!
   /**
@@ -62,10 +64,11 @@ function* putImageErrorButton(action) {
     // Let the backend know we got a problem with IMAGE
     // ${user.id here}/${cus_order_number here}
     const errorWithImageButtonResponse = yield axios.put(
-      `/api/employee/productOrder/errorButton/v1/${action.payload.id}/${action.payload.cus_order_number}`
+      `/api/employee/productOrder/errorButton/v1/${action.payload.id}/${action.payload.cus_order_number}`,
+      action.payload.data
     );
     // Need to do a GET request to get updated info for DOM
-    // stating that this order is started
+    // stating that this order had an Error
     yield put({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
 
     // ***** DEVELOPER NOTE, need to let error reducer know we got a problem here!
@@ -74,10 +77,36 @@ function* putImageErrorButton(action) {
   }
 }
 
+// PUT route for completing product order
+function* putOrderCompleteButton(action) {
+  console.log(`Data we need for this route => `, action.payload.data);
+  // table "user" SET id => action.payload.id
+  // This Saga payload needs to contain this info!
+  /**
+   * data = {
+   *  cus_progress_status: 'Complete',
+   *  cus_order_number: 'Order Number Here',
+   *  id: 'employee id here'
+   * }
+   */
+  try {
+    // Inform the backend we have a completed order for them.
+    // ${user.id here}/${cus_order_number here}
+    const productOrderCompleteResponse = yield axios.put(
+      `/api/employee/productOrder/orderCompleteButton/v1/${action.payload.id}/${action.payload.cus_order_number}`
+    );
+    // Need to do a GET request to get updated info for DOM
+    // stating that this order is complete
+    yield put({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
+  } catch (error) {
+    console.log(`Yo Yo Yo, we can't complete that order... `, error);
+  }
+}
+
 function* employeeSaga() {
   yield takeLatest('FETCH_ALL_PRODUCT_ORDERS', fetchAllProductOrders);
   yield takeLatest('START_ORDER_BUTTON', putProductOrderIsStarted);
-  yield takeLatest('IMAGE_ERROR_BUTTON', putImageErrorButton)
+  yield takeLatest('IMAGE_ERROR_BUTTON', putImageErrorButton);
 }
 
 export default employeeSaga;

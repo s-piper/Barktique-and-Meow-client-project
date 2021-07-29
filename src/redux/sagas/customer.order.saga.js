@@ -20,16 +20,18 @@ function* getCustomerOrderSaga(action) {
   console.log(
     `Hey, looks like you're looking for an Order...
         You got some action for us => `,
-    action.payload
+    action.payload.data
   );
-
+    // action.payload.data is only used for the URL params to get
+    // specific order. -- data model doesn't need to go back with
+    // this route.
   try {
     // Grab our Product Order from backend
     // We need the employee id => table user SET id && 
     // table order_table SET cus_order_number to hit
     // this endpoint.
     const getCustomerOrderResponse = yield axios.get(
-      `/productOrder/v1/${action.payload.id}/${action.payload.cus_order_number}`
+      `/api/employee/productOrder/v1/${action.payload.id}/${action.payload.cus_order_number}`
     );
     // Set our response to our reducer
     yield put({type: 'SET_PRODUCT_ORDER', payload: getCustomerOrderResponse.data})
