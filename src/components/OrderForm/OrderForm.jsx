@@ -84,7 +84,7 @@ function OrderForm() {
         }
     }
 
-    //Packages inputs for dispatch
+    //Packages inputs for dispatch then pushes to Barktique webpage
     const saveOrder = () => {
         const newOrder = {
             cus_order_number: order,
@@ -101,6 +101,14 @@ function OrderForm() {
         console.log("newOrder", newOrder);
 
         dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: {newOrder} });
+
+        Swal.fire({
+            title: "Success",
+            text: "Thank You For Your Order",
+            icon: "success"
+        }).then(function () {
+            window.location = "https://www.barktiqueandmeow.com/";
+        });
 
     }
 
