@@ -21,6 +21,11 @@ function* fetchAllEmployees() {
   }
 }
 
+// PUT route to edit employee first name
+function* putEmployeeFirstName(action) {
+    console.log(`Data we need for this route => `, action.payload.data)
+}
+
 // Watcher SAGA for admin
 function* adminWatcherSaga() {
     yield takeLatest('FETCH_EMPLOYEES_FROM_SERVER', fetchAllEmployees)
