@@ -1,17 +1,41 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import './OrderForm.css'
 
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { FormControl } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox'
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
+
+// setup styles for material-ui
+const useStyles = makeStyles((theme) => ({
+    root: {
+        flexGrow: 1,
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 195,
+    },
+    textField: {
+        marginTop: theme.spacing(2),
+    },
+    button: {
+        marginTop: theme.spacing(2),
+    }
+})); // end useStyles
 
 function OrderForm() {
 
-    const dispatch = useDispatch();
+    // variable for material-ui classes
+    const classes = useStyles();
 
+    const dispatch = useDispatch();
+    //Captures inputs
     const [order, setOrder] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -100,7 +124,7 @@ function OrderForm() {
 
         console.log("newOrder", newOrder);
 
-        dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: {newOrder} });
+        dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: { newOrder } });
 
         Swal.fire({
             title: "Success",
@@ -116,95 +140,119 @@ function OrderForm() {
     return (
 
         <div>
-            {/* User Inputs */}
-            <FormControl>
-                <TextField
-                    onChange={(event) => setOrder(event.target.value)}
-                    id="outline-basic"
-                    variant="outlined"
-                    label="Order Number"
-                    required />
-                <TextField
-                    onChange={(event) => setFirstName(event.target.value)}
-                    id="outline-basic"
-                    variant="outlined"
-                    label="First Name"
-                    required />
-                <TextField
-                    onChange={(event) => setLastName(event.target.value)}
-                    id="outline-basic"
-                    variant="outlined"
-                    label="Last Name"
-                    required />
-                <TextField
-                    onChange={(event) => setPhone(event.target.value)}
-                    id="outline-basic"
-                    variant="outlined"
-                    label="Phone Number"
-                    required />
-                <TextField
-                    onChange={(event) => setEmail(event.target.value)}
-                    id="outline-basic"
-                    variant="outlined"
-                    label="Email"
-                    required />
 
-                {/* Upload Button and Iframe */}
-                {/* <iframe id="imageID" src={image.file}height="250px" width="350px" /> */}
-                <img id="imageID" onLoad={validateImage} src={image.file} height="250px" width="350px" />
-                {/* <iframe src={imageUpload.file} height="250px" width="350px" /> */}
+            <Grid
+                container
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="center"
+            >
+                {/* User Inputs */}
+                <FormControl variant="outlined" className={classes.formControl}>
+                    <TextField
+                        onChange={(event) => setOrder(event.target.value)}
+                        id="outline-basic"
+                        variant="outlined"
+                        label="Order Number"
+                        className={classes.textField}
+                        required />
+                    <TextField
+                        onChange={(event) => setFirstName(event.target.value)}
+                        id="outline-basic"
+                        variant="outlined"
+                        label="First Name"
+                        className={classes.textField}
+                        required />
+                    <TextField
+                        onChange={(event) => setLastName(event.target.value)}
+                        id="outline-basic"
+                        variant="outlined"
+                        label="Last Name"
+                        className={classes.textField}
+                        required />
+                    <TextField
+                        onChange={(event) => setPhone(event.target.value)}
+                        id="outline-basic"
+                        variant="outlined"
+                        label="Phone Number"
+                        className={classes.textField}
+                        required />
+                    <TextField
+                        onChange={(event) => setEmail(event.target.value)}
+                        id="outline-basic"
+                        variant="outlined"
+                        label="Email"
+                        className={classes.textField}
+                        required />
 
-                {/* {image.length ? "" : (
+                    {/* Upload Button and Iframe */}
+                    {/* <iframe id="imageID" src={image.file}height="250px" width="350px" /> */}
+
+                    <img id="imageID"
+                        onLoad={validateImage}
+                        src={image.file}
+                        height="250px" width="350px"
+                        class="center" />
+
+                    {/* <iframe src={imageUpload.file} height="250px" width="350px" /> */}
+
+                    {/* {image.length ? "" : (
                     <iframe id="imageID" src={image.file} height="250px" width="350px" />
                 )} */}
 
-                <Button
-                    variant="contained"
-                    component="label">
-                    Upload Picture
-                    <input
-                        onChange={(event) => setImage({ file: URL.createObjectURL(event.target.files[0]) })}
-                        // onChange={(event) => handleUpload(event)}
-                        type="file"
-                        hidden />
-                </Button>
+                    <Button
+                        className={classes.textField}
+                        variant="contained"
+                        component="label">
+                        Upload Picture
 
-                <TextField
-                    onChange={(event) => setNotes(event.target.value)}
-                    id="outline-basic"
-                    variant="outlined"
-                    label="Notes"
-                    required />
+                        <input
+                            onChange={(event) => setImage({ file: URL.createObjectURL(event.target.files[0]) })}
+                            // onChange={(event) => handleUpload(event)}
+                            type="file"
 
-                {/* Creates the checkboxes for social. Still needs check box logic */}
-                {/* Image Rights */}
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={rightsCheck}
-                            color="primary" />
-                    }
-                    label="Yes, I own the rights to the image I am submitting and I give permission to Barktique + Meow 
+                            hidden />
+                    </Button>
+
+                    <TextField
+                        onChange={(event) => setNotes(event.target.value)}
+                        id="outline-basic"
+                        variant="outlined"
+                        label="Notes"
+                        className={classes.textField}
+                        required />
+
+                    {/* Creates the checkboxes for social. Still needs check box logic */}
+                    {/* Image Rights */}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={rightsCheck}
+                                className={classes.textField}
+                                color="primary" />
+                        }
+                        label="Yes, I own the rights to the image I am submitting and I give permission to Barktique + Meow 
                     to use the file in order to produce the product"/>
-                {/* Social Permission */}
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={socialCheck}
-                            color="primary" />
-                    }
-                    label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
-                />
+                    {/* Social Permission */}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                onChange={socialCheck}
+                                color="primary" />
+                        }
+                        label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
+                    />
 
-                <Button
-                    onClick={checkRights}
-                    variant="outlined"
-                    size="large"
-                    color="primary">
-                    Submit
-                </Button>
-            </FormControl>
-
+                    <Button
+                        className={classes.textField}
+                        onClick={checkRights}
+                        variant="outlined"
+                        size="large"
+                        color="primary">
+                        Submit
+                    </Button>
+                </FormControl>
+            </Grid>
         </div>
     )
 }
