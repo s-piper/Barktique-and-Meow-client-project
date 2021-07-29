@@ -20,7 +20,7 @@ function AdminCreateButton() {
                     history.push('/createEmployee');
                 }}
             >
-                Create Employee
+                Create Artist
             </Button>
         </div>
     )
