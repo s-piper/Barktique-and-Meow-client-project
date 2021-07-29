@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { GridCellParams } from '@material-ui/data-grid';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -15,7 +15,7 @@ import { blue, green, lightBlue, orange, pink, purple, red } from '@material-ui/
 import { STATUS_OPTIONS } from "./StaticData";
 
 const useStyles = makeStyles(
-  (theme: Theme) =>
+  (theme) =>
     createStyles({
       select: {
         display: 'flex',
@@ -32,11 +32,11 @@ const useStyles = makeStyles(
   
 );
 
-function EditStatus(props: GridCellParams) {
+function EditStatus(props) {
   const classes = useStyles();
   const { id, value, api, field } = props;
 
-  const handleChange = (event: any = null) => {
+  const handleChange = (event) => {
     const editProps = { value: event.target.value };
     api.setEditCellProps({ id, field, props: editProps }, event);
     if (!event.key) {
@@ -67,7 +67,7 @@ function EditStatus(props: GridCellParams) {
       open
     >
       {STATUS_OPTIONS.map((option) => {
-        let IconComponent: any = null;
+        let IconComponent = null;
         if (option === 'Image Rejected') {
           IconComponent = ReportProblemIcon;
         } else if (option === 'Not Started') {
@@ -96,6 +96,6 @@ function EditStatus(props: GridCellParams) {
   );
 }
 
-export function renderEditStatus(params: GridCellParams) {
+export function renderEditStatus(params) {
   return <EditStatus {...params} />;
 }

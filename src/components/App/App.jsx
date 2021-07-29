@@ -121,7 +121,7 @@ function App() {
             <LoginPage />
           </ProtectedRoute>
 
-          <ProtectedRoute
+          {/* <ProtectedRoute
             // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows RegisterPage at "/registration"
@@ -130,7 +130,7 @@ function App() {
             authRedirect="/user"
           >
             <RegisterPage />
-          </ProtectedRoute>
+          </ProtectedRoute> */}
 
           <ProtectedRoute
             exact
@@ -156,7 +156,7 @@ function App() {
           <ProtectedRoute
             exact
             path="/employee"
-            authRedirect="/employee"
+            
           >
             <EmployeeOrderPage/>
           </ProtectedRoute>

@@ -18,20 +18,21 @@ import { Button } from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import Select from "@material-ui/core/Select";
 import { STATUS_OPTIONS, COLORS } from "./StaticData";
-
+import { renderEditStatus } from "./EmployeeOrderSelect";
+import { renderStatus } from "./renderStatus";
 function EmployeeOrderQueue() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const classes = useStyles();
+  //const classes = useStyles();
   const employee = useSelector((store) => store.employeeReducer.employee);
   const user = useSelector((store) => store.userReducer);
-  useEffect(() => {
-    dispatch({ type: "FETCH_EMPLOYEE" });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({ type: "FETCH_EMPLOYEE" });
+  // }, []);
 
-  useEffect(() => {
-    dispatch({ type: "FETCH_USER" });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({ type: "FETCH_USER" });
+  // }, []);
 
   const fullName = "employee.cus_first_name " + "employee.cus_last_name";
   const employeeFullName = "user.first_name " + "user.last_name";
