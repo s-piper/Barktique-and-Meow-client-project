@@ -64,7 +64,7 @@ function* putEmployeeLastName(action) {
   try {
     // Let the backend know we got a last name change coming in.
     // ${id of employee here!}
-    const employeeFirstNameResponse = yield axios.put(
+    const employeeLastNameResponse = yield axios.put(
       `/api/admin/editEmployee/lastName/v1/${action.payload.data.id}`,
       action.payload.data
     );
@@ -73,7 +73,36 @@ function* putEmployeeLastName(action) {
     yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
   } catch (error) {
     console.log(
-      `Hmm, doesn't look like we could change their first name... `,
+      `Hmm, doesn't look like we could change their last name... `,
+      error
+    );
+  }
+}
+
+// PUT route to edit employee phone number
+function* putEmployeePhoneNumber(action) {
+  console.log(`Data we need for this route => `, action.payload.data);
+  // table "user" SET id => action.payload.id
+  // This Saga payload needs to contain this info!
+  /**
+   * data = {
+   *  id:'employee id' This is who's name will change
+   *  employee_phone_number: 'phone number to be changed'
+   * }
+   */
+  try {
+    // Let the backend know we got a phone number change coming in.
+    // ${id of employee here!}
+    const employeePhoneNumberResponse = yield axios.put(
+      `/api/admin/editEmployee/phoneNumber/v1/${action.payload.data.id}`,
+      action.payload.data
+    );
+
+    // Need to do a GET request to get updated info for DOM
+    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+  } catch (error) {
+    console.log(
+      `Hmm, doesn't look like we could change their phone number... `,
       error
     );
   }
@@ -84,6 +113,7 @@ function* adminWatcherSaga() {
   yield takeLatest('FETCH_EMPLOYEES_FROM_SERVER', fetchAllEmployees);
   yield takeLatest('UPDATE_EMPLOYEE_FIRST_NAME', putEmployeeFirstName);
   yield takeLatest('UPDATE_EMPLOYEE_LAST_NAME', putEmployeeLastName)
+  yield takeLatest('UPDATE_EMPLOYEE_PHONE_NUMBER', putEmployeePhoneNumber)
 }
 
 export default adminWatcherSaga;
