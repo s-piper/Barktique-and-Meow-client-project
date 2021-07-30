@@ -151,20 +151,6 @@ function App() {
 
             <ProtectedRoute
               exact
-              path="/artists"
-            >
-              <AdminArtistTable />
-            </ProtectedRoute>
-
-            <ProtectedRoute
-              exact
-              path="/adminOrders"
-            >
-              <AdminOrdersTable />
-            </ProtectedRoute>
-
-            <ProtectedRoute
-              exact
               path="/employee"
 
             >
