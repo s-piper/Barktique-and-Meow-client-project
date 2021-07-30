@@ -89,7 +89,7 @@ function* putOrderCompleteButton(action) {
    *  id: 'employee id here'
    * }
    */
-  try {
+   try {
     // Inform the backend we have a completed order for them.
     // ${user.id here}/${cus_order_number here}
     const productOrderCompleteResponse = yield axios.put(

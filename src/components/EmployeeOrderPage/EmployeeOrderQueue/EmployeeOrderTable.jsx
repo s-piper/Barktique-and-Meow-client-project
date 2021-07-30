@@ -10,7 +10,7 @@ import {
 } from "@material-ui/data-grid";
 import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import Button from "@material-ui/core/Button";
 import { STATUS_OPTIONS, COLORS } from "./StaticData";
 import { renderEditStatus } from "./EmployeeOrderSelect";
@@ -19,35 +19,31 @@ function EmployeeOrderTable() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [startOrder, setStartOrder] = useState({
-    cus_order_isStarted: true,
-    cus_progress_status: "In Progress",
-    cus_order_number: "order_id",
-    id: "foundUser",
+    cus_order_isStarted: null,
+    cus_progress_status: "",
+    cus_order_number: "",
+    user_id_ref: "",
   });
-  const userInfo = useSelector((store) => store.user)
+  const userInfo = useSelector((store) => store.user);
   const employeeInfo = useSelector((store) => store.employee);
   const adminEmployeeInfo = useSelector(
     (store) => store.adminEmployeeInfoReducer
   );
   const orderInfoMap = employeeInfo?.map((value) => {
     value.id = value.order_id;
-    
+
     value.fullName = value.cus_first_name + " " + value.cus_last_name;
     const foundUser = adminEmployeeInfo?.find((adminEmployee) => {
-      adminEmployee.id == value.id;
+      adminEmployee.id == value.user_id_ref;
     });
     if (foundUser) {
       value.artist =
         foundUser.employee_first_name + " " + foundUser.employee_last_name;
-      value.employeeId = foundUser.id; //not working
+      // value.employeeId = foundUser.user_id_ref; not working
     }
     return value;
   });
-  //implement validation for status on admin level
-  //cus_progress_status,cus_order_isStarted
-  //const customChips = chip switch statement by started, blue outline, inProgress orange outline, complete green outline, image Rejected red outline
-  //cell clickable = true double click to pop up menu to change status
-  // status cell handlers
+  //implement validation for status on admin level(stretch)
 
   // claim order functions
   const ClaimOrderButton = () => {
@@ -56,21 +52,44 @@ function EmployeeOrderTable() {
         variant="outlined"
         color="secondary"
         style={{ marginLeft: 16 }}
-        onClick={handleClaimClick}
+        onClick={() => {
+          handleClaimClick();
+        }}
+        // onClick={handleClaimClick}
       >
         ClAIM
       </Button>
     );
   };
-  const handleClaimClick = (event) => {
-    event.preventDefault();
-    console.log("clicked Claim", adminEmployeeInfo);
-    dispatch({
-      type: "START_ORDER_BUTTON",
-      payload: startOrder,
+  const handleClaimClick = () => {
+    console.log("clicked Claim");
+    Swal.fire({
+      icon: "question",
+      title: "Are you sure you want to claim this order?",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Claim",
+      denyButtonText: `Don't Claim`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setStartOrder({
+          cus_order_isStarted: true,
+          cus_progress_status: "In Progress",
+          cus_order_number: "cus_order_number",
+          user_id_ref: "user.id",
+        }),
+          dispatch({
+            type: "START_ORDER_BUTTON",
+            payload: { startOrder },
+          });
+        history.push("/orderpage");
+        Swal.fire("Order Claimed!", "", "success");
+      } else if (result.isDenied) {
+        Swal.fire("Claim Canceled");
+      }
     });
-    history.push("/orderpage");
   };
+
   //csv export toolbar
   const CustomToolbar = () => {
     return (
@@ -84,8 +103,8 @@ function EmployeeOrderTable() {
   }, []);
 
   useEffect(() => {
-    dispatch({ type: 'FETCH_EMPLOYEES_FROM_SERVER'})
-  },[]);
+    dispatch({ type: "FETCH_EMPLOYEES_FROM_SERVER" });
+  }, []);
 
   //data grid table
 
@@ -103,7 +122,7 @@ function EmployeeOrderTable() {
     { field: "cus_order_number", headerName: "Order #", width: 180 },
     { field: "fullName", headerName: "Customer", width: 150 },
     { field: "artist", headerName: "Employee", width: 150 },
-    { field: "employeeId", headerName: "Employee ID", width: 150 },
+    { field: "user.id", headerName: "Employee ID", width: 150 },
     {
       field: "cus_progress_status",
       headerName: "Status",
