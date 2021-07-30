@@ -25,7 +25,7 @@ import RegisterPage from '../RegisterPage/RegisterPage';
 import OrderPage from '../OrderPage/OrderPage';
 import AdminCreateEmployee from '../Admin/AdminCreateEmployee/AdminCreateEmployee';
 import AdminArtistTable from '../Admin/AdminArtistTable/AdminArtistTable';
-
+import EmployeeOrderPage from '../EmployeeOrderPage/EmployeeOrderPage';
 import './App.css';
 import { fontWeight } from '@material-ui/system';
 const theme = createTheme({
@@ -121,7 +121,7 @@ function App() {
             <LoginPage />
           </ProtectedRoute>
 
-          <ProtectedRoute
+          {/* <ProtectedRoute
             // with authRedirect:
             // - if logged in, redirects to "/user"
             // - else shows RegisterPage at "/registration"
@@ -130,7 +130,7 @@ function App() {
             authRedirect="/user"
           >
             <RegisterPage />
-          </ProtectedRoute>
+          </ProtectedRoute> */}
 
           <ProtectedRoute
             exact
@@ -151,6 +151,14 @@ function App() {
             path="/artists"
           >
             <AdminArtistTable />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            exact
+            path="/employee"
+            
+          >
+            <EmployeeOrderPage/>
           </ProtectedRoute>
 
           <ProtectedRoute
