@@ -9,11 +9,8 @@ import {
   GridToolbarContainer,
 } from "@material-ui/data-grid";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
 import moment from "moment";
+import Swal from 'sweetalert2'
 import Button from "@material-ui/core/Button";
 import { STATUS_OPTIONS, COLORS } from "./StaticData";
 import { renderEditStatus } from "./EmployeeOrderSelect";
@@ -25,15 +22,16 @@ function EmployeeOrderTable() {
     cus_order_isStarted: true,
     cus_progress_status: "In Progress",
     cus_order_number: "order_id",
-    id: "employeeId",
+    id: "foundUser",
   });
+  const userInfo = useSelector((store) => store.user)
   const employeeInfo = useSelector((store) => store.employee);
   const adminEmployeeInfo = useSelector(
     (store) => store.adminEmployeeInfoReducer
   );
   const orderInfoMap = employeeInfo?.map((value) => {
     value.id = value.order_id;
-
+    
     value.fullName = value.cus_first_name + " " + value.cus_last_name;
     const foundUser = adminEmployeeInfo?.find((adminEmployee) => {
       adminEmployee.id == value.id;
