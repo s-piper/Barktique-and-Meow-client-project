@@ -8,7 +8,7 @@
 
 //   return (
 //     <div>
-//       {/* <RegisterForm /> */}
+//       <RegisterForm />
 
 //       <center>
 //         <button

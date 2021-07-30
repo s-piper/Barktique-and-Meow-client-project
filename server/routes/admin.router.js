@@ -21,11 +21,11 @@ router.put(
     // Prepare the client to get some work done
     const client = await pool.connect();
     // deconstruct the body!
-    const { employee_first_name, employee_id } = req.body;
+    const { employee_first_name } = req.body;
     console.log(`Params => `, req.params);
     console.log(`Data coming in => `, req.body);
     // employee id from user table column id!
-    const emp_id = Number(req.body.employee_id);
+    const emp_id = Number(req.body.id);
     // Query Area
     const updateEmployeeFirst = `
       UPDATE "user" SET employee_first_name=$1
@@ -76,7 +76,7 @@ router.put(
     console.log(`Params => `, req.params);
     console.log(`Data coming in => `, String(employee_last_name));
     // employee id from user table column id!
-    const emp_id = Number(req.params.employeeID);
+    const emp_id = Number(req.body.id);
     // Query Area
     const updateEmployeeLast = `
       UPDATE "user" SET employee_last_name=$1
@@ -124,7 +124,7 @@ router.put(
     console.log(`Params => `, req.params);
     console.log(`Data coming in => `, String(employee_phone_number));
     // employee id from user table column id!
-    const emp_id = Number(req.params.employeeID);
+    const emp_id = Number(req.body.id);
     // Query Area
     const updateEmployeePhoneNumber = `
       UPDATE "user" SET employee_phone_number=$1
@@ -175,7 +175,7 @@ router.put(
     console.log(`Params => `, req.params);
     console.log(`Data coming in => `, String(employee_access_level));
     // employee id from user table column id!
-    const emp_id = Number(req.params.employeeID);
+    const emp_id = Number(req.body.id);
     // Query Area
     const updateEmployeeAccessLevel = `
       UPDATE "user" SET employee_access_level=$1
@@ -226,7 +226,7 @@ router.put(
     console.log(`Params => `, req.params);
     console.log(`Data coming in => `, String(username));
     // employee id from user table column id!
-    const emp_id = Number(req.params.employeeID);
+    const emp_id = Number(req.body.id);
     // Query Area
     const updateEmployeeEmail = `
       UPDATE "user" SET username=$1
