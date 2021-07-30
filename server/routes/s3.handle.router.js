@@ -19,7 +19,7 @@ router.post('/images', upload.single('image'), async (req, res) => {
     await unlinkFile(file.path);
     //what comes back from s3 bucket
     console.log('bucket response', result.Location);
-    const responseToForm = await axios.post
+    res.send({ imagePath: result.Location });
   } catch (error) {
     console.log('Having issues sending to s3', error);
   }

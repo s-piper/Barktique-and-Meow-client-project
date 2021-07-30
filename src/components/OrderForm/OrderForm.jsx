@@ -31,15 +31,17 @@ const useStyles = makeStyles((theme) => ({
   },
 })); // end useStyles
 
-async function postImage({ image }) {
-  console.log(image)
-  const formData = new FormData();
-  formData.append('image', image);
-  const result = await axios.post('/api/s3/images', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-  return result.data;
-}
+// async function postImage({ image }) {
+//   console.log(image);
+//   const formData = new FormData();
+//   formData.append('image', image);
+//   const result = await axios.post('/api/s3/images', formData, {
+//     headers: { 'Content-Type': 'multipart/form-data' },
+//   });
+//   console.log(result.data);
+//   setS3response(result.data);
+//   console.log(s3response[0]);
+// }
 
 function OrderForm() {
   // variable for material-ui classes
@@ -59,6 +61,19 @@ function OrderForm() {
   const [social, setSocial] = useState(false);
   const [file, setFile] = useState();
   const [image, setImage] = useState([]);
+
+  async function postImage({ image }) {
+    console.log(image);
+    const formData = new FormData();
+    formData.append('image', image);
+    const result = await axios.post('/api/s3/images', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    console.log(result.data);
+    setS3response(result.data);
+    console.log(s3response.imagePath);
+    return result.data;
+  }
 
   console.log('Rights', rights);
   console.log('Social', social);
@@ -213,7 +228,7 @@ function OrderForm() {
           <img
             id="imageID"
             onLoad={validateImage}
-            // src="https://aws-practice-meow.s3.us-east-2.amazonaws.com/f76dc7b453b3a382120a2ab8863f4212"
+            src={s3response.imagePath}
             class="center"
           />
           {/* Upload Button and State Setter*/}
