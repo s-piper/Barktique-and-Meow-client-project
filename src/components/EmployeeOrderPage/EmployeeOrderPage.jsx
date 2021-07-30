@@ -8,7 +8,7 @@ function EmployeeOrderPage () {
 
     const history = useHistory();
     const dispatch = useDispatch();
-    const employee = useSelector ((store) => store.employeeReducer.employee) 
+    //const employee = useSelector ((store) => store.employee) 
     const user = useSelector((store) => store.userReducer)
 
 

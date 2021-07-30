@@ -11,4 +11,4 @@ const employee = (state = [], action) => {
 
 
 
-export default combineReducers({employee})
+export default employee

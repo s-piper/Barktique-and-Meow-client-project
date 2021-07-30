@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import errors from './errors.reducer';
 import user from './user.reducer';
-import employeeReducer from './employee.reducer';
+import employee from './employee.reducer';
 import {productOrderReducer} from './customerProduct.order.reducer'
 import {adminEmployeeInfoReducer} from './admin.reducer'
 
@@ -14,7 +14,7 @@ import {adminEmployeeInfoReducer} from './admin.reducer'
 const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
-  employeeReducer,
+  employee,
   productOrderReducer, // Reducer to handle order from customer
   adminEmployeeInfoReducer, // Reducer to handle employee info
 });

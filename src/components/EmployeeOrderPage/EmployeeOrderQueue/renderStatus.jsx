@@ -43,18 +43,18 @@ const useStyles = makeStyles(
     const { status } = props;
     let icon = null;
     const classes = useStyles();
-    if (status === 'Rejected') {
+    if (status === 'ImageRejected') {
       icon = <ReportProblemIcon className="icon" />;
-    } else if (status === 'Open') {
+    } else if (status === 'Not Started') {
       icon = <InfoIcon className="icon" />;
-    } else if (status === 'PartiallyFilled') {
+    } else if (status === 'In Progress') {
       icon = <AutorenewIcon className="icon" />;
-    } else if (status === 'Filled') {
+    } else if (status === 'Complete') {
       icon = <DoneIcon className="icon" />;
     }
     let label = status;
-    if (status === 'PartiallyFilled') {
-      label = 'Partially Filled';
+    if (status === 'In Progress') {
+      label = 'In Progress';
     }
     return (
       <Chip

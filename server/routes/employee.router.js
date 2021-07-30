@@ -5,6 +5,7 @@ const {
   rejectUnauthenticated,
 } = require('../modules/authentication-middleware');
 
+
 // PUT route Area
 
 router.put(
@@ -156,9 +157,7 @@ router.put(
     console.log(
       `Full route => /api/productOrder/unassignOrderButton/v1/:employeeID/:orderNumber`
     );
-    // Pseudo code for the button on client side
-    // button only exist if(user_id_ref === 3 || user.employee_access_level > 1)
-    
+
     // Prepare the client, Got an Order to complete
     const client = await pool.connect();
     console.log(`What's are params => `, req.params);
@@ -169,6 +168,7 @@ router.put(
       UPDATE order_table SET cus_progress_status=$1, "cus_order_isStarted"=$2, "user_id_ref"=$3
       WHERE user_id_ref=$4 and cus_order_number=$5
     ;`;
+    
 
     // Gonna need some ID to get in here
     if (req.isAuthenticated) {
@@ -179,7 +179,7 @@ router.put(
           req.body.cus_progress_status,
           req.body.cus_order_isStarted,
           req.body.user_id_ref,
-          req.body.user_id_ref,
+          req.params.employeeID,
           req.params.orderNumber,
         ]);
 
