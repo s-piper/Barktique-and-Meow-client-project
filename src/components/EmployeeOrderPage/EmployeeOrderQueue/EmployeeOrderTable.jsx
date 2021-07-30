@@ -17,7 +17,7 @@ import { Button } from "@material-ui/core/Button";
 import { STATUS_OPTIONS, COLORS } from "./StaticData";
 import { renderEditStatus } from "./EmployeeOrderSelect";
 import { renderStatus } from "./renderStatus";
-function EmployeeOrderQueue() {
+function EmployeeOrderTable() {
   const history = useHistory();
   const dispatch = useDispatch();
   const employeeInfo = useSelector((store) => store.employee);
@@ -93,4 +93,4 @@ function EmployeeOrderQueue() {
   );
 }
 
-export default EmployeeOrderQueue;
+export default EmployeeOrderTable;
