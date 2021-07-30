@@ -66,12 +66,12 @@ function EmployeeOrderTable() {
   };
   const handleClaimClick = (event) => {
     event.preventDefault();
-    console.log("clicked Claim");
+    console.log("clicked Claim", adminEmployeeInfo);
     dispatch({
       type: "START_ORDER_BUTTON",
       payload: startOrder,
     });
-    history.push("/order");
+    history.push("/orderpage");
   };
   //csv export toolbar
   const CustomToolbar = () => {
@@ -84,6 +84,10 @@ function EmployeeOrderTable() {
   useEffect(() => {
     dispatch({ type: "FETCH_ALL_PRODUCT_ORDERS" });
   }, []);
+
+  useEffect(() => {
+    dispatch({ type: 'FETCH_EMPLOYEES_FROM_SERVER'})
+  },[]);
 
   //data grid table
 
