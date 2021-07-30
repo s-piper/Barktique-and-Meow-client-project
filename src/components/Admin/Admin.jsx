@@ -9,27 +9,31 @@ import AdminTabs from './AdminTabs/AdminTabs';
 // function for Admin component
 function Admin() {
 
-
     return (
         <div>
-            <div>
-                <AdminHeader />
-            </div>
-            <div className="admin-button-align">
-                <div className="admin-buttons">
-                    <AdminCreateButton />
+            <section>
+                <div>
+                    <AdminHeader />
                 </div>
-                <div className="admin-buttons">
-                    <AdminLogOutButton />
+                <div className="admin-button-align">
+                    <div className="admin-buttons">
+                        <AdminCreateButton />
+                    </div>
+                    <div className="admin-buttons">
+                        <AdminLogOutButton />
+                    </div>
                 </div>
-            </div>
-            <div>
-                <h2>Admin</h2>
-            </div>
-            <div>
-                <AdminTabs />
-            </div>
-            
+            </section>
+            <section>
+                <div>
+                    <h2>Admin</h2>
+                </div>
+                <div>
+                    <AdminTabs />
+                </div>
+            </section>
+
+
         </div>
     )
 }

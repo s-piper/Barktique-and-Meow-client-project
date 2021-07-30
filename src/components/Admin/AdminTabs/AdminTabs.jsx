@@ -22,7 +22,6 @@ function AdminTabs() {
         const [selectedTab, setSelectedTab] = useState(0);
     
         const handleTabs = (event, value) => {
-            console.log('Tab value:', selectedTab);
             setSelectedTab(value);
         } 
 
@@ -43,7 +42,7 @@ function AdminTabs() {
                     </Tabs>
                 </AppBar>
                 {/* { selectedTab === 0 && <AdminOrdersTable /> }
-                { selectedTab === 1 && <AdmindIssuesTable /> } */}
+                { selectedTab === 1 && <AdminIssuesTable /> } */}
                 { selectedTab === 2 && <AdminArtistTable /> }
             </div>
         </>
