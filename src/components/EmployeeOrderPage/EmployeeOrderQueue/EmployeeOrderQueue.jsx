@@ -20,7 +20,6 @@ import { renderStatus } from "./renderStatus";
 function EmployeeOrderQueue() {
   const history = useHistory();
   const dispatch = useDispatch();
-  //const classes = useStyles();
   const employeeInfo = useSelector((store) => store.employee);
   const adminEmployeeInfo = useSelector((store) => store.adminEmployeeInfoReducer);
   const orderInfoMap = employeeInfo?.map((value) => {
@@ -65,7 +64,7 @@ function EmployeeOrderQueue() {
       headerName: "Status",
       width: 150,
       type: "singleSelect",
-      editable: true,
+      editable: false,
       valueOptions: STATUS_OPTIONS,
       renderCell: renderStatus,
       renderEditCell: renderEditStatus,
