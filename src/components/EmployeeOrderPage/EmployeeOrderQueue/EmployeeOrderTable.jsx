@@ -4,6 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 import {
   DataGrid,
   GridToolbar,
+  GridApi,
   GridToolbarExport,
   GridToolbarContainer,
 } from "@material-ui/data-grid";
@@ -13,33 +14,65 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import moment from "moment";
-import { Button } from "@material-ui/core/Button";
+import Button from "@material-ui/core/Button";
 import { STATUS_OPTIONS, COLORS } from "./StaticData";
 import { renderEditStatus } from "./EmployeeOrderSelect";
 import { renderStatus } from "./renderStatus";
 function EmployeeOrderTable() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [startOrder, setStartOrder] = useState({
+    cus_order_isStarted: true,
+    cus_progress_status: "In Progress",
+    cus_order_number: "order_id",
+    id: "employeeId",
+  });
   const employeeInfo = useSelector((store) => store.employee);
-  const adminEmployeeInfo = useSelector((store) => store.adminEmployeeInfoReducer);
+  const adminEmployeeInfo = useSelector(
+    (store) => store.adminEmployeeInfoReducer
+  );
   const orderInfoMap = employeeInfo?.map((value) => {
     value.id = value.order_id;
+
     value.fullName = value.cus_first_name + " " + value.cus_last_name;
     const foundUser = adminEmployeeInfo?.find((adminEmployee) => {
-      adminEmployee.id == value.user_id_ref;
+      adminEmployee.id == value.id;
     });
-    if(foundUser){
-    value.artist =
-      foundUser.employee_first_name + " " + foundUser.employee_last_name;
+    if (foundUser) {
+      value.artist =
+        foundUser.employee_first_name + " " + foundUser.employee_last_name;
+      value.employeeId = foundUser.id; //not working
     }
     return value;
   });
-   //implement vailidation for status on admin level 
+  //implement validation for status on admin level
   //cus_progress_status,cus_order_isStarted
   //const customChips = chip switch statement by started, blue outline, inProgress orange outline, complete green outline, image Rejected red outline
   //cell clickable = true double click to pop up menu to change status
   // status cell handlers
 
+  // claim order functions
+  const ClaimOrderButton = () => {
+    return (
+      <Button
+        variant="outlined"
+        color="secondary"
+        style={{ marginLeft: 16 }}
+        onClick={handleClaimClick}
+      >
+        ClAIM
+      </Button>
+    );
+  };
+  const handleClaimClick = (event) => {
+    event.preventDefault();
+    console.log("clicked Claim");
+    dispatch({
+      type: "START_ORDER_BUTTON",
+      payload: startOrder,
+    });
+    history.push("/order");
+  };
   //csv export toolbar
   const CustomToolbar = () => {
     return (
@@ -55,10 +88,20 @@ function EmployeeOrderTable() {
   //data grid table
 
   const columns = [
+    {
+      field: "",
+      headerName: "Claim Order",
+      sortable: false,
+      width: 150,
+      disableClickEventBubbling: true,
+      renderCell: ClaimOrderButton,
+    },
+
     { field: "order_id", headerName: "ID", width: 100 },
     { field: "cus_order_number", headerName: "Order #", width: 180 },
     { field: "fullName", headerName: "Customer", width: 150 },
     { field: "artist", headerName: "Employee", width: 150 },
+    { field: "employeeId", headerName: "Employee ID", width: 150 },
     {
       field: "cus_progress_status",
       headerName: "Status",
@@ -81,6 +124,7 @@ function EmployeeOrderTable() {
               <DataGrid
                 rows={orderInfoMap ?? []}
                 columns={columns}
+                pageSize={10}
                 components={{
                   Toolbar: CustomToolbar,
                 }}
