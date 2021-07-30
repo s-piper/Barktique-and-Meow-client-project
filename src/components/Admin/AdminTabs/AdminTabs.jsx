@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import AdminArtistTable from '../AdminArtistTable/AdminArtistTable';
-// import AdminOrdersTable from './AdminOrdersTable/AdminOrdersTable';
+import AdminOrdersTable from '../AdminOrdersTable/AdminOrdersTable';
 // import AdminIssuesTable from '../AdminIssuesTable/AdminIssuesTable';
 
 // import material-ui
@@ -41,8 +41,8 @@ function AdminTabs() {
                         <Tab label="Artists" />
                     </Tabs>
                 </AppBar>
-                {/* { selectedTab === 0 && <AdminOrdersTable /> }
-                { selectedTab === 1 && <AdminIssuesTable /> } */}
+                { selectedTab === 0 && <AdminOrdersTable /> }
+                {/* { selectedTab === 1 && <AdminIssuesTable /> } */}
                 { selectedTab === 2 && <AdminArtistTable /> }
             </div>
         </>

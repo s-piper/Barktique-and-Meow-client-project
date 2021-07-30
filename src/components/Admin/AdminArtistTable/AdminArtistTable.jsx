@@ -47,7 +47,7 @@ function AdminArtistTable() {
 
     return (
         <>
-            <div>
+            <div className="artist-table">
                 {artists[0]?.map(((artist, i) => {
                     return (
                         <div key={i} className={classes.root}>
