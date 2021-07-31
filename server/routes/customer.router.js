@@ -2,6 +2,17 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
+
+// Let's talk to AWS S3 bucket here, wait for response, if good
+// let's inform client
+// head down to '/order/v1/form/:orderNumber'
+
+
+
+
+
+
+
 router.post('/order/v1/form/:orderNumber', async (req, res) => {
   console.log(
     `Full route and body => /api/customer/order/v1/form/:orderNumber`,
@@ -62,6 +73,8 @@ router.post('/order/v1/form/:orderNumber', async (req, res) => {
     } else if (awaitingGetResponse.rows !== []) {
       console.log(`Our response is => `, awaitingGetResponse.rows);
       // If order number doesn't exist, we get to proceed and make a POST request
+
+        // go to S3 if we get back OK do next post to database => 
       const createPostResponse = await pool.query(postOrderTable, [
         cus_order_number,
         cus_first_name,
