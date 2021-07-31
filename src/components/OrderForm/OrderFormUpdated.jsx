@@ -29,9 +29,6 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(2),
   },
-  input: {
-    display: 'none',
-  },
 })); // end useStyles
 
 // async function postImage({ image }) {
@@ -236,37 +233,11 @@ function OrderForm() {
           />
           {/* Upload Button and State Setter*/}
           <form onSubmit={submit}>
-            <input
-              accept="image/*"
-              className={classes.input}
-              id="icon-button-file"
-              onChange={fileSelected}
-              type="file"
-            />
-            <label htmlFor="icon-button-file">
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-                id="icon-button-file"
-              >
-                <PhotoCamera></PhotoCamera>
-              </IconButton>
-            </label>
-            <Button
-              className={classes.textField}
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Upload
-            </Button>
-          </form>
-
-          {/* <button type="submit" component="label">
-            Upload Picture
-          </button> */}
-          {/* <Button
+            <input onChange={fileSelected} type="file" accept="image/*" />
+            <button type="submit" component="label">
+              Upload Picture
+            </button>
+            {/* <Button
               className={classes.textField}
               variant="contained"
               color="primary"
@@ -275,6 +246,7 @@ function OrderForm() {
             >
               Upload Picture
             </Button> */}
+          </form>
 
           {/* <IconButton>
             <PhotoCamera
