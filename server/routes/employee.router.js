@@ -12,6 +12,7 @@ router.put(
   '/startOrder/v1/:employeeID',
   rejectUnauthenticated,
   async (req, res) => {
+    console.log('THIS IS OUR TEST', req.user.id);
     console.log(`Full route => /api/employee/startOrder/v1/:employeeID`);
 
     // Prepare the client to get some work done

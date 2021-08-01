@@ -51,7 +51,6 @@ const theme = createTheme({
     },
     button: {
       textTransform: 'uppercase',
-
       fontFamily: "Yantramanav",
       fontWeightBold: 700,
     },
@@ -159,9 +158,7 @@ function App() {
             </ProtectedRoute>
             <ProtectedRoute
               exact
-              path="/orderpage"
-
-            >
+              path="/orderpage/:id" compenent = {EmployeeOrderPage}>
               <EmployeeOrderPage/>
             </ProtectedRoute>
 
