@@ -10,6 +10,8 @@ function* postCustomerOrderFormSaga(action) {
     const postCustomerOrderResponse = yield axios.post(
       `/api/customer/order/v1/form/${action.payload.newOrder.cus_order_number}`, action.payload.newOrder)
     ;
+
+    // ****** DEV NOTE Need a ok response to boot customer to barktiqueandmeow.com
   } catch (error) {
     console.log(`Hey, We had a problem with Customer Order =>`, error);
   }

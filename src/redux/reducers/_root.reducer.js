@@ -4,6 +4,7 @@ import user from './user.reducer';
 import orders from './orders.reducer';
 import {productOrderReducer} from './customerProduct.order.reducer'
 import {adminEmployeeInfoReducer} from './admin.reducer'
+import {s3ImageHolderReducer} from './s3.reducer'
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
