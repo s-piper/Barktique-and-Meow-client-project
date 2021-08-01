@@ -67,6 +67,8 @@ function OrderForm() {
   // Holds the state of individual state of the file
   // to be uploaded.
   const [imageUpload, setImageUpload] = useState([]);
+  // State to check if quality passed
+  const [qualityPass, setQualityPass] = useState(false);
 
   async function postImage({ image }) {
     console.log(image);
@@ -108,6 +110,8 @@ function OrderForm() {
   };
 
   const fileSelected = (event) => {
+    event.preventDefault();
+    setFile([]);
     const file = event.target.files[0];
     setImageUpload({ file: URL.createObjectURL(event.target.files[0]) });
     console.log(imageUpload);
@@ -117,6 +121,10 @@ function OrderForm() {
 
   // Validates the image size and alerts yah or nah
   const validateImage = () => {
+    // Prevents customer from choosing uploading
+    // poor quality Image after they've selected
+    // a good quality image.
+    setQualityPass(false);
     let img = document.getElementById('imageID');
     let width = img.naturalWidth;
     let height = img.naturalHeight;
@@ -132,10 +140,8 @@ function OrderForm() {
         icon: 'error',
         confirmButtonColor: '#000000',
       });
-
-      setImage([]);
-      console.log(image);
     } else {
+      setQualityPass(true);
       Swal.fire({
         title: 'Looks Good!',
         text: 'Our Artists will be happy!!!',
@@ -153,7 +159,8 @@ function OrderForm() {
         icon: 'error',
         confirmButtonColor: '#000000',
       });
-    } else if (image.length === 0) {
+    } else if (qualityPass === false) {
+      console.log(image);
       Swal.fire({
         title: 'Sorry',
         text: 'Need a higher quality picture to upload',
@@ -166,14 +173,16 @@ function OrderForm() {
   };
 
   //Packages inputs for dispatch then pushes to Barktique webpage
-  const saveOrder = () => {
+  const saveOrder = async () => {
+    const result = await postImage({ image: file });
+    console.log(`Our result from AWS => `, result);
     const newOrder = {
       cus_order_number: order,
       cus_first_name: firstName,
       cus_last_name: lastName,
       cus_phone_number: phone,
       cus_email: email,
-      cus_image: s3response.imagePath,
+      cus_image: result.imagePath,
       cus_notes: notes,
       cus_image_owner_rights: rights,
       cus_social_permission: social,
@@ -187,6 +196,7 @@ function OrderForm() {
       title: 'Success',
       text: 'Thank You For Your Order',
       icon: 'success',
+      confirmButtonColor: '#000000',
     }).then(function () {
       window.location = 'https://www.barktiqueandmeow.com/';
     });
@@ -280,30 +290,6 @@ function OrderForm() {
               Upload
             </Button>
           </form>
-
-          {/* <button type="submit" component="label">
-            Upload Picture
-          </button> */}
-          {/* <Button
-              className={classes.textField}
-              variant="contained"
-              color="primary"
-              component="label"
-              type="submit"
-            >
-              Upload Picture
-            </Button> */}
-
-          {/* <IconButton>
-            <PhotoCamera
-              onChange={(event) => fileSelected(event)}
-              type="file"
-              accept="image/*"
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-            />
-          </IconButton> */}
 
           <TextField
             onChange={(event) => setNotes(event.target.value)}
