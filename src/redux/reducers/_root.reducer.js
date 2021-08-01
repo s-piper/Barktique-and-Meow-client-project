@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import errors from './errors.reducer';
 import user from './user.reducer';
-import employee from './employee.reducer';
+import orders from './orders.reducer';
 import {productOrderReducer} from './customerProduct.order.reducer'
 import {adminEmployeeInfoReducer} from './admin.reducer'
 import {s3ImageHolderReducer} from './s3.reducer'
@@ -15,7 +15,7 @@ import {s3ImageHolderReducer} from './s3.reducer'
 const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
-  employee,
+  orders,
   productOrderReducer, // Reducer to handle order from customer
   adminEmployeeInfoReducer, // Reducer to handle employee info
 });

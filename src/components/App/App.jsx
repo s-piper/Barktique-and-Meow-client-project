@@ -27,6 +27,7 @@ import AdminCreateEmployee from '../Admin/AdminCreateEmployee/AdminCreateEmploye
 import AdminArtistTable from '../Admin/AdminArtistTable/AdminArtistTable';
 import AdminOrdersTable from '../Admin/AdminOrdersTable/AdminOrdersTable';
 import EmployeeOrderPage from '../EmployeeOrderPage/EmployeeOrderPage';
+import EmployeeOrderQueue from '../EmployeeOrderPage/EmployeeOrderQueue/EmployeeOrderQueue';
 
 import './App.css';
 import { fontWeight } from '@material-ui/system';
@@ -50,7 +51,6 @@ const theme = createTheme({
     },
     button: {
       textTransform: 'uppercase',
-
       fontFamily: "Yantramanav",
       fontWeightBold: 700,
     },
@@ -154,7 +154,12 @@ function App() {
               path="/employee"
 
             >
-              <EmployeeOrderPage />
+              <EmployeeOrderQueue/>
+            </ProtectedRoute>
+            <ProtectedRoute
+              exact
+              path="/orderpage/:id" compenent = {EmployeeOrderPage}>
+              <EmployeeOrderPage/>
             </ProtectedRoute>
 
             <ProtectedRoute

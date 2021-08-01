@@ -1,6 +1,5 @@
-import { combineReducers } from 'redux'
 
-const employee = (state = [], action) => {
+const orders = (state = [], action) => {
     switch (action.type) {
       case 'SET_ALL_PRODUCT_ORDERS':
         return action.payload;
@@ -9,6 +8,4 @@ const employee = (state = [], action) => {
     }
 }
 
-
-
-export default employee
+export default orders;
