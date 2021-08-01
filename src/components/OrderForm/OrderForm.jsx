@@ -5,14 +5,15 @@ import Swal from 'sweetalert2';
 import './OrderForm.css';
 
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import TextField from '@material-ui/core/TextField';
-import { FormControl } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { FormControl } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
 
 // setup styles for material-ui
 const useStyles = makeStyles((theme) => ({
@@ -156,8 +157,10 @@ function OrderForm() {
     }
   };
 
-  //Packages inputs for dispatch then pushes to Barktique webpage
+  // Packages inputs for dispatch then pushes to Barktique webpage
   const saveOrder = async () => {
+    // We passed all checks, send to S3 for upload
+    // and come back with URL to save to database.
     const result = await postImage({ image: file });
     console.log(`Our result from AWS => `, result);
     const newOrder = {
