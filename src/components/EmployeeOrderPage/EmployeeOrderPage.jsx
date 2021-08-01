@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 const EmployeeOrderPage = () => {
     const { id } = useParams();
-    const orders = useSelector((store) => store.employee); // I think this is the store with the orders in it?
+    const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
     const [order, setOrder] = useState();
 
     useEffect(() => {
