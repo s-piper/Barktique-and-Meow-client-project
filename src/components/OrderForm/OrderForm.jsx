@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import './OrderForm.css';
@@ -34,17 +34,6 @@ const useStyles = makeStyles((theme) => ({
   },
 })); // end useStyles
 
-// async function postImage({ image }) {
-//   console.log(image);
-//   const formData = new FormData();
-//   formData.append('image', image);
-//   const result = await axios.post('/api/s3/images', formData, {
-//     headers: { 'Content-Type': 'multipart/form-data' },
-//   });
-//   console.log(result.data);
-//   setS3response(result.data);
-//   console.log(s3response[0]);
-// }
 
 function OrderForm() {
   // variable for material-ui classes
@@ -103,20 +92,15 @@ function OrderForm() {
     }
   };
 
-  const submit = async (event) => {
-    event.preventDefault();
-    const result = await postImage({ image: file });
-    setImage([result.image, ...image]);
-  };
-
   const fileSelected = (event) => {
     event.preventDefault();
+    // Clear previous file, if customer choose one before.
     setFile([]);
     const file = event.target.files[0];
+    // Below is image to show on DOM.
     setImageUpload({ file: URL.createObjectURL(event.target.files[0]) });
-    console.log(imageUpload);
     setFile(file);
-    console.log(file);
+    console.log(`File being chosen => `, file);
   };
 
   // Validates the image size and alerts yah or nah
@@ -201,7 +185,7 @@ function OrderForm() {
       window.location = 'https://www.barktiqueandmeow.com/';
     });
   };
-  // console.log(file);
+
   return (
     <div>
       <Grid
@@ -253,17 +237,15 @@ function OrderForm() {
             required
           />
 
-          {/* Uploaded Image */}
-
+          {/* Image preview for customer */}
           <img
             id="imageID"
             onLoad={validateImage}
-            // src={s3response.imagePath}
             src={imageUpload.file}
             class="center"
           />
           {/* Upload Button and State Setter*/}
-          <form onSubmit={submit}>
+          <form>
             <input
               accept="image/*"
               className={classes.input}
@@ -281,14 +263,14 @@ function OrderForm() {
                 <PhotoCamera></PhotoCamera>
               </IconButton>
             </label>
-            <Button
+            {/* <Button
               className={classes.textField}
               variant="contained"
               color="primary"
               type="submit"
             >
-              Upload
-            </Button>
+              Upload an Image
+            </Button> */}
           </form>
 
           <TextField
@@ -319,7 +301,7 @@ function OrderForm() {
             label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
           />
 
-          {/* Submit Button */}
+          {/* Submit Button customer form*/}
           <Button
             className={classes.textField}
             onClick={checkRights}
