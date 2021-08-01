@@ -64,6 +64,9 @@ function OrderForm() {
   const [social, setSocial] = useState(false);
   const [file, setFile] = useState();
   const [image, setImage] = useState([]);
+  // Holds the state of individual state of the file
+  // to be uploaded.
+  const [imageUpload, setImageUpload] = useState([]);
 
   async function postImage({ image }) {
     console.log(image);
@@ -106,7 +109,10 @@ function OrderForm() {
 
   const fileSelected = (event) => {
     const file = event.target.files[0];
+    setImageUpload({ file: URL.createObjectURL(event.target.files[0]) });
+    console.log(imageUpload);
     setFile(file);
+    console.log(file);
   };
 
   // Validates the image size and alerts yah or nah
@@ -124,14 +130,17 @@ function OrderForm() {
         title: 'Sorry',
         text: 'Please select a higher quality image',
         icon: 'error',
+        confirmButtonColor: '#000000',
       });
 
       setImage([]);
+      console.log(image);
     } else {
       Swal.fire({
         title: 'Looks Good!',
         text: 'Our Artists will be happy!!!',
         icon: 'success',
+        confirmButtonColor: '#000000',
       });
     }
   };
@@ -142,6 +151,14 @@ function OrderForm() {
         title: 'Sorry',
         text: 'You must own the picture',
         icon: 'error',
+        confirmButtonColor: '#000000',
+      });
+    } else if (image.length === 0) {
+      Swal.fire({
+        title: 'Sorry',
+        text: 'Need a higher quality picture to upload',
+        icon: 'error',
+        confirmButtonColor: '#000000',
       });
     } else {
       saveOrder();
@@ -174,7 +191,7 @@ function OrderForm() {
       window.location = 'https://www.barktiqueandmeow.com/';
     });
   };
-  console.log(file);
+  // console.log(file);
   return (
     <div>
       <Grid
@@ -231,7 +248,8 @@ function OrderForm() {
           <img
             id="imageID"
             onLoad={validateImage}
-            src={s3response.imagePath}
+            // src={s3response.imagePath}
+            src={imageUpload.file}
             class="center"
           />
           {/* Upload Button and State Setter*/}
