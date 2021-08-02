@@ -190,9 +190,17 @@ function* deleteEmployee(action) {
 
 // GET route for Image Issues and Date Issues from database
 function* imageAndDateIssues() {
-  console.log(`You're fetching all issues with orders`)
+  console.log(`You're fetching all issues with orders`);
 
-  try {} catch {}
+  try {
+    const imageAndDateIssuesResponse = yield axios.get(`
+    /api/admin/getOrderIssue/v1
+    `);
+
+    yield put({type: 'SET_ORDER_ISSUES', payload: imageAndDateIssuesResponse.data})
+  } catch (error) {
+    console.log(`Guess we couldn't get to the backend issues... `, error);
+  }
 }
 
 // Watcher SAGA for admin
@@ -204,6 +212,7 @@ function* adminWatcherSaga() {
   yield takeLatest('UPDATE_EMPLOYEE_ACCESS_LEVEL', putEmployeeAccessLevel);
   yield takeLatest('UPDATE_EMPLOYEE_EMAIL', putEmployeeEmail);
   yield takeLatest('DELETE_EMPLOYEE_FROM_DATABASE', deleteEmployee);
+  yield takeLatest('FETCH_ISSUES_WITH_ORDERS', imageAndDateIssues)
 }
 
 export default adminWatcherSaga;
