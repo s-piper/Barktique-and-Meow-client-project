@@ -188,6 +188,13 @@ function* deleteEmployee(action) {
   }
 }
 
+// GET route for Image Issues and Date Issues from database
+function* imageAndDateIssues() {
+  console.log(`You're fetching all issues with orders`)
+
+  try {} catch {}
+}
+
 // Watcher SAGA for admin
 function* adminWatcherSaga() {
   yield takeLatest('FETCH_EMPLOYEES_FROM_SERVER', fetchAllEmployees);
