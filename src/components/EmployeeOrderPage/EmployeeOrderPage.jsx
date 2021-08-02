@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -9,22 +11,24 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      flexGrow: 1,
+        flexGrow: 1,
     },
     formControl: {
-      margin: theme.spacing(1),
-      minWidth: 195,
+        margin: theme.spacing(1),
+        minWidth: 195,
     },
     textField: {
-      marginTop: theme.spacing(2),
+        marginTop: theme.spacing(2),
     },
     button: {
-      marginTop: theme.spacing(2),
+        marginTop: theme.spacing(2),
     },
     input: {
-      display: 'none',
+        display: 'none',
     },
-  }));
+}));
+
+
 
 
 
@@ -32,6 +36,7 @@ const EmployeeOrderPage = () => {
     const { id } = useParams();
     const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
     const [order, setOrder] = useState();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (id && orders?.length) {
@@ -40,10 +45,25 @@ const EmployeeOrderPage = () => {
         }
     }, [id, orders]);
 
+    //Sends Error Package to Saga
+    const imageError = () => {
+
+
+    }
+    //Sends Complete Notification to Saga
+    const setComplete = () => {
+
+    }
+
     return (
 
         <div>
-            <Grid>
+            <Grid
+                container
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="center">
+
                 <div id="orderNumber">
                     {order?.cus_order_number}
                 </div>
@@ -63,12 +83,16 @@ const EmployeeOrderPage = () => {
                     <img src={order?.cus_image} style={{ height: 150, width: 150 }} />
                 </div>
 
-                <Button>Error with Image</Button>
+                <Button onClick={imageError}>
+                    Error with Image
+                </Button>
                 <Button>
                     <a href={order?.cus_image} download> </a>
                     Download Image
                 </Button>
-                <Button>Complete</Button>
+                <Button onClick={setComplete}>
+                    Complete
+                </Button>
                 <Button>Download CSV</Button>
                 <Button>Unassign Order</Button>
 
