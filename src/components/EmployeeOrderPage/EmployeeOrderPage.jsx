@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
 const EmployeeOrderPage = () => {
+    const dispatch = useDispatch();
     const { id } = useParams();
     const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
     const [order, setOrder] = useState();
-
+     useEffect(() => {
+         dispatch({ type: "FETCH_ALL_PRODUCT_ORDERS"})
+     }, []);
+     
     useEffect(() => {
         if (id && orders?.length) {
             const foundOrder = orders.find((o) => o.order_id == id);

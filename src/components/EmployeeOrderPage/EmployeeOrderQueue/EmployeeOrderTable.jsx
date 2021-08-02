@@ -12,9 +12,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Swal from "sweetalert2";
 import Button from "@material-ui/core/Button";
+import "./orderTable.css";
 import { STATUS_OPTIONS, COLORS } from "./StaticData";
 import { renderEditStatus } from "./EmployeeOrderSelect";
 import { renderStatus } from "./renderStatus";
+import { actionChannel } from "redux-saga/effects";
 function EmployeeOrderTable() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -39,20 +41,53 @@ function EmployeeOrderTable() {
   // claim order functions
   const ClaimOrderButton = (config) => {
     const orderId = config.value;
+    switch (config.row.cus_progress_status) {
+      case "In Progress":
+        return <Button hidden />;
+      case "Complete":
+        return <Button hidden />;
+      case "Image Rejected":
+        return <Button hidden />;
+      default:
+        return (
+          <Button
+            variant="outlined"
+            color="secondary"
+            style={{ marginLeft: 16 }}
+            onClick={() => {
+              handleClaimClick(orderId);
+            }}
+          >
+            ClAIM
+          </Button>
+        );
+    }
+  };
+
+  const orderNumberHandler = (config) => {
+    const orderId = config.row.order_id;
     return (
-      <Button
-        variant="outlined"
-        color="secondary"
-        style={{ marginLeft: 16 }}
+      <div
         onClick={() => {
-          handleClaimClick(orderId);
+          handleOrderNumberClick(orderId);
         }}
+        className="OrderNum-Nav"
       >
-        ClAIM
-      </Button>
+        {config.row.cus_order_number}
+      </div>
     );
   };
 
+  const handleOrderNumberClick = (orderId, params) => {
+    console.log("clicked handleOrderNumberClick", orderId, orders);
+    if (orderId && orders?.length) {
+      console.log(orderId);
+      console.log(orders);
+
+      history.push(`/orderpage/${orderId}`);
+    }
+  };
+  //}
   const handleClaimClick = (orderId) => {
     Swal.fire({
       icon: "question",
@@ -67,7 +102,6 @@ function EmployeeOrderTable() {
           console.log(orderId);
           console.log(orders);
           const foundOrder = orders.find((o) => o.order_id === orderId);
-
           if (foundOrder) {
             const startOrder = {
               cus_order_isStarted: true,
@@ -95,6 +129,7 @@ function EmployeeOrderTable() {
         Swal.fire("Claim Canceled");
       }
     });
+    //conditional to hide button here
   };
 
   //csv export toolbar
@@ -124,7 +159,13 @@ function EmployeeOrderTable() {
       disableClickEventBubbling: true,
       renderCell: ClaimOrderButton,
     },
-    { field: "cus_order_number", headerName: "Order #", width: 180 },
+    {
+      field: "cus_order_number",
+      headerName: "Order #",
+      width: 180,
+      disableClickEventBubbling: true,
+      renderCell: orderNumberHandler,
+    },
     { field: "fullName", headerName: "Customer", width: 150 },
     { field: "artist", headerName: "Employee", width: 150 },
     {

@@ -269,7 +269,7 @@ router.delete(
   rejectNonAdmins,
   async (req, res) => {
     console.log(`Full route => /api/admin/delete/v1/:employeeID`);
-    console.log(`We data is body sending us? => `, req.body)
+    console.log(`We data is body sending us? => `, req.body);
     // Prepare the client for DELETION!
     const client = await pool.connect();
 
@@ -285,7 +285,7 @@ router.delete(
     ;`;
 
     // Do you have what it takes?
-    if(req.isAuthenticated) {
+    if (req.isAuthenticated) {
       try {
         // We're going to find out
         await client.query('BEGIN');
@@ -300,10 +300,10 @@ router.delete(
           req.body.id,
         ]);
 
-         await client.query('COMMIT');
-         res.sendStatus(200);
-      } catch(error) {
-        console.log(`Looks like you missed the correct delete `, error)
+        await client.query('COMMIT');
+        res.sendStatus(200);
+      } catch (error) {
+        console.log(`Looks like you missed the correct delete `, error);
         // Send back that they couldn't find the ring status code
         res.sendStatus(500);
       } finally {
@@ -311,7 +311,7 @@ router.delete(
       }
     } else {
       // Forbidden
-      res.sendStatus(403)
+      res.sendStatus(403);
     }
   }
 );
@@ -352,6 +352,56 @@ router.get(
           error
         );
         // Send back we can't find our way outta here, http status code....
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // Forbidden
+      res.sendStatus(403);
+    }
+  }
+);
+
+router.get(
+  '/getOrderIssue/v1',
+  rejectUnauthenticated,
+  rejectNonAdmins,
+  async (req, res) => {
+    console.log(`Full route => /api/admin/getOrderIssue/v1`);
+    // Prepare the client to get some work done
+    const client = await pool.connect();
+    // Query Area
+
+    const fetchDateIssues = `
+      SELECT * FROM order_table
+      WHERE cus_upload_date < NOW() - INTERVAL '5 days'
+    ;`;
+
+    const fetchImageIssues = `
+      SELECT * FROM order_table
+      WHERE cus_error_image=true;
+    `;
+
+    // Make sure they belong to this realm!
+    if (req.isAuthenticated) {
+      try {
+        // Welcome to the Shadow Realm, begin your work!
+        await client.query('BEGIN');
+        const theTimeIsResponse = await pool.query(fetchDateIssues);
+        console.log(`Date issues => `, theTimeIsResponse.rows);
+
+        const imageIssuesResponse = await pool.query(fetchImageIssues);
+        console.log(`Image Issues => `, imageIssuesResponse.rows);
+        await client.query('COMMIT');
+        // Send the rows for our Database.
+        res.send([
+          { dateIssues: theTimeIsResponse.rows },
+          { imageIssue: imageIssuesResponse.rows },
+        ]);
+      } catch (error) {
+        console.log(`Hey, we had issues with your issues... `, error);
+        // Send back we can't find our way outta here, http status help code....
         res.sendStatus(500);
       } finally {
         client.release();
