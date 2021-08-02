@@ -44,7 +44,7 @@ function AdminIssuesTable() {
     }, []);
 
     // all orders in the store 
-    const orders = useSelector(store => store.orders);
+    const orders = useSelector(store => store.adminIssuesReducer);
 
     // // convert to ms
     // let upload = new Date(order.cus_upload_date);
