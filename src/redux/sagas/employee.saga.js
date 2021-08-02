@@ -115,15 +115,16 @@ function* putUnassignProductOrder(action) {
    *  cus_progress_status: 'Not Started',
    *  cus_order_isStarted: false,
    *  cus_order_number: 'Order Number Here',
-   *  user_id_ref: Number here for user.id that is assigned to order!
-   *  id: 'employee id here'
+   *  user_id_ref: null
+   *  id: 'employee id here',
+   * employee_full_name: null
    * }
    */
   try {
     // Inform the backend we have a product order to un-assign.
     // ${user.id here}/${cus_order_number here}
     const productOrderUnassignButton = yield axios.put(
-      `/api/productOrder/unassignOrderButton/v1/${action.payload.data.id}/${action.payload.data.cus_order_number}`,
+      `/api/employee/productOrder/unassignOrderButton/v1/${action.payload.data.id}/${action.payload.data.cus_order_number}`,
       action.payload.data
     );
     // Need to do a GET request to get updated info for DOM

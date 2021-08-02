@@ -42,7 +42,8 @@ CREATE TABLE "order_table" (
 	"cus_upload_date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	"cus_order_isStarted" BOOLEAN DEFAULT 'FALSE',
 	"cus_error_image" BOOLEAN DEFAULT 'FALSE',
-	"cus_date_issues" BOOLEAN DEFAULT 'FALSE'
+	"cus_date_issues" BOOLEAN DEFAULT 'FALSE',
+	"employee_full_name" VARCHAR(100)
 );
 
 --- First insert without notes and social permissions ---

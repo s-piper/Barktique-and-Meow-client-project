@@ -5,14 +5,12 @@ const {
   rejectUnauthenticated,
 } = require('../modules/authentication-middleware');
 
-
 // PUT route Area
 
 router.put(
   '/startOrder/v1/:employeeID',
   rejectUnauthenticated,
   async (req, res) => {
-    console.log('THIS IS OUR TEST', req.user.id);
     console.log(`Full route => /api/employee/startOrder/v1/:employeeID`);
 
     // Prepare the client to get some work done
@@ -21,20 +19,33 @@ router.put(
     console.log(`What are data coming from body => `, req.body);
     // Query Area
     const updateStartOrder = `
-      UPDATE order_table SET "user_id_ref"=$1, "cus_order_isStarted"=$2, "cus_progress_status"=$3
-      WHERE "cus_order_number"=$4
+      UPDATE order_table SET "user_id_ref"=$1, "cus_order_isStarted"=$2, "cus_progress_status"=$3, "employee_full_name"=$4
+      WHERE "cus_order_number"=$5
     ;`;
 
+    const getEmployeeName = `
+      SELECT * FROM "user"
+      WHERE "user".id=$1
+    ;`;
+
+    let employeeFullName = '';
     // Prepare thy self!
     if (req.isAuthenticated) {
       try {
         // Did you grab bring your shield?
         await client.query('BEGIN');
+
+        const getEmployeeFullName = await pool.query(getEmployeeName, [
+          req.params.employeeID,
+        ]);
+        employeeFullName = `${getEmployeeFullName.rows[0].employee_first_name} ${getEmployeeFullName.rows[0].employee_last_name}`;
+        console.log('Employee Name => ', employeeFullName);
         const putOrderStatusResponse = await pool.query(updateStartOrder, [
           req.params.employeeID,
           req.body.cus_order_isStarted,
           req.body.cus_progress_status,
-          req.body.cus_order_number,
+          employeeFullName,
+          req.body.cus_order_number
         ]);
 
         await client.query('COMMIT');
@@ -156,7 +167,7 @@ router.put(
   rejectUnauthenticated,
   async (req, res) => {
     console.log(
-      `Full route => /api/productOrder/unassignOrderButton/v1/:employeeID/:orderNumber`
+      `Full route => /api/employee/productOrder/unassignOrderButton/v1/:employeeID/:orderNumber`
     );
 
     // Prepare the client, Got an Order to complete
@@ -166,10 +177,9 @@ router.put(
 
     // Query Area
     const updateUnassignButton = `
-      UPDATE order_table SET cus_progress_status=$1, "cus_order_isStarted"=$2, "user_id_ref"=$3
-      WHERE user_id_ref=$4 and cus_order_number=$5
+      UPDATE order_table SET cus_progress_status=$1, "cus_order_isStarted"=$2, "user_id_ref"=$3, "employee_full_name"=$4
+      WHERE user_id_ref=$5 and cus_order_number=$6
     ;`;
-    
 
     // Gonna need some ID to get in here
     if (req.isAuthenticated) {
@@ -180,6 +190,7 @@ router.put(
           req.body.cus_progress_status,
           req.body.cus_order_isStarted,
           req.body.user_id_ref,
+          req.body.employee_full_name,
           req.params.employeeID,
           req.params.orderNumber,
         ]);
@@ -281,6 +292,5 @@ router.get(
     }
   }
 );
-
 
 module.exports = router;
