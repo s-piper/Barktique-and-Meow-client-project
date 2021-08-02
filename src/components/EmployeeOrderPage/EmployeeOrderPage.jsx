@@ -133,7 +133,7 @@ const EmployeeOrderPage = () => {
                         color="primary">
                         Error with Image
                     </Button>
-                )}
+                )};
 
                 <Button onClick={setComplete}
                     className={classes.button}
