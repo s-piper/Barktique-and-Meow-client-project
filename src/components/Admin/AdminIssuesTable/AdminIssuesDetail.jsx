@@ -23,12 +23,12 @@ const useStyles = makeStyles((theme) => ({
     secondaryHeading: {
         fontSize: theme.typography.pxToRem(15),
         color: theme.palette.text.secondary,
-        flexBasis: '33.33%',
+        flexBasis: '31.99%',
         flexShrink: 0,
     },
 }));
 
-function AdminIssuesDetail({order, key}) {
+function AdminIssuesDetail({orders, order, key}) {
 
     // variable for material-ui classes
     const classes = useStyles();
@@ -55,12 +55,13 @@ function AdminIssuesDetail({order, key}) {
     // console.log('This is the time of image upload', upload.toISOString().slice(11, -8));
     // console.log('the difference in time:', difference > fiveDays);
     
+    console.log('These are the issues:', orders);
 
     return (
         <>
             <div 
                 className={classes.root}
-                onClick = {() => handleIssuesClick(order)}
+                
             >
                 <Accordion>
                     <AccordionSummary
@@ -70,6 +71,7 @@ function AdminIssuesDetail({order, key}) {
                     >
                         <Typography
                             className={classes.heading}
+                            onClick = {() => handleIssuesClick(order)}
                         >
                             Order # {order.cus_order_number}
                         </Typography>
@@ -78,15 +80,20 @@ function AdminIssuesDetail({order, key}) {
                         >
                             {order.cus_first_name} {order.cus_last_name}
                         </Typography>
-                        <Typography
+                        {orders[0].dateIssues.length > 0 ? (
+                            <Typography
                             className={classes.heading}
                         >
-                            {order.cus_error_image}
+                            Date Issue
                         </Typography>
+                        ) : ('')}
                     </AccordionSummary>
                     <AccordionDetails>
-                        <Typography>
+                        <Typography className={classes.secondaryHeading}>
                             Contact Customer: {order.cus_phone_number}
+                        </Typography>
+                        <Typography className={classes.secondaryHeading}>
+                            Email Customer: {order.cus_email}
                         </Typography>
                     </AccordionDetails>
                 </Accordion>

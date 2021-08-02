@@ -45,6 +45,7 @@ function AdminIssuesTable() {
 
     // all orders in the store 
     const orders = useSelector(store => store.adminIssuesReducer);
+    console.log('what are the orders:', orders);
 
     // // convert to ms
     // let upload = new Date(order.cus_upload_date);
@@ -63,17 +64,19 @@ function AdminIssuesTable() {
     return (
         <>
             <div className="issues-table">
-                {orders?.map((order, i) => {
+                {orders[0]?.dateIssues?.map((order, i) => {
                     return (
                         <>
-                            { !order.cus_error_image === true 
-                            ? 
-                            (
-                                ''
-                            ) : (
-                                <AdminIssuesDetail order={order} key={i} />
-                            )
-                            }
+                                <AdminIssuesDetail orders={orders} order={order} key={i} />  
+                        </>
+                )
+                })}
+            </div>
+            <div className="issues-table">
+                {orders[1]?.imageIssue?.map((order, i) => {
+                    return (
+                        <>
+                                <AdminIssuesDetail orders={orders} order={order} key={i} />  
                         </>
                 )
                 })}
