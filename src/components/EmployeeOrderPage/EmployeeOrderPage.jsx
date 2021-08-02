@@ -9,6 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -37,6 +38,7 @@ const EmployeeOrderPage = () => {
     const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
     const [order, setOrder] = useState();
     const dispatch = useDispatch();
+    const classes = useStyles();
 
     useEffect(() => {
         if (id && orders?.length) {
@@ -82,36 +84,57 @@ const EmployeeOrderPage = () => {
                 alignItems="center">
 
                 <div id="orderNumber">
-                    {order?.cus_order_number}
+                    <p>Order Number: {order?.cus_order_number}</p>
                 </div>
                 <div id="fullName">
-                    {order ? order.cus_first_name + ' ' + order.cus_last_name : ''}
+                    <p>Name: {order ? order.cus_first_name + ' ' + order.cus_last_name : ''}</p>
                 </div>
                 <div id="phone">
-                    {order?.cus_phone_number}
+                    <p>Phone: {order?.cus_phone_number}</p>
                 </div>
                 <div id="email">
-                    {order?.cus_email}
+                    <p>Email: {order?.cus_email}</p>
                 </div>
                 <div id="note">
-                    {order?.cus_notes}
+                    <p>Note: {order?.cus_notes}</p>
                 </div>
                 <div id="image">
                     <img src={order?.cus_image} style={{ height: 150, width: 150 }} />
                 </div>
 
-                <Button onClick={imageError}>
-                    Error with Image
-                </Button>
-                <Button>
+                <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary">
                     <a href={order?.cus_image} download> </a>
                     Download Image
                 </Button>
-                <Button onClick={setComplete}>
+
+                <Button onClick={imageError}
+                    className={classes.button}
+                    variant="contained"
+                    color="primary">
+                    Error with Image
+                </Button>
+
+                <Button onClick={setComplete}
+                    className={classes.button}
+                    variant="contained"
+                    color="primary">
                     Complete
                 </Button>
-                <Button>Download CSV</Button>
-                <Button>Unassign Order</Button>
+                <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary">
+                    Download CSV
+                </Button>
+                <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary">
+                    Unassign Order
+                </Button>
 
             </Grid>
         </div>
