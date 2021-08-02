@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useDispatch } from 'react-redux';
 import EmployeeHeader from "../EmployeeHeader/EmployeeHeader"
 
 import Button from '@material-ui/core/Button';
@@ -38,7 +37,6 @@ const EmployeeOrderPage = () => {
     const { id } = useParams();
     const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
     const [order, setOrder] = useState();
-    const dispatch = useDispatch();
     const classes = useStyles();
 
      useEffect(() => {
@@ -54,7 +52,7 @@ const EmployeeOrderPage = () => {
 
     //Sends Error Package to Saga
     //Data is error status, order number, user id
-    const imageError = () => {
+    const imageErrorColumn = () => {
 
         const data = {
             cus_error_image: true,
@@ -63,6 +61,51 @@ const EmployeeOrderPage = () => {
         }
 
         dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
+    }
+
+    const imageErrorStatus = () => {
+        const data = {
+
+            cus_progress_status: 'Image Rejected',
+            cus_order_number: order?.cus_order_number,
+            id: order?.user_id_ref
+        }
+
+        dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } })
+    }
+
+    const imageError = () => {
+        imageErrorColumn();
+        imageErrorStatus();
+    }
+
+    const imageErrorColumnFixed = () => {
+
+        const data = {
+            cus_error_image: false,
+            cus_order_number: order?.cus_order_number,
+            id: order?.user_id_ref,
+        }
+
+        dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
+    }
+
+    const imageErrorStatusFixed = () => {
+
+        const data = {
+
+            cus_progress_status: 'In Progress',
+            cus_order_number: order?.cus_order_number,
+            id: order?.user_id_ref
+        }
+
+        dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
+
+    }
+
+    const imageErrorFixed = () => {
+        imageErrorStatusFixed();
+        imageErrorColumnFixed();
     }
 
     //Sends Complete Notification to Saga
@@ -130,7 +173,14 @@ const EmployeeOrderPage = () => {
 
                 {/* Renders button or static message */}
                 {order?.cus_error_image ? (
-                    <p>Artist Noted Error with Image</p>
+                  
+                    <Button onClick={imageErrorFixed}
+                        className={classes.button}
+                        variant="contained"
+                        color="primary">
+                        Resolve Image Error
+                    </Button>
+                 
                 ) : (
                     <Button onClick={imageError}
                         className={classes.button}
@@ -138,7 +188,7 @@ const EmployeeOrderPage = () => {
                         color="primary">
                         Error with Image
                     </Button>
-                )};
+                )}
 
                 <Button onClick={setComplete}
                     className={classes.button}
