@@ -51,7 +51,7 @@ const EmployeeOrderPage = () => {
     //Data is error status, order number, user id
     const imageError = () => {
 
-        data = {
+        const data = {
             cus_error_image: true,
             cus_order_number: order?.cus_order_number,
             id: order?.user_id_ref,
@@ -64,7 +64,7 @@ const EmployeeOrderPage = () => {
     //Data is status, order number, user id
     const setComplete = () => {
 
-        data = {
+       const data = {
 
             cus_progress_status: 'Complete',
             cus_order_number: order?.cus_order_number,
@@ -73,7 +73,18 @@ const EmployeeOrderPage = () => {
 
         dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
     }
-
+    const downloadImage = (event) => {
+        fetch(order?.cus_image)
+            .then(response => {
+                response.blob().then(blob => {
+                    let url = window.URL.createObjectURL(blob);
+                    let a = document.createElement('a');
+                    a.href = url;
+                    a.download = `Order ${order?.cus_order_number}`;
+                    a.click();
+                });;
+        });
+    }
     return (
 
         <div>
@@ -102,11 +113,12 @@ const EmployeeOrderPage = () => {
                     <img src={order?.cus_image} style={{ height: 150, width: 150 }} />
                 </div>
 
-                <Button
+                <Button 
+                    onClick={event => downloadImage(event)}
                     className={classes.button}
                     variant="contained"
                     color="primary">
-                    <a href={order?.cus_image} download> </a>
+                    
                     Download Image
                 </Button>
 
