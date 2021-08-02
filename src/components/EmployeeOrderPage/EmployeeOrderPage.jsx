@@ -46,13 +46,30 @@ const EmployeeOrderPage = () => {
     }, [id, orders]);
 
     //Sends Error Package to Saga
+    //Data is error status, order number, user id
     const imageError = () => {
 
+        data = {
+            cus_error_image: true,
+            cus_order_number: order?.cus_order_number,
+            id: order?.user_id_ref,
+        }
 
+        dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
     }
+
     //Sends Complete Notification to Saga
+    //Data is status, order number, user id
     const setComplete = () => {
 
+        data = {
+
+            cus_progress_status: 'Complete',
+            cus_order_number: order?.cus_order_number,
+            id: order?.user_id_ref
+        }
+
+        dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
     }
 
     return (
