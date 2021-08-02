@@ -80,7 +80,7 @@ function AdminIssuesDetail({orders, order, key}) {
                         >
                             {order.cus_first_name} {order.cus_last_name}
                         </Typography>
-                        {orders[0].dateIssues.length > 0 ? (
+                        {order.cus_date_issues && !order.cus_error_image === true ? (
                             <Typography
                             className={classes.heading}
                         >

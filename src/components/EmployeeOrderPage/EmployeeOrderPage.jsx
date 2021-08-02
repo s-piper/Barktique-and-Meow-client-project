@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useDispatch } from 'react-redux';
 import EmployeeHeader from "../EmployeeHeader/EmployeeHeader"
 
 import Button from '@material-ui/core/Button';
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const EmployeeOrderPage = () => {
-    const dispatch = useDispatch();
+    
     const { id } = useParams();
     const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
     const [order, setOrder] = useState();
