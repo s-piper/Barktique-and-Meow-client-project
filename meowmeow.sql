@@ -41,7 +41,8 @@ CREATE TABLE "order_table" (
 	"cus_progress_status" VARCHAR(20) DEFAULT 'Not Started',
 	"cus_upload_date" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	"cus_order_isStarted" BOOLEAN DEFAULT 'FALSE',
-	"cus_error_image" BOOLEAN DEFAULT 'FALSE'
+	"cus_error_image" BOOLEAN DEFAULT 'FALSE',
+	"cus_date_issues" BOOLEAN DEFAULT 'FALSE'
 );
 
 --- First insert without notes and social permissions ---

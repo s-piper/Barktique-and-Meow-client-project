@@ -375,7 +375,7 @@ router.get(
 
     const fetchDateIssues = `
       SELECT * FROM order_table
-      WHERE cus_upload_date < NOW() - INTERVAL '5 days'
+      WHERE cus_date_issues=true
     ;`;
 
     const fetchImageIssues = `
@@ -383,16 +383,29 @@ router.get(
       WHERE cus_error_image=true;
     `;
 
+    const flagDateIssues = `
+      UPDATE order_table SET cus_date_issues=true
+      WHERE cus_upload_date < NOW() - INTERVAL '5 days'
+
+    ;`;
+
     // Make sure they belong to this realm!
     if (req.isAuthenticated) {
       try {
         // Welcome to the Shadow Realm, begin your work!
         await client.query('BEGIN');
+
+        // Fire off query to check for date > 5 days and update order_table
+        // column cus_date_issues to be true
+        const flagDateIssuesResponse = await pool.query(flagDateIssues);
+        console.log(`Are there any issues => `, flagDateIssuesResponse);
+        // Query to grab from order_table if there is any date issues
         const theTimeIsResponse = await pool.query(fetchDateIssues);
         console.log(`Date issues => `, theTimeIsResponse.rows);
-
+        // Query to grab from order_table if there are any image issues
         const imageIssuesResponse = await pool.query(fetchImageIssues);
         console.log(`Image Issues => `, imageIssuesResponse.rows);
+
         await client.query('COMMIT');
         // Send the rows for our Database.
         res.send([
