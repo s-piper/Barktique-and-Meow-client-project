@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import AdminIssuesDetail from './AdminIssuesDetail';
+
 // import material-ui
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -43,49 +45,16 @@ function AdminIssuesTable() {
     }, []);
 
     // Need to target a new store for errors ------------------
-    const orders = useSelector(store => store.employee)
-
-    if (orders.cus_error_image === true) {
-        
-    }
+    const orders = useSelector(store => store.orders);
 
     return (
         <>
             <div className="issues-table">
-                {orders.map(((order, i) => {
+                {orders?.map((order, i) => {
                     return (
-                        <div key={i} className={classes.root}>
-                            <Accordion>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel1a-content"
-                                    id="panel1a-header"
-                                >
-                                    <Typography
-                                        className={classes.heading}
-                                    >
-                                        Order # {order.cus_order_number}
-                                    </Typography>
-                                    <Typography
-                                        className={classes.heading}
-                                    >
-                                        {order.cus_first_name} {order.cus_last_name}
-                                    </Typography>
-                                    <Typography
-                                        className={classes.heading}
-                                    >
-                                        {order.cus_error_image}
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography>
-                                        Contact Customer: {order.cus_phone_number}
-                                    </Typography>
-                                </AccordionDetails>
-                            </Accordion>
-                        </div>
+                        <AdminIssuesDetail order={order} key={i} />
                     )
-                }))}
+                })}
             </div>
         </>
     )
