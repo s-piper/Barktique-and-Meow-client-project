@@ -39,21 +39,43 @@ function AdminIssuesTable() {
     const dispatch = useDispatch();
 
     // fetch all orders to find any with errors
-    // will need to target a new FETCH for image errors------------------
     useEffect(() => {
-        dispatch({ type: 'FETCH_ALL_PRODUCT_ORDERS' })
+        dispatch({ type: 'FETCH_ISSUES_WITH_ORDERS' })
     }, []);
 
-    // Need to target a new store for errors ------------------
+    // all orders in the store 
     const orders = useSelector(store => store.orders);
+
+    // // convert to ms
+    // let upload = new Date(order.cus_upload_date);
+    // let ms = upload.getTime();
+    // let currentDate = new Date();
+    // let timeStamp = currentDate.getTime();
+    // let difference = timeStamp - ms;
+    // let fiveDays = 432_000_000;
+
+    // // console logs to see ms 
+    // console.log('is timeStamp in ms?', timeStamp);
+    // console.log('upload in ms', ms);
+    // console.log('This is the time of image upload', upload.toISOString().slice(11, -8));
+    // console.log('the difference in time:', difference > fiveDays);
 
     return (
         <>
             <div className="issues-table">
                 {orders?.map((order, i) => {
                     return (
-                        <AdminIssuesDetail order={order} key={i} />
-                    )
+                        <>
+                            { !order.cus_error_image === true 
+                            ? 
+                            (
+                                ''
+                            ) : (
+                                <AdminIssuesDetail order={order} key={i} />
+                            )
+                            }
+                        </>
+                )
                 })}
             </div>
         </>

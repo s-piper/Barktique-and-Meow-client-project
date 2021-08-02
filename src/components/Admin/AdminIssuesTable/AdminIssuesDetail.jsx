@@ -1,3 +1,5 @@
+import {useHistory} from 'react-router-dom';
+
 // import material-ui
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
@@ -30,11 +32,36 @@ function AdminIssuesDetail({order, key}) {
 
     // variable for material-ui classes
     const classes = useStyles();
+    const history = useHistory();
+
     console.log('This order ==>', order)
+
+    const handleIssuesClick = (order) => {
+        console.log('You clicked handleIssuesClick', order);
+        history.push(`/orderpage/${order.order_id}`)
+    }
+
+    // // convert to ms
+    // let upload = new Date(order.cus_upload_date);
+    // let ms = upload.getTime();
+    // let currentDate = new Date();
+    // let timeStamp = currentDate.getTime();
+    // let difference = timeStamp - ms;
+    // let fiveDays = 432_000_000;
+
+    // // console logs to see ms 
+    // console.log('is timeStamp in ms?', timeStamp);
+    // console.log('upload in ms', ms);
+    // console.log('This is the time of image upload', upload.toISOString().slice(11, -8));
+    // console.log('the difference in time:', difference > fiveDays);
+    
 
     return (
         <>
-            <div className={classes.root}>
+            <div 
+                className={classes.root}
+                onClick = {() => handleIssuesClick(order)}
+            >
                 <Accordion>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
