@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-
+import EmployeeHeader from "../EmployeeHeader/EmployeeHeader"
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -64,7 +64,7 @@ const EmployeeOrderPage = () => {
     //Data is status, order number, user id
     const setComplete = () => {
 
-       const data = {
+        const data = {
 
             cus_progress_status: 'Complete',
             cus_order_number: order?.cus_order_number,
@@ -83,11 +83,12 @@ const EmployeeOrderPage = () => {
                     a.download = `Order ${order?.cus_order_number}`;
                     a.click();
                 });;
-        });
+            });
     }
     return (
 
         <div>
+            <EmployeeHeader />
             <Grid
                 container
                 direction="column"
@@ -113,21 +114,26 @@ const EmployeeOrderPage = () => {
                     <img src={order?.cus_image} style={{ height: 150, width: 150 }} />
                 </div>
 
-                <Button 
+                <Button
                     onClick={event => downloadImage(event)}
                     className={classes.button}
                     variant="contained"
                     color="primary">
-                    
+
                     Download Image
                 </Button>
 
-                <Button onClick={imageError}
-                    className={classes.button}
-                    variant="contained"
-                    color="primary">
-                    Error with Image
-                </Button>
+                {/* Renders button or static message */}
+                {order?.cus_error_image ? (
+                    <p>Artist Noted Error with Image</p>
+                ) : (
+                    <Button onClick={imageError}
+                        className={classes.button}
+                        variant="contained"
+                        color="primary">
+                        Error with Image
+                    </Button>
+                )}
 
                 <Button onClick={setComplete}
                     className={classes.button}
