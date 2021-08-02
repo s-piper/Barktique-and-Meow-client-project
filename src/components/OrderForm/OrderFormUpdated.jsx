@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import './OrderForm.css';
 
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import TextField from '@material-ui/core/TextField';
+import { FormControl } from '@material-ui/core';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { FormControl } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
+import Grid from '@material-ui/core/Grid';
 
 // setup styles for material-ui
 const useStyles = makeStyles((theme) => ({
@@ -30,11 +29,19 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(2),
   },
-  input: {
-    display: 'none',
-  },
 })); // end useStyles
 
+// async function postImage({ image }) {
+//   console.log(image);
+//   const formData = new FormData();
+//   formData.append('image', image);
+//   const result = await axios.post('/api/s3/images', formData, {
+//     headers: { 'Content-Type': 'multipart/form-data' },
+//   });
+//   console.log(result.data);
+//   setS3response(result.data);
+//   console.log(s3response[0]);
+// }
 
 function OrderForm() {
   // variable for material-ui classes
@@ -54,11 +61,6 @@ function OrderForm() {
   const [social, setSocial] = useState(false);
   const [file, setFile] = useState();
   const [image, setImage] = useState([]);
-  // Holds the state of individual state of the file
-  // to be uploaded.
-  const [imageUpload, setImageUpload] = useState([]);
-  // State to check if quality passed
-  const [qualityPass, setQualityPass] = useState(false);
 
   async function postImage({ image }) {
     console.log(image);
@@ -93,23 +95,19 @@ function OrderForm() {
     }
   };
 
-  const fileSelected = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
-    // Clear previous file, if customer choose one before.
-    setFile([]);
+    const result = await postImage({ image: file });
+    setImage([result.image, ...image]);
+  };
+
+  const fileSelected = (event) => {
     const file = event.target.files[0];
-    // Below is image to show on DOM.
-    setImageUpload({ file: URL.createObjectURL(event.target.files[0]) });
     setFile(file);
-    console.log(`File being chosen => `, file);
   };
 
   // Validates the image size and alerts yah or nah
   const validateImage = () => {
-    // Prevents customer from choosing uploading
-    // poor quality Image after they've selected
-    // a good quality image.
-    setQualityPass(false);
     let img = document.getElementById('imageID');
     let width = img.naturalWidth;
     let height = img.naturalHeight;
@@ -123,15 +121,14 @@ function OrderForm() {
         title: 'Sorry',
         text: 'Please select a higher quality image',
         icon: 'error',
-        confirmButtonColor: '#000000',
       });
+
+      setImage([]);
     } else {
-      setQualityPass(true);
       Swal.fire({
         title: 'Looks Good!',
         text: 'Our Artists will be happy!!!',
         icon: 'success',
-        confirmButtonColor: '#000000',
       });
     }
   };
@@ -142,34 +139,21 @@ function OrderForm() {
         title: 'Sorry',
         text: 'You must own the picture',
         icon: 'error',
-        confirmButtonColor: '#000000',
-      });
-    } else if (qualityPass === false) {
-      console.log(image);
-      Swal.fire({
-        title: 'Sorry',
-        text: 'Need a higher quality picture to upload',
-        icon: 'error',
-        confirmButtonColor: '#000000',
       });
     } else {
       saveOrder();
     }
   };
 
-  // Packages inputs for dispatch then pushes to Barktique webpage
-  const saveOrder = async () => {
-    // We passed all checks, send to S3 for upload
-    // and come back with URL to save to database.
-    const result = await postImage({ image: file });
-    console.log(`Our result from AWS => `, result);
+  //Packages inputs for dispatch then pushes to Barktique webpage
+  const saveOrder = () => {
     const newOrder = {
       cus_order_number: order,
       cus_first_name: firstName,
       cus_last_name: lastName,
       cus_phone_number: phone,
       cus_email: email,
-      cus_image: result.imagePath,
+      cus_image: s3response.imagePath,
       cus_notes: notes,
       cus_image_owner_rights: rights,
       cus_social_permission: social,
@@ -183,12 +167,11 @@ function OrderForm() {
       title: 'Success',
       text: 'Thank You For Your Order',
       icon: 'success',
-      confirmButtonColor: '#000000',
     }).then(function () {
       window.location = 'https://www.barktiqueandmeow.com/';
     });
   };
-
+  console.log(file);
   return (
     <div>
       <Grid
@@ -240,41 +223,41 @@ function OrderForm() {
             required
           />
 
-          {/* Image preview for customer */}
+          {/* Uploaded Image */}
+
           <img
             id="imageID"
             onLoad={validateImage}
-            src={imageUpload.file}
+            src={s3response.imagePath}
             class="center"
           />
           {/* Upload Button and State Setter*/}
-          <form>
-            <input
-              accept="image/*"
-              className={classes.input}
-              id="icon-button-file"
-              onChange={fileSelected}
-              type="file"
-            />
-            <label htmlFor="icon-button-file">
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-                id="icon-button-file"
-              >
-                <PhotoCamera></PhotoCamera>
-              </IconButton>
-            </label>
+          <form onSubmit={submit}>
+            <input onChange={fileSelected} type="file" accept="image/*" />
+            <button type="submit" component="label">
+              Upload Picture
+            </button>
             {/* <Button
               className={classes.textField}
               variant="contained"
               color="primary"
+              component="label"
               type="submit"
             >
-              Upload an Image
+              Upload Picture
             </Button> */}
           </form>
+
+          {/* <IconButton>
+            <PhotoCamera
+              onChange={(event) => fileSelected(event)}
+              type="file"
+              accept="image/*"
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+            />
+          </IconButton> */}
 
           <TextField
             onChange={(event) => setNotes(event.target.value)}
@@ -304,7 +287,7 @@ function OrderForm() {
             label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
           />
 
-          {/* Submit Button customer form*/}
+          {/* Submit Button */}
           <Button
             className={classes.textField}
             onClick={checkRights}

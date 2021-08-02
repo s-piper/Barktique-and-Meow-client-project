@@ -36,6 +36,7 @@ function* putProductOrderIsStarted(action) {
    */
   try {
     // Inform the backend that employee is ready to start order
+  
     const startOrderButtonResponse = yield axios.put(
       `/api/employee/startOrder/v1/${action.payload.data.id}`,
       action.payload.data
@@ -89,7 +90,7 @@ function* putOrderCompleteButton(action) {
    *  id: 'employee id here'
    * }
    */
-  try {
+   try {
     // Inform the backend we have a completed order for them.
     // ${user.id here}/${cus_order_number here}
     const productOrderCompleteResponse = yield axios.put(
