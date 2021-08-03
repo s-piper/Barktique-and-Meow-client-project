@@ -41,6 +41,7 @@ const EmployeeOrderPage = () => {
     );
     const [order, setOrder] = useState();
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     // Data that needs to be sent with our useEffect below
     const data = {
@@ -69,8 +70,8 @@ const EmployeeOrderPage = () => {
         const data = {
 
             cus_progress_status: 'Image Rejected',
-            cus_order_number: order?.cus_order_number,
-            id: order?.user_id_ref
+            cus_order_number: productOrderReducer[0]?.cus_order_number,
+            id: productOrderReducer[0]?.user_id_ref
         }
 
         dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } })
@@ -85,8 +86,8 @@ const EmployeeOrderPage = () => {
 
         const data = {
             cus_error_image: false,
-            cus_order_number: order?.cus_order_number,
-            id: order?.user_id_ref,
+            cus_order_number: productOrderReducer[0]?.cus_order_number,
+            id: productOrderReducer[0]?.user_id_ref,
         }
 
         dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
@@ -97,8 +98,8 @@ const EmployeeOrderPage = () => {
         const data = {
 
             cus_progress_status: 'In Progress',
-            cus_order_number: order?.cus_order_number,
-            id: order?.user_id_ref
+            cus_order_number: productOrderReducer[0]?.cus_order_number,
+            id: productOrderReducer[0]?.user_id_ref
         }
 
         dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
@@ -123,13 +124,14 @@ const EmployeeOrderPage = () => {
         dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
     }
     const downloadImage = (event) => {
-        fetch(order?.cus_image)
+      console.log(`download image?`,productOrderReducer[0]?.cus_image);
+        fetch(productOrderReducer[0]?.cus_image)
             .then(response => {
                 response.blob().then(blob => {
                     let url = window.URL.createObjectURL(blob);
                     let a = document.createElement('a');
                     a.href = url;
-                    a.download = `Order ${order?.cus_order_number}`;
+                    a.download = `Order ${productOrderReducer[0]?.cus_order_number}`;
                     a.click();
                 });;
             });
@@ -184,7 +186,14 @@ const EmployeeOrderPage = () => {
 
           {/* Renders button or static message */}
           {productOrderReducer[0]?.cus_error_image ? (
-            <p>Artist Noted Error with Image</p>
+
+            <Button onClick={imageErrorFixed}
+                        className={classes.button}
+                        variant="contained"
+                        color="primary">
+                        Resolve Image Error
+                    </Button>
+
           ) : (
             <Button
               onClick={imageError}
