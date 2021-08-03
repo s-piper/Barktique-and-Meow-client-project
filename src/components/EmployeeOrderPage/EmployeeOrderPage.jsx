@@ -33,6 +33,7 @@ const EmployeeOrderPage = () => {
   const { orderNumber, id } = useParams();
   // const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
   const productOrderReducer = useSelector((store) => store.productOrderReducer);
+  const user = useSelector((store) => store.user);
   const [order, setOrder] = useState();
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -268,12 +269,15 @@ const EmployeeOrderPage = () => {
           Download 
         </Button>
 
+          {productOrderReducer[0]?.user_id_ref !== Number(id) ? '': (
+ 
         <Button className={classes.button}
           variant="contained"
           color="secondary"
           onClick={unassignOrder}>
           Unassign
         </Button>
+          )}
       </Grid>
     </div>
   );
