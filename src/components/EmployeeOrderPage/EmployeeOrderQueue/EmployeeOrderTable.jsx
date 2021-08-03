@@ -105,7 +105,7 @@ function EmployeeOrderTable() {
           cus_order_isStarted: true,
           cus_progress_status: 'In Progress',
           cus_order_number: orderNumber,
-          id: user.id,
+          id: user.id, 
         };
 
         console.log(`The order we are starting => `, startOrder);

@@ -204,6 +204,21 @@ function* imageAndDateIssues() {
   }
 }
 
+// GET route for single employee information
+function* getMyEmployeesInfo(action) {
+console.log(`You're looking for what employee? `, action.payload)
+
+try {
+  const getEmployeeResponse = yield axios.get(`
+  /api/admin/getSingleEmployeeInfo/v1/${action.payload}
+  `)
+
+  yield put({type: 'SET_SINGLE_EMP_INFO', payload: getEmployeeResponse.data})
+} catch(error) {
+  console.log(`Sorry, they never came back with your employee... `, error)
+}
+}
+
 // Watcher SAGA for admin
 function* adminWatcherSaga() {
   yield takeLatest('FETCH_EMPLOYEES_FROM_SERVER', fetchAllEmployees);
@@ -214,6 +229,7 @@ function* adminWatcherSaga() {
   yield takeLatest('UPDATE_EMPLOYEE_EMAIL', putEmployeeEmail);
   yield takeLatest('DELETE_EMPLOYEE_FROM_DATABASE', deleteEmployee);
   yield takeLatest('FETCH_ISSUES_WITH_ORDERS', imageAndDateIssues)
+  yield takeLatest('FETCH_INDIVIDUAL_EMPLOYEE', getMyEmployeesInfo)
 }
 
 export default adminWatcherSaga;
