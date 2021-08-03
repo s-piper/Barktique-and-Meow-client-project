@@ -65,11 +65,23 @@ const EmployeeOrderPage = () => {
 
     dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
   };
+  
+      // Data that needs to be sent with our useEffect below
+    const data = {
+        id: id,
+        cus_order_number: orderNumber
+    }
+
+    useEffect(() => {
+        dispatch({type: "GET_PRODUCT_ORDER", payload: data })
+    }, [])
+
 
   const imageError = () => {
     imageErrorColumn();
     imageErrorStatus();
   };
+
 
   const imageErrorColumnFixed = () => {
     const data = {
