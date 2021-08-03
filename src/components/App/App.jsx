@@ -158,7 +158,7 @@ function App() {
             </ProtectedRoute>
             <ProtectedRoute
               exact
-              path="/orderpage/:id" compenent = {EmployeeOrderPage}>
+              path="/orderPage/:id/:orderNumber" component = {EmployeeOrderPage}>
               <EmployeeOrderPage/>
             </ProtectedRoute>
 
