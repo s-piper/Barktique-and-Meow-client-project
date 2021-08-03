@@ -34,32 +34,34 @@ const useStyles = makeStyles((theme) => ({
 
 const EmployeeOrderPage = () => {
     
-    const { id } = useParams();
-    const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
+    const { orderNumber, id } = useParams();
+    // const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
+    const productOrderReducer = useSelector(
+      (store) => store.productOrderReducer
+    );
     const [order, setOrder] = useState();
     const dispatch = useDispatch();
     const classes = useStyles();
 
-     useEffect(() => {
-         dispatch({ type: "FETCH_ALL_PRODUCT_ORDERS"})
-     }, []);
-     
-    useEffect(() => {
-        if (id && orders?.length) {
-            const foundOrder = orders.find((o) => o.order_id == id);
-            setOrder(foundOrder);
-        }
-    }, [id, orders]);
+    // Data that needs to be sent with our useEffect below
+    const data = {
+        id: id,
+        cus_order_number: orderNumber
+    }
 
+    useEffect(() => {
+        dispatch({type: "GET_PRODUCT_ORDER", payload: data })
+    }, [])
+     
     //Sends Error Package to Saga
     //Data is error status, order number, user id
     const imageError = () => {
 
         const data = {
-            cus_error_image: true,
-            cus_order_number: order?.cus_order_number,
-            id: order?.user_id_ref,
-        }
+          cus_error_image: true,
+          cus_order_number: productOrderReducer[0]?.cus_order_number,
+          id: productOrderReducer[0]?.user_id_ref,
+        };
 
         dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
     }
@@ -69,11 +71,10 @@ const EmployeeOrderPage = () => {
     const setComplete = () => {
 
         const data = {
-
-            cus_progress_status: 'Complete',
-            cus_order_number: order?.cus_order_number,
-            id: order?.user_id_ref
-        }
+          cus_progress_status: 'Complete',
+          cus_order_number: productOrderReducer[0]?.cus_order_number,
+          id: productOrderReducer[0]?.user_id_ref,
+        };
 
         dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
     }
@@ -90,76 +91,94 @@ const EmployeeOrderPage = () => {
             });
     }
     return (
+      <div>
+        <EmployeeHeader />
+        <Grid
+          container
+          direction="column"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+        
+          <div id="orderNumber">
+            <p>Order Number: {productOrderReducer[0]?.cus_order_number}</p>
+          </div>
 
-        <div>
-            <EmployeeHeader />
-            <Grid
-                container
-                direction="column"
-                justifyContent="flex-start"
-                alignItems="center">
+          <div id="fullName">
+            <p>
+              Name: {`${productOrderReducer[0]?.cus_first_name} ${productOrderReducer[0]?.cus_last_name}`}
+            </p>
+          </div>
 
-                <div id="orderNumber">
-                    <p>Order Number: {order?.cus_order_number}</p>
-                </div>
-                <div id="fullName">
-                    <p>Name: {order ? order.cus_first_name + ' ' + order.cus_last_name : ''}</p>
-                </div>
-                <div id="phone">
-                    <p>Phone: {order?.cus_phone_number}</p>
-                </div>
-                <div id="email">
-                    <p>Email: {order?.cus_email}</p>
-                </div>
-                <div id="note">
-                    <p>Note: {order?.cus_notes}</p>
-                </div>
-                <div id="image">
-                    <img src={order?.cus_image} style={{ height: 150, width: 150 }} />
-                </div>
+          <div id="phone">
+            <p>Phone: {productOrderReducer[0]?.cus_phone_number}</p>
+          </div>
 
-                <Button
-                    onClick={event => downloadImage(event)}
-                    className={classes.button}
-                    variant="contained"
-                    color="primary">
+          <div id="email">
+            <p>Email: {productOrderReducer[0]?.cus_email}</p>
+          </div>
 
-                    Download Image
-                </Button>
+          <div id="note">
+            <p>Note: {productOrderReducer[0]?.cus_notes}</p>
+          </div>
 
-                {/* Renders button or static message */}
-                {order?.cus_error_image ? (
-                    <p>Artist Noted Error with Image</p>
-                ) : (
-                    <Button onClick={imageError}
-                        className={classes.button}
-                        variant="contained"
-                        color="primary">
-                        Error with Image
-                    </Button>
-                )};
+          <div id="image">
+            <img
+              src={productOrderReducer[0]?.cus_image}
+              style={{ height: 150, width: 150 }}
+            />
+          </div>
 
-                <Button onClick={setComplete}
-                    className={classes.button}
-                    variant="contained"
-                    color="primary">
-                    Complete
-                </Button>
-                <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary">
-                    Download CSV
-                </Button>
-                <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary">
-                    Unassign Order
-                </Button>
+          <Button
+            onClick={(event) => downloadImage(event)}
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            Download Image
+          </Button>
 
-            </Grid>
-        </div>
+          {/* Renders button or static message */}
+          {productOrderReducer[0]?.cus_error_image ? (
+            <p>Artist Noted Error with Image</p>
+          ) : (
+            <Button
+              onClick={imageError}
+              className={classes.button}
+              variant="contained"
+              color="primary"
+            >
+              Error with Image
+            </Button>
+          )}
+
+          <Button
+            onClick={setComplete}
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            Complete
+          </Button>
+
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            Download CSV
+          </Button>
+
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            Unassign Order
+          </Button>
+
+        </Grid>
+      </div>
     );
 };
 
