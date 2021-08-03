@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import AdminArtistTable from '../AdminArtistTable/AdminArtistTable';
 import AdminOrdersTable from '../AdminOrdersTable/AdminOrdersTable';
-// import AdminIssuesTable from '../AdminIssuesTable/AdminIssuesTable';
+import AdminIssuesTable from '../AdminIssuesTable/AdminIssuesTable';
 
 // import material-ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,7 +42,7 @@ function AdminTabs() {
                     </Tabs>
                 </AppBar>
                 { selectedTab === 0 && <AdminOrdersTable /> }
-                {/* { selectedTab === 1 && <AdminIssuesTable /> } */}
+                { selectedTab === 1 && <AdminIssuesTable /> }
                 { selectedTab === 2 && <AdminArtistTable /> }
             </div>
         </>
