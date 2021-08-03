@@ -24,21 +24,18 @@ function EmployeeOrderTable() {
 
   const userInfo = useSelector((store) => store.user);
   const orders = useSelector((store) => store.orders);
-  const users = useSelector((store) => store.adminEmployeeInfoReducer); // Regular employees can't hit this route!
+  // const users = useSelector((store) => store.adminEmployeeInfoReducer); // Regular employees can't hit this route!
   const user = useSelector((store) => store.user); // This is the user table to show who's logged in. This is the reducer to use.
 
   // Create all table rows
   const orderInfoMap = orders?.map((order) => {
-    order.id = order.order_id; // adding id here because material-ui REQUIRES it.
+    // adding id here because material-ui REQUIRES it.
+    order.id = order.order_id;
     order.fullName = `${order.cus_first_name} ${order.cus_last_name}`;
-    const assignedUser = users?.find((user) => user.id == order.user_id_ref);
-    if (assignedUser) {
-      order.artist = `${assignedUser.employee_first_name} ${assignedUser.employee_last_name}`;
-    }
+    console.log(`What is the order => `, order);
 
     return order;
   });
-  //implement validation for status on admin level(stretch)
 
   // claim order functions
   const ClaimOrderButton = (config) => {
@@ -160,7 +157,7 @@ function EmployeeOrderTable() {
       renderCell: orderNumberHandler,
     },
     { field: 'fullName', headerName: 'Customer', width: 150 },
-    { field: 'artist', headerName: 'Employee', width: 150 },
+    { field: 'employee_full_name', headerName: 'Employee', width: 150 },
     {
       field: 'cus_progress_status',
       headerName: 'Status',
