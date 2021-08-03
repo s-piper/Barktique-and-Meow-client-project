@@ -40,7 +40,6 @@ const EmployeeOrderPage = () => {
       (store) => store.productOrderReducer
     );
     const [order, setOrder] = useState();
-    const dispatch = useDispatch();
     const classes = useStyles();
 
     // Data that needs to be sent with our useEffect below
@@ -55,7 +54,7 @@ const EmployeeOrderPage = () => {
      
     //Sends Error Package to Saga
     //Data is error status, order number, user id
-    const imageError = () => {
+    const imageErrorColumn = () => {
 
         const data = {
           cus_error_image: true,
@@ -64,6 +63,51 @@ const EmployeeOrderPage = () => {
         };
 
         dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
+    }
+
+    const imageErrorStatus = () => {
+        const data = {
+
+            cus_progress_status: 'Image Rejected',
+            cus_order_number: order?.cus_order_number,
+            id: order?.user_id_ref
+        }
+
+        dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } })
+    }
+
+    const imageError = () => {
+        imageErrorColumn();
+        imageErrorStatus();
+    }
+
+    const imageErrorColumnFixed = () => {
+
+        const data = {
+            cus_error_image: false,
+            cus_order_number: order?.cus_order_number,
+            id: order?.user_id_ref,
+        }
+
+        dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
+    }
+
+    const imageErrorStatusFixed = () => {
+
+        const data = {
+
+            cus_progress_status: 'In Progress',
+            cus_order_number: order?.cus_order_number,
+            id: order?.user_id_ref
+        }
+
+        dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
+
+    }
+
+    const imageErrorFixed = () => {
+        imageErrorStatusFixed();
+        imageErrorColumnFixed();
     }
 
     //Sends Complete Notification to Saga
