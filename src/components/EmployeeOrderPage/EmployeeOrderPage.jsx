@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import EmployeeHeader from '../EmployeeHeader/EmployeeHeader';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
+import Swal from 'sweetalert2'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const EmployeeOrderPage = () => {
+  const history = useHistory();
   const { orderNumber, id } = useParams();
   // const orders = useSelector((store) => store.orders); // I think this is the store with the orders in it?
   const productOrderReducer = useSelector((store) => store.productOrderReducer);
@@ -73,6 +75,7 @@ const EmployeeOrderPage = () => {
   const imageError = () => {
     imageErrorColumn();
     imageErrorStatus();
+    window.location.reload();
   };
 
   const imageErrorColumnFixed = () => {
@@ -98,6 +101,7 @@ const EmployeeOrderPage = () => {
   const imageErrorFixed = () => {
     imageErrorStatusFixed();
     imageErrorColumnFixed();
+    window.location.reload();
   };
 
   //Sends Complete Notification to Saga
@@ -108,8 +112,22 @@ const EmployeeOrderPage = () => {
       cus_order_number: productOrderReducer[0]?.cus_order_number,
       id: productOrderReducer[0]?.user_id_ref,
     };
-
-    dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
+    Swal.fire({
+      icon: 'question',
+      title: 'Are you sure?',
+      showCancelButton: true,
+      confirmButtonText: 'Complete',
+      confirmButtonColor: '#000000',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
+        Swal.fire({
+          icon: 'success',
+          title: 'Order Complete!',
+          confirmButtonColor: '#000000',})
+      }
+      history.push(`/employee`);
+    })
   };
   const downloadImage = (event) => {
     console.log(`download image?`, productOrderReducer[0]?.cus_image);
@@ -123,6 +141,34 @@ const EmployeeOrderPage = () => {
       });
     });
   };
+  const unassignOrder = (event) => {
+    console.log(`click unassign order`, productOrderReducer[0]?.cus_order_number)
+    const data = {
+      cus_progress_status: 'Not Started',
+      cus_order_isStarted: false,
+      cus_order_number: productOrderReducer[0]?.cus_order_number,
+      user_id_ref: null,
+      id: productOrderReducer[0]?.user_id_ref,
+      employee_full_name: null
+    }
+
+    Swal.fire({
+      icon: 'question',
+      title: 'Are you sure?',
+      showCancelButton: true,
+      confirmButtonText: 'Unassign',
+      confirmButtonColor: '#000000',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch({
+          type: 'PRODUCT_UNASSIGN_ORDER_BUTTON',
+          payload: { data }
+        });
+      }
+      history.push(`/employee`);
+    })
+
+  }
   return (
     <div>
       <EmployeeHeader />
@@ -205,7 +251,10 @@ const EmployeeOrderPage = () => {
           Download CSV
         </Button>
 
-        <Button className={classes.button} variant="contained" color="primary">
+        <Button className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={unassignOrder}>
           Unassign Order
         </Button>
       </Grid>
