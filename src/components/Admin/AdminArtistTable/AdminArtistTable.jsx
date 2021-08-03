@@ -45,6 +45,24 @@ function AdminArtistTable() {
     // get artist info from store
     const artists = useSelector(store => store.adminEmployeeInfoReducer);
 
+    // function to handle artist delete
+    const handleDelete = (artist) => {
+        // console log to see delete btn fires
+        console.log('Clicked Delete', artist);
+        
+        // package data and send to saga
+        const data = {
+            cus_progress_status: 'Not Started',
+            cus_order_isStarted: false,
+            user_id_ref: null,
+            id: artist.id,
+            employee_full_name: null
+        }
+        
+        // dispatch 'DELETE_EMPLOYEE_FROM_DATABASE'
+        dispatch({type: 'DELETE_EMPLOYEE_FROM_DATABASE', payload: {data}})
+    }
+
     return (
         <>
             <div className="artist-table">
@@ -69,8 +87,14 @@ function AdminArtistTable() {
                                     </Typography>
                                     <Typography
                                         className={classes.secondaryHeading}
+                                        onClick={() => {handleDelete(artist)}}
                                     >
-                                        <Button variant="contained" color="secondary">Delete Artist</Button>
+                                        <Button 
+                                            variant="contained" 
+                                            color="secondary" 
+                                        >
+                                            Delete Artist
+                                        </Button>
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>

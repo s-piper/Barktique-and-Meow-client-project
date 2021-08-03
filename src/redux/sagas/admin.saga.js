@@ -171,12 +171,13 @@ function* deleteEmployee(action) {
    *  cus_order_isStarted: false, <= needs to false, no employee assigned now
    *  user_id_ref: null, <= needs to be set to null now, no employee assigned now
    *  id:'employee id' This is who's getting deleted
+   *  employee_full_name: null
    * }
    */
   try {
     // Looks like we have an employee to delete
     // ${id of employee here!}
-    const employeeDeleteResponse = yield axios.delete(
+    const employeeDeleteResponse = yield axios.put(
       `/api/admin/delete/v1/${action.payload.data.id}`,
       action.payload.data
     );

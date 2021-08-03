@@ -1,13 +1,14 @@
 import React from 'react';
 
-import EmployeeOrderQueue from '../../EmployeeOrderPage/EmployeeOrderQueue/EmployeeOrderQueue';
+// component import
+import EmployeeOrderTable from '../../EmployeeOrderPage/EmployeeOrderQueue/EmployeeOrderTable';
 
 // AdminOrdersTable function component
 function AdminOrdersTable () {
     return (
         <>
             <div>
-                <EmployeeOrderQueue />
+                <EmployeeOrderTable />
             </div>
         </>
     )

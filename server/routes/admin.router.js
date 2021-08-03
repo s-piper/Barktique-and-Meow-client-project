@@ -263,7 +263,7 @@ router.put(
 
 // DELETE route
 // ****** This route needs an Employee Assigned to an order to test
-router.delete(
+router.put(
   '/delete/v1/:employeeID',
   rejectUnauthenticated,
   rejectNonAdmins,
@@ -275,8 +275,8 @@ router.delete(
 
     // Query Area
     const reinstateOrders = `
-      UPDATE order_table SET cus_progress_status=$1, "cus_order_isStarted"=$2, "user_id_ref"=$3
-      WHERE user_id_ref=$4
+      UPDATE order_table SET cus_progress_status=$1, "cus_order_isStarted"=$2, "user_id_ref"=$3, "employee_full_name"=$4
+      WHERE user_id_ref=$5
     ;`;
 
     const deleteEmployee = `
@@ -293,6 +293,7 @@ router.delete(
           req.body.cus_progress_status,
           req.body.cus_order_isStarted,
           req.body.user_id_ref,
+          req.body.employee_full_name,
           req.body.id,
         ]);
 
