@@ -22,3 +22,7 @@ h2 {
     width: 300px;
     height: 100px;
 }
+
+.admin-dashboard-btn {
+    margin-left: 15px;
+}
