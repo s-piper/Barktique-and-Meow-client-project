@@ -37,7 +37,9 @@ function AdminIssuesDetail({ orders, order, key }) {
 
   const handleIssuesClick = (order) => {
     console.log('You clicked handleIssuesClick', order);
-    history.push(`/orderpage/${order.order_id}`);
+
+    // ****** DEV NOTE, route needs to be changed.
+    history.push(`/orderPage/${user.id}/${order.cus_order_number}`);
   };
 
   console.log('These are the issues:', orders);
