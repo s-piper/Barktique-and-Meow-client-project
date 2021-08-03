@@ -14,7 +14,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 
 // Component imports for employee
-import {EmployeeEmail} from './AdminEditEmployeeComponents/EditEmail'
+import { EmployeeEmail } from './AdminEditEmployeeComponents/EditEmail';
+import { EmployeeFirstName } from './AdminEditEmployeeComponents/FirstName';
 
 // setup styles for material-ui
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +46,6 @@ function AdminEditEmployee() {
 
   const adminSingleEmpInfo = useSelector((store) => store.adminSingleEmpInfo);
 
-
   const handleBackButton = () => {
     console.log('Clicked AdminDashboard button');
     history.push('/admin');
@@ -75,7 +75,7 @@ function AdminEditEmployee() {
       </div>
       <br />
       <div>
-        <h2>Create Artist</h2>
+        <h2>Edit Artist</h2>
       </div>
 
       <Grid
@@ -92,11 +92,10 @@ function AdminEditEmployee() {
           />
         </Grid>
         <Grid item>
-          <TextField
-            variant="outlined"
-            label="First Name"
-            className={classes.textField}
-            onChange={(event) => setFirstName(event.target.value)}
+          <EmployeeFirstName
+            classes={classes}
+            useStyles={useStyles}
+            adminSingleEmpInfo={adminSingleEmpInfo}
           />
         </Grid>
         <Grid item>

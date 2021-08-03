@@ -117,7 +117,7 @@ function* putUnassignProductOrder(action) {
    *  cus_order_number: 'Order Number Here',
    *  user_id_ref: null
    *  id: 'employee id here',
-   * employee_full_name: null
+   *  employee_full_name: null
    * }
    */
   try {

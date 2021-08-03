@@ -7,9 +7,10 @@ import TextField from '@material-ui/core/TextField';
 
 import Swal from 'sweetalert2';
 
-export const EmployeeEmail = ({ adminSingleEmpInfo, classes, useStyles }) => {
+export const EmployeeEmail = ({ classes, useStyles }) => {
   useStyles();
 
+  const adminSingleEmpInfo = useSelector((store) => store.adminSingleEmpInfo);
   // Bring in dispatch
   const dispatch = useDispatch();
   // Function to check for valid email address.
@@ -38,7 +39,7 @@ export const EmployeeEmail = ({ adminSingleEmpInfo, classes, useStyles }) => {
     });
 
     const data = {
-      id: adminSingleEmpInfo[0].id,
+      id: adminSingleEmpInfo[0]?.id,
       username: email,
     };
     // email shows message showing name change.
@@ -51,18 +52,21 @@ export const EmployeeEmail = ({ adminSingleEmpInfo, classes, useStyles }) => {
         type: 'UPDATE_EMPLOYEE_EMAIL',
         payload: { data },
       });
-      // Show Updated name after User changes name.
-      dispatch({
-        type: 'FETCH_INDIVIDUAL_EMPLOYEE',
-        payload: adminSingleEmpInfo[0].id,
-      });
+
     }
   };
+
+  useEffect(() => {
+    dispatch({
+      type: 'FETCH_INDIVIDUAL_EMPLOYEE',
+      payload: adminSingleEmpInfo[0]?.id,
+    });
+  }, []);
 
   return (
     <>
       <TextField
-        className={classes.textStyling}
+        className={classes.textField}
         fullWidth
         required
         placeholder="Email"
