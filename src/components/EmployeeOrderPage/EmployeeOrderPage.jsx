@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import EmployeeHeader from '../EmployeeHeader/EmployeeHeader';
-
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,6 +49,7 @@ const EmployeeOrderPage = () => {
 
   //Sends Error Package to Saga
   //Data is error status, order number, user id
+
   const imageErrorColumn = () => {
     const data = {
       cus_error_image: true,
@@ -104,6 +106,17 @@ const EmployeeOrderPage = () => {
     window.location.reload();
   };
 
+  const onDownload = (orderNumber) => {
+  // const link = document.createElement("a");
+  //   link.download = `Order ${productOrderReducer[0]?.cus_order_number}.pdf`;
+  //   link.href = `/orderPage/${user.id}/${orderNumber}./download.pdf`;
+  //   link.click();
+
+  // const toPrint = document.getElementById("orderNumber");
+  // const newWin = window.open();
+  // newWin.document.write(`<div>${toPrint}</div>`);
+  // newWin.print()
+  }
   //Sends Complete Notification to Saga
   //Data is status, order number, user id
   const setComplete = () => {
@@ -247,15 +260,19 @@ const EmployeeOrderPage = () => {
           Complete
         </Button>
 
-        <Button className={classes.button} variant="contained" color="primary">
-          Download CSV
+        <Button className={classes.button}
+         variant="contained"
+         color="primary"
+         endIcon ={<PictureAsPdfIcon/>}
+          >
+          Download 
         </Button>
 
         <Button className={classes.button}
           variant="contained"
-          color="primary"
+          color="secondary"
           onClick={unassignOrder}>
-          Unassign Order
+          Unassign
         </Button>
       </Grid>
     </div>
