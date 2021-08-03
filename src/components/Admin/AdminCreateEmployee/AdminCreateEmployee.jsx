@@ -71,6 +71,11 @@ function AdminCreateEmployee() {
 
     } // end saveEmployee
 
+    const handleBackButton = () => {
+        console.log('Clicked AdminDashboard button');
+        history.push('/admin');
+    }
+
     // function to handle dropdown selection and set Access Level
     const handleSelect = (event) => {
 
@@ -85,6 +90,15 @@ function AdminCreateEmployee() {
         <>
             <div>
                 <AdminHeader />
+            </div>
+            <div className="admin-dashboard-btn">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleBackButton}
+                >
+                    Admin Dashboard
+                </Button>
             </div>
             <br />
             <div>
