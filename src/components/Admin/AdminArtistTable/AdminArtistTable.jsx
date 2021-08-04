@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     secondaryHeading: {
         fontSize: theme.typography.pxToRem(15),
         color: theme.palette.text.secondary,
-        flexBasis: '33.33%',
+        flexBasis: '32.15%',
         flexShrink: 0,
     },
 }));
@@ -82,6 +82,7 @@ function AdminArtistTable() {
                     console.log(data);
                     // dispatch 'DELETE_EMPLOYEE_FROM_DATABASE'
                     dispatch({ type: 'DELETE_EMPLOYEE_FROM_DATABASE', payload: { data } });
+                    dispatch({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
                 });
             } else {
                 return;
@@ -132,10 +133,10 @@ function AdminArtistTable() {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Typography className={classes.secondaryHeading}>
-                                        {artist.username}
+                                        Email: {artist.username}
                                     </Typography>
                                     <Typography className={classes.secondaryHeading}>
-                                        {artist.employee_phone_number}
+                                        Phone: {artist.employee_phone_number}
                                     </Typography>
                                 </AccordionDetails>
                             </Accordion>
