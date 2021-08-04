@@ -44,8 +44,6 @@ function AdminIssuesDetail({ orders, order, key }) {
 
   console.log('These are the issues:', orders);
 
-
-
   return (
     <>
       <div className={classes.root}>
