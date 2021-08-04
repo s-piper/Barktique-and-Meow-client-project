@@ -22,30 +22,43 @@ function Admin() {
   // Bring some style in here
   const classes = useStyles();
   const user = useSelector((store) => store.user);
+    const dispatch = useDispatch();
+    const ordersState = useSelector((store) => store.ordersState);
+    useEffect(() => {
+
+      dispatch({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
+    }, []);
+    
   return (
-    <div>
-      <section>
+    <>
+      {!ordersState ? (
+        ''
+      ) : (
         <div>
-          <AdminHeader />
+          <section>
+            <div>
+              <AdminHeader />
+            </div>
+            <Grid
+              className={classes.buttonGroup}
+              container
+              direction="row"
+              justifyContent="space-around"
+            >
+              <AdminCreateButton />
+              <AdminLogOutButton />
+            </Grid>
+          </section>
+          <section>
+            <h2>{`Welcome`}</h2>
+            <h3>{`${user.employee_first_name} ${user.employee_last_name}`}</h3>
+            <div>
+              <AdminTabs />
+            </div>
+          </section>
         </div>
-        <Grid
-          className={classes.buttonGroup}
-          container
-          direction="row"
-          justifyContent="space-around"
-        >
-          <AdminCreateButton />
-          <AdminLogOutButton />
-        </Grid>
-      </section>
-      <section>
-          <h2>{`Welcome`}</h2>
-          <h3>{`${user.employee_first_name} ${user.employee_last_name}`}</h3>
-        <div>
-          <AdminTabs />
-        </div>
-      </section>
-    </div>
+      )}
+    </>
   );
 }
 

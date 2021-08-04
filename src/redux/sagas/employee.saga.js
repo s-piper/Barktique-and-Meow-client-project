@@ -8,6 +8,7 @@ function* fetchAllProductOrders() {
 
   try {
     // Hit the backend with a get route to grab all orders
+    // yield put({type: 'SET_ORDER_STATE', payload: false})
     const getAllOrdersResponse = yield axios.get(
       '/api/employee/getAllOrders/v1'
     );

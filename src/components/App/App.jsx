@@ -73,7 +73,7 @@ function App() {
         <div>
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
-            <Redirect exact from="/" to="/home" />
+            <Redirect exact from="/" to="/login" />
 
             {/* Visiting localhost:3000/about will show the about page. */}
             <Route
@@ -141,10 +141,6 @@ function App() {
             <RegisterPage />
           </ProtectedRoute> */}
 
-            <ProtectedRoute exact path="/admin">
-              <Admin />
-            </ProtectedRoute>
-
             <ProtectedRoute exact path="/createEmployee">
               <AdminCreateEmployee />
             </ProtectedRoute>
@@ -166,9 +162,13 @@ function App() {
               // - else shows LandingPage at "/home"
               exact
               path="/home"
-              authRedirect="/user"
+              authRedirect="/employee"
             >
               <LandingPage />
+            </ProtectedRoute>
+
+            <ProtectedRoute exact path="/admin">
+              <Admin />
             </ProtectedRoute>
 
             {/* If none of the other routes matched, we will show a 404. */}

@@ -6,8 +6,8 @@ import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
-import Swal from 'sweetalert2'
-
+import Swal from 'sweetalert2';
+import AdminHeader from '../Admin/AdminHeader/AdminHeader';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,16 +108,15 @@ const EmployeeOrderPage = () => {
   };
 
   const onDownload = (orderNumber) => {
-  // const link = document.createElement("a");
-  //   link.download = `Order ${productOrderReducer[0]?.cus_order_number}.pdf`;
-  //   link.href = `/orderPage/${user.id}/${orderNumber}./download.pdf`;
-  //   link.click();
-
-  // const toPrint = document.getElementById("orderNumber");
-  // const newWin = window.open();
-  // newWin.document.write(`<div>${toPrint}</div>`);
-  // newWin.print()
-  }
+    // const link = document.createElement("a");
+    //   link.download = `Order ${productOrderReducer[0]?.cus_order_number}.pdf`;
+    //   link.href = `/orderPage/${user.id}/${orderNumber}./download.pdf`;
+    //   link.click();
+    // const toPrint = document.getElementById("orderNumber");
+    // const newWin = window.open();
+    // newWin.document.write(`<div>${toPrint}</div>`);
+    // newWin.print()
+  };
   //Sends Complete Notification to Saga
   //Data is status, order number, user id
   const setComplete = () => {
@@ -144,10 +143,11 @@ const EmployeeOrderPage = () => {
         Swal.fire({
           icon: 'success',
           title: 'Order Complete!',
-          confirmButtonColor: '#000000',})
+          confirmButtonColor: '#000000',
+        });
       }
       history.push(`/employee`);
-    })
+    });
   };
   const downloadImage = (event) => {
     console.log(`download image?`, productOrderReducer[0]?.cus_image);
@@ -162,15 +162,20 @@ const EmployeeOrderPage = () => {
     });
   };
   const unassignOrder = (event) => {
-    console.log(`click unassign order`, productOrderReducer[0]?.cus_order_number)
+    console.log(
+      `click unassign order`,
+      productOrderReducer[0]?.cus_order_number
+    );
+
+    dispatch({ type: 'SET_ORDER_STATE', payload: false });
     const data = {
       cus_progress_status: 'Not Started',
       cus_order_isStarted: false,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
       user_id_ref: null,
       id: productOrderReducer[0]?.user_id_ref,
-      employee_full_name: null
-    }
+      employee_full_name: null,
+    };
 
     Swal.fire({
       icon: 'question',
@@ -178,20 +183,27 @@ const EmployeeOrderPage = () => {
       showCancelButton: true,
       confirmButtonText: 'Unassign',
       confirmButtonColor: '#000000',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch({
-          type: 'PRODUCT_UNASSIGN_ORDER_BUTTON',
-          payload: { data }
-        });
-      }
-      history.push(`/employee`);
     })
-
-  }
+      .then((result) => {
+        if (result.isConfirmed) {
+          dispatch({
+            type: 'PRODUCT_UNASSIGN_ORDER_BUTTON',
+            payload: { data },
+          });
+          dispatch({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
+        }
+      })
+      .then(async () => {
+        try {
+        } catch (error) {
+          console.log(`Didn't make it did we... `, error);
+        }
+        history.push(`/employee`);
+      });
+  };
   return (
     <div>
-      <EmployeeHeader />
+      <AdminHeader />
       <Grid
         container
         direction="column"
@@ -266,20 +278,28 @@ const EmployeeOrderPage = () => {
         >
           Complete
         </Button>
-
-        <Button className={classes.button} variant="contained" color="primary">
-          Download 
-        </Button>
-
-          {productOrderReducer[0]?.user_id_ref !== Number(id) ? '': (
  
         <Button className={classes.button}
+
           variant="contained"
-          color="secondary"
-          onClick={unassignOrder}>
-          Unassign
+          color="primary"
+          endIcon={<PictureAsPdfIcon />}
+        >
+          Download
         </Button>
-          )}
+
+        {productOrderReducer[0]?.user_id_ref !== Number(id) ? (
+          ''
+        ) : (
+          <Button
+            className={classes.button}
+            variant="contained"
+            color="secondary"
+            onClick={unassignOrder}
+          >
+            Unassign
+          </Button>
+        )}
       </Grid>
     </div>
   );
