@@ -40,7 +40,7 @@ function* putEmployeeFirstName(action) {
       action.payload.data
     );
 
-     // Need to do a GET request to get updated info for DOM
+    // Need to do a GET request to get updated info for DOM
     yield put({
       type: 'FETCH_INDIVIDUAL_EMPLOYEE',
       payload: action.payload.data.id,
@@ -72,7 +72,7 @@ function* putEmployeeLastName(action) {
       action.payload.data
     );
 
-     // Need to do a GET request to get updated info for DOM
+    // Need to do a GET request to get updated info for DOM
     yield put({
       type: 'FETCH_INDIVIDUAL_EMPLOYEE',
       payload: action.payload.data.id,
@@ -136,7 +136,7 @@ function* putEmployeeAccessLevel(action) {
       action.payload.data
     );
 
-     // Need to do a GET request to get updated info for DOM
+    // Need to do a GET request to get updated info for DOM
     yield put({
       type: 'FETCH_INDIVIDUAL_EMPLOYEE',
       payload: action.payload.data.id,
@@ -236,6 +236,7 @@ function* getMyEmployeesInfo(action) {
       payload: getEmployeeResponse.data,
     });
     yield put({ type: 'FETCH_NEW_EMPLOYEE_INFO' });
+    yield put({type: 'SET_SINGLE_EMPLOYEE_STATE', payload: true})
   } catch (error) {
     console.log(`Sorry, they never came back with your employee... `, error);
   }
