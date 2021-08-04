@@ -16,6 +16,8 @@ import Grid from '@material-ui/core/Grid';
 // Component imports for employee
 import { EmployeeEmail } from './AdminEditEmployeeComponents/EditEmail';
 import { EmployeeFirstName } from './AdminEditEmployeeComponents/FirstName';
+import { EmployeeLastName } from './AdminEditEmployeeComponents/LastName';
+import { EmployeePhoneNumber } from './AdminEditEmployeeComponents/PhoneNumber';
 
 // setup styles for material-ui
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +27,11 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 350,
+  },
+  formControl2: {
+    margin: theme.spacing(1),
+    minWidth: 365,
+    marginLeft: 23
   },
   textField: {
     marginTop: theme.spacing(2),
@@ -45,6 +52,9 @@ function AdminEditEmployee() {
   const history = useHistory();
 
   const adminSingleEmpInfo = useSelector((store) => store.adminSingleEmpInfo);
+  // This waits for employee info to come back from SAGA then fires
+  const singleEmployeeState = useSelector((store) => store.singleEmployeeState);
+  const [accessLevel, setAccessLevel] = useState();
 
   const handleBackButton = () => {
     console.log('Clicked AdminDashboard button');
@@ -54,9 +64,12 @@ function AdminEditEmployee() {
   // function to handle dropdown selection and set Access Level
   const handleSelect = (event) => {
     event.preventDefault();
-
-    // set local state to value (1 or 2) selected by user
-    setAccessLevel(event.target.value);
+    console.log(`This is our event`, event.target.value);
+    const data = {
+      id: adminSingleEmpInfo[0].id,
+      employee_access_level: event.target.value,
+    };
+    dispatch({type: 'UPDATE_EMPLOYEE_ACCESS_LEVEL', payload: { data }})
   }; // end handleSelect
 
   useEffect(() => {
@@ -65,59 +78,82 @@ function AdminEditEmployee() {
 
   return (
     <>
-      <div>
-        <AdminHeader />
-      </div>
-      <div className="admin-dashboard-btn">
-        <Button variant="contained" color="primary" onClick={handleBackButton}>
-          Admin Dashboard
-        </Button>
-      </div>
-      <br />
-      <div>
-        <h2>Edit Artist</h2>
-      </div>
+      {!singleEmployeeState ? (
+        ''
+      ) : (
+        <>
+          <div>
+            <AdminHeader />
+          </div>
+          <div className="admin-dashboard-btn">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleBackButton}
+            >
+              Admin Dashboard
+            </Button>
+          </div>
+          <br />
+          <div>
+            <h2>Edit Artist</h2>
+          </div>
 
-      <Grid
-        container
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="center"
-      >
-        <Grid item>
-          <EmployeeEmail
-            classes={classes}
-            useStyles={useStyles}
-            adminSingleEmpInfo={adminSingleEmpInfo}
-          />
-        </Grid>
-        <Grid item>
-          <EmployeeFirstName
-            classes={classes}
-            useStyles={useStyles}
-            adminSingleEmpInfo={adminSingleEmpInfo}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            variant="outlined"
-            label="Last Name"
-            required
-            className={classes.textField}
-            onChange={(event) => setLastName(event.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            variant="outlined"
-            label="Phone Number"
-            required
-            className={classes.textField}
-            onChange={(event) => setPhone(event.target.value)}
-          />
-        </Grid>
-        <Grid item></Grid>
-      </Grid>
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="center"
+          >
+            <Grid item>
+              <EmployeeEmail
+                classes={classes}
+                useStyles={useStyles}
+                adminSingleEmpInfo={adminSingleEmpInfo}
+              />
+            </Grid>
+            <Grid item>
+              <EmployeeFirstName
+                classes={classes}
+                useStyles={useStyles}
+                adminSingleEmpInfo={adminSingleEmpInfo}
+              />
+            </Grid>
+            <Grid item>
+              <EmployeeLastName
+                classes={classes}
+                useStyles={useStyles}
+                adminSingleEmpInfo={adminSingleEmpInfo}
+              />
+            </Grid>
+            <Grid item>
+              <EmployeePhoneNumber
+                classes={classes}
+                useStyles={useStyles}
+                adminSingleEmpInfo={adminSingleEmpInfo}
+              />
+            </Grid>
+            <Grid item>
+              <FormControl variant="outlined" className={classes.formControl2}>
+                <InputLabel>Access Level</InputLabel>
+                <Select
+                  value={adminSingleEmpInfo[0]?.employee_access_level}
+                  label="Access Level"
+                  required
+                  onChange={handleSelect}
+                  className={classes.textField}
+                >
+                  <MenuItem value={0}>
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={1}>Artist</MenuItem>
+                  <MenuItem value={2}>Admin</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </>
+      )}
     </>
   );
 } // end AdminCreateEmployee
