@@ -6,6 +6,7 @@ import customerWatcherSaga from './customer.order.saga';
 import employeeWatcherSaga from './employee.saga';
 import adminWatcherSaga from './admin.saga'
 import s3WatcherSaga from './s3.saga'
+import mailerWatcherSaga from './mailer.saga';
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
 // This is imported in index.js as rootSaga
@@ -22,5 +23,6 @@ export default function* rootSaga() {
     employeeWatcherSaga(), // Saga to watch employee needs
     adminWatcherSaga(), // Saga to watch admin needs
     s3WatcherSaga(), // S3 to watch for images coming in
+    mailerWatcherSaga(), //Saga to watch for when automated emails need to be sent
   ]);
 }

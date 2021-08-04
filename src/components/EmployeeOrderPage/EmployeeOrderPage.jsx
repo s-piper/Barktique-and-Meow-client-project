@@ -125,6 +125,11 @@ const EmployeeOrderPage = () => {
       cus_order_number: productOrderReducer[0]?.cus_order_number,
       id: productOrderReducer[0]?.user_id_ref,
     };
+
+    const orderComplete = {
+      cus_email: productOrderReducer[0]?.cus_email,
+      cus_order_number: productOrderReducer[0]?.cus_order_number,
+    }
     Swal.fire({
       icon: 'question',
       title: 'Are you sure?',
@@ -134,6 +139,7 @@ const EmployeeOrderPage = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
+        dispatch({ type: 'POST_COMPLETED_EMAIL', payload: {orderComplete} });
         Swal.fire({
           icon: 'success',
           title: 'Order Complete!',
@@ -272,9 +278,9 @@ const EmployeeOrderPage = () => {
         >
           Complete
         </Button>
+ 
+        <Button className={classes.button}
 
-        <Button
-          className={classes.button}
           variant="contained"
           color="primary"
           endIcon={<PictureAsPdfIcon />}

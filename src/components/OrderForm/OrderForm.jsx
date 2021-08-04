@@ -178,6 +178,7 @@ function OrderForm() {
     console.log('newOrder', newOrder);
 
     dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: { newOrder } });
+    dispatch({ type: 'POST_CONFIRMATION_EMAIL', payload: {newOrder} });
     //Fires alert and pushes to main website
     Swal.fire({
       title: 'Success',
