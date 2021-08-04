@@ -7,6 +7,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+//import './adminStyle.css'
 
 // variable useStyles for class names
 const useStyles = makeStyles((theme) => ({
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.pxToRem(15),
     flexBasis: '33.33%',
     flexShrink: 0,
+    
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
@@ -55,6 +57,7 @@ function AdminIssuesDetail({ orders, order, key }) {
           >
             <Typography
               className={classes.heading}
+              style={{textDecorationLine: 'underline'}}
               onClick={() => handleIssuesClick(order)}
             >
               Order # {order.cus_order_number}
