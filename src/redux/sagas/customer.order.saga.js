@@ -35,6 +35,7 @@ function* getCustomerOrderSaga(action) {
     const getCustomerOrderResponse = yield axios.get(
       `/api/employee/productOrder/v1/${action.payload.id}/${action.payload.cus_order_number}`
     );
+
     // Set our response to our reducer
     yield put({type: 'SET_PRODUCT_ORDER', payload: getCustomerOrderResponse.data})
   } catch (error) {
