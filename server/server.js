@@ -14,7 +14,7 @@ const adminRouter = require('./routes/admin.router')
 const customerRouter = require('./routes/customer.router')
 const employeeRouter = require('./routes/employee.router')
 const s3ImageUpload = require('./routes/s3.handle.router')
-const sendMail = require('./routes/mailer.router')
+const mailerRouter = require('./routes/mailer.router')
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -33,8 +33,8 @@ app.use('/api/admin', adminRouter)
 app.use('/api/employee', employeeRouter);
 app.use('/api/customer', customerRouter);
 app.use('/api/s3', s3ImageUpload);
-app.use('/api/mail', sendMail);
-
+// app.use('/api/mail', sendMail);
+app.use('/api/mail', mailerRouter)
 
 
 // Serve static files

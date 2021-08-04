@@ -2,9 +2,11 @@ import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
 function* postConfirmations(action) {
+    console.log('mail confirmation');
+    
     try {
         yield axios.post(
-            '/api/mail/confirmation', action.payload.data);
+            '/api/mail/confirmation', action.payload.newOrder);
 
     } catch (error) {
         console.log('Please check your postage on Mail Confirmation =>', error);
@@ -15,7 +17,7 @@ function* postConfirmations(action) {
 function* postCompleted(action) {
     try {
         yield axios.post(
-            '/api/mail/completed', action.payload.data);
+            '/api/mail/completed', action.payload.orderComplete);
 
     } catch (error) {
         console.log('Please check your postage on Mail Completed =>', error);
