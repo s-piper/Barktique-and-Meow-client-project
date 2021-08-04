@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   formControl2: {
     margin: theme.spacing(1),
     minWidth: 365,
-    marginLeft: 23
+    marginLeft: 23,
   },
   textField: {
     marginTop: theme.spacing(2),
@@ -70,7 +70,7 @@ function AdminEditEmployee() {
       id: adminSingleEmpInfo[0].id,
       employee_access_level: event.target.value,
     };
-    dispatch({type: 'UPDATE_EMPLOYEE_ACCESS_LEVEL', payload: { data }})
+    dispatch({ type: 'UPDATE_EMPLOYEE_ACCESS_LEVEL', payload: { data } });
   }; // end handleSelect
 
   const handleConfirm = () => {
@@ -82,7 +82,7 @@ function AdminEditEmployee() {
     }).then(function () {
       history.push('/admin');
     });
-  }
+  };
 
   useEffect(() => {
     dispatch({ type: 'FETCH_INDIVIDUAL_EMPLOYEE', payload: params.id });
@@ -116,6 +116,7 @@ function AdminEditEmployee() {
             direction="column"
             justifyContent="flex-start"
             alignItems="center"
+            className={classes.textField}
           >
             <Grid item>
               <EmployeeEmail
