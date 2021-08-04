@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-router.post('/confirm', (req, res) => {
+router.post('/confirmation', (req, res) => {
 
     const messageOptions = {
         from: ``,
@@ -33,4 +33,25 @@ router.post('/confirm', (req, res) => {
             console.log('Email Sent', info.response);
         }
     });
+});
+
+router.post('/completed', (req, res) => {
+
+    const messageOptions = {
+        from: ``,
+        to: ``,
+        subject: ``,
+        text: ``
+    };
+
+    transporter.sendMail(messageOptions, function (err, info) {
+        if (err) {
+            console.log('mailer error', err);
+            return;
+        } else {
+            console.log('Email Sent', info.response);
+        }
+    });
+
+    
 });
