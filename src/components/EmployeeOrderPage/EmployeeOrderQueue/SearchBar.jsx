@@ -59,7 +59,7 @@ export const QuickSearchToolbar = (props) => {
               aria-label="Clear"
               size="small"
               style={{ visibility: props.value ? 'visible' : 'hidden' }}
-            //   onClick={props.clearSearch}
+              onClick={props.clearSearch}
             >
               <ClearIcon fontSize="small" />
             </IconButton>
