@@ -267,11 +267,7 @@ const EmployeeOrderPage = () => {
           Complete
         </Button>
 
-        <Button className={classes.button}
-         variant="contained"
-         color="primary"
-         endIcon ={<PictureAsPdfIcon/>}
-          >
+        <Button className={classes.button} variant="contained" color="primary">
           Download 
         </Button>
 
