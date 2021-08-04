@@ -427,4 +427,51 @@ router.get(
   }
 );
 
+router.get(
+  '/getSingleEmployeeInfo/v1/:employeeId',
+  rejectUnauthenticated,
+  rejectNonAdmins,
+  async (req, res) => {
+    console.log(
+      `Full route => /api/admin/getSingleEmployeeInfo/v1/:employeeId`,
+      req.params
+    );
+    // Prepare the client to get some work done
+    const client = await pool.connect();
+    // Query Area
+    const queryToGetSingleEmployee = `
+      SELECT id,
+      username,
+      employee_access_level,
+      employee_first_name,
+      employee_last_name,
+      employee_phone_number FROM "user"
+      WHERE "id"=$1
+    ;`;
+    // You need the boot?
+    if (req.isAuthenticated) {
+      try {
+        // Guess not, what can I do for you
+        await client.query('BEGIN');
+        const getEmployeeResponse = await pool.query(queryToGetSingleEmployee, [
+          Number(req.params.employeeId),
+        ]);
+        console.log(`What did we get => `, getEmployeeResponse.rows);
+        await client.query('COMMIT');
+        // Send the employee info back, thanks...
+        res.send(getEmployeeResponse.rows);
+      } catch (error) {
+        console.log(`Yah, I don't think your getting their info `, error);
+        // They never made it out of the maze.
+        res.sendStatus(500);
+      } finally {
+        client.release();
+      }
+    } else {
+      // You get the boot
+      res.sendStatus(403);
+    }
+  }
+);
+
 module.exports = router;

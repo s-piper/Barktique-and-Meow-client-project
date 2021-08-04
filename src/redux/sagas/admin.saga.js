@@ -41,7 +41,10 @@ function* putEmployeeFirstName(action) {
     );
 
     // Need to do a GET request to get updated info for DOM
-    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+    yield put({
+      type: 'FETCH_INDIVIDUAL_EMPLOYEE',
+      payload: action.payload.data.id,
+    });
   } catch (error) {
     console.log(
       `Hmm, doesn't look like we couldn't change their first name... `,
@@ -70,7 +73,10 @@ function* putEmployeeLastName(action) {
     );
 
     // Need to do a GET request to get updated info for DOM
-    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+    yield put({
+      type: 'FETCH_INDIVIDUAL_EMPLOYEE',
+      payload: action.payload.data.id,
+    });
   } catch (error) {
     console.log(
       `Hmm, doesn't look like we couldn't change their last name... `,
@@ -99,7 +105,10 @@ function* putEmployeePhoneNumber(action) {
     );
 
     // Need to do a GET request to get updated info for DOM
-    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+    yield put({
+      type: 'FETCH_INDIVIDUAL_EMPLOYEE',
+      payload: action.payload.data.id,
+    });
   } catch (error) {
     console.log(
       `Hmm, doesn't look like we couldn't change their phone number... `,
@@ -128,7 +137,10 @@ function* putEmployeeAccessLevel(action) {
     );
 
     // Need to do a GET request to get updated info for DOM
-    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+    yield put({
+      type: 'FETCH_INDIVIDUAL_EMPLOYEE',
+      payload: action.payload.data.id,
+    });
   } catch (error) {
     console.log(`Hmm, access level denied apparently... `, error);
   }
@@ -154,7 +166,10 @@ function* putEmployeeEmail(action) {
     );
 
     // Need to do a GET request to get updated info for DOM
-    yield put({ type: 'FETCH_EMPLOYEES_FROM_SERVER' });
+    yield put({
+      type: 'FETCH_INDIVIDUAL_EMPLOYEE',
+      payload: action.payload.data.id,
+    });
   } catch (error) {
     console.log(`Hmm, something went wrong with the email... `, error);
   }
@@ -198,9 +213,32 @@ function* imageAndDateIssues() {
     /api/admin/getOrderIssue/v1
     `);
 
-    yield put({type: 'SET_ORDER_ISSUES', payload: imageAndDateIssuesResponse.data})
+    yield put({
+      type: 'SET_ORDER_ISSUES',
+      payload: imageAndDateIssuesResponse.data,
+    });
   } catch (error) {
     console.log(`Guess we couldn't get to the backend issues... `, error);
+  }
+}
+
+// GET route for single employee information
+function* getMyEmployeesInfo(action) {
+  console.log(`You're looking for what employee? `, action.payload);
+
+  try {
+    const getEmployeeResponse = yield axios.get(`
+  /api/admin/getSingleEmployeeInfo/v1/${action.payload}
+  `);
+
+    yield put({
+      type: 'SET_SINGLE_EMP_INFO',
+      payload: getEmployeeResponse.data,
+    });
+    yield put({ type: 'FETCH_NEW_EMPLOYEE_INFO' });
+    yield put({type: 'SET_SINGLE_EMPLOYEE_STATE', payload: true})
+  } catch (error) {
+    console.log(`Sorry, they never came back with your employee... `, error);
   }
 }
 
@@ -213,7 +251,8 @@ function* adminWatcherSaga() {
   yield takeLatest('UPDATE_EMPLOYEE_ACCESS_LEVEL', putEmployeeAccessLevel);
   yield takeLatest('UPDATE_EMPLOYEE_EMAIL', putEmployeeEmail);
   yield takeLatest('DELETE_EMPLOYEE_FROM_DATABASE', deleteEmployee);
-  yield takeLatest('FETCH_ISSUES_WITH_ORDERS', imageAndDateIssues)
+  yield takeLatest('FETCH_ISSUES_WITH_ORDERS', imageAndDateIssues);
+  yield takeLatest('FETCH_INDIVIDUAL_EMPLOYEE', getMyEmployeesInfo);
 }
 
 export default adminWatcherSaga;

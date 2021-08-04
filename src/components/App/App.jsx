@@ -16,6 +16,7 @@ import Footer from '../Footer/Footer';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import Admin from '../Admin/Admin';
+import AdminEditEmployee from '../Admin/AdminEditEmployee/AdminEditEmployee'
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
@@ -83,10 +84,7 @@ function App() {
               <AboutPage />
             </Route>
 
-            <Route
-              exact
-              path="/order"
-            >
+            <Route exact path="/order">
               <OrderPage />
             </Route>
 
@@ -100,6 +98,14 @@ function App() {
               path="/user"
             >
               <UserPage />
+            </ProtectedRoute>
+
+            <ProtectedRoute
+              // logged in shows UserPage else shows LoginPage
+              exact
+              path="/editEmployee/:id"
+            >
+              <AdminEditEmployee />
             </ProtectedRoute>
 
             <ProtectedRoute
@@ -135,31 +141,23 @@ function App() {
             <RegisterPage />
           </ProtectedRoute> */}
 
-            <ProtectedRoute
-              exact
-              path="/admin"
-            >
+            <ProtectedRoute exact path="/admin">
               <Admin />
             </ProtectedRoute>
 
-            <ProtectedRoute
-              exact
-              path="/createEmployee"
-            >
+            <ProtectedRoute exact path="/createEmployee">
               <AdminCreateEmployee />
             </ProtectedRoute>
 
-            <ProtectedRoute
-              exact
-              path="/employee"
-
-            >
-              <EmployeeOrderQueue/>
+            <ProtectedRoute exact path="/employee">
+              <EmployeeOrderQueue />
             </ProtectedRoute>
             <ProtectedRoute
               exact
-              path="/orderPage/:id/:orderNumber" component = {EmployeeOrderPage}>
-              <EmployeeOrderPage/>
+              path="/orderPage/:id/:orderNumber"
+              component={EmployeeOrderPage}
+            >
+              <EmployeeOrderPage />
             </ProtectedRoute>
 
             <ProtectedRoute
@@ -177,7 +175,6 @@ function App() {
             <Route>
               <h1>404</h1>
             </Route>
-
           </Switch>
           <Footer />
         </div>
