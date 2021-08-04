@@ -28,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 350,
   },
+  formControl2: {
+    margin: theme.spacing(1),
+    minWidth: 365,
+    marginLeft: 23
+  },
   textField: {
     marginTop: theme.spacing(2),
   },
@@ -59,10 +64,12 @@ function AdminEditEmployee() {
   // function to handle dropdown selection and set Access Level
   const handleSelect = (event) => {
     event.preventDefault();
-
-    // set local state to value (1 or 2) selected by user
-    setAccessLevel(event.target.value);
-    console.log(`This is our event`, event);
+    console.log(`This is our event`, event.target.value);
+    const data = {
+      id: adminSingleEmpInfo[0].id,
+      employee_access_level: event.target.value,
+    };
+    dispatch({type: 'UPDATE_EMPLOYEE_ACCESS_LEVEL', payload: { data }})
   }; // end handleSelect
 
   useEffect(() => {
@@ -127,7 +134,7 @@ function AdminEditEmployee() {
               />
             </Grid>
             <Grid item>
-              <FormControl variant="outlined" className={classes.formControl}>
+              <FormControl variant="outlined" className={classes.formControl2}>
                 <InputLabel>Access Level</InputLabel>
                 <Select
                   value={adminSingleEmpInfo[0]?.employee_access_level}
