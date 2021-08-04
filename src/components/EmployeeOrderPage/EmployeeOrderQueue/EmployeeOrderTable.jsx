@@ -175,11 +175,14 @@ function EmployeeOrderTable() {
     const filteredRows = rows.filter((row) => {
       console.log(`inside of filteredRows`, row);
       return Object.keys(row).some((field) => {
-        return searchRegex.test(row[field].toString());
+        console.log(`inside of field `, field);
+        if (row[field] !== null) {
+          return searchRegex.test(row[field].toString());
+        }
       });
     });
     setRows(filteredRows);
-    if(searchValue.length == 0) {
+    if (searchValue.length == 0) {
       setRows(orderInfoMap);
     }
   };
@@ -218,30 +221,6 @@ function EmployeeOrderTable() {
           </div>
         </section>
       )}
-      {/* <section>
-        <div style={{ display: 'flex', height: '100%' }}>
-          <div style={{ flexGrow: 1 }}>
-            <div style={{ height: 500, width: '100%' }}>
-              <DataGrid
-                rows={rows ?? []}
-                columns={columns}
-                pageSize={10}
-                components={{
-                  Toolbar: CustomToolbar,
-                  Toolbar: QuickSearchToolbar,
-                }}
-                componentsProps={{
-                  toolbar: {
-                    value: searchText,
-                    onChange: (event) => requestSearch(event.target.value),
-                    clearSearch: () => requestSearch(''),
-                  },
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </section> */}
     </>
   );
 }
