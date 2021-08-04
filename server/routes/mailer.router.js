@@ -1,5 +1,4 @@
 const express = require('express');
-const pool = require('../modules/pool');
 const router = express.Router();
 require('dotenv').config();
 
@@ -17,7 +16,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-router.post("/confirm", (req, res) => {
+router.post('/confirm', (req, res) => {
 
     const messageOptions = {
         from: ``,
@@ -31,7 +30,7 @@ router.post("/confirm", (req, res) => {
             console.log('mailer error', err);
             return;
         } else {
-            console.log('Sent', info.response);
+            console.log('Email Sent', info.response);
         }
     });
 });
