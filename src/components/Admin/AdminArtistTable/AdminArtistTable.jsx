@@ -131,8 +131,11 @@ function AdminArtistTable() {
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <Typography>
-                                        {artist.username} {artist.employee_phone_number}
+                                    <Typography className={classes.secondaryHeading}>
+                                        {artist.username}
+                                    </Typography>
+                                    <Typography className={classes.secondaryHeading}>
+                                        {artist.employee_phone_number}
                                     </Typography>
                                 </AccordionDetails>
                             </Accordion>
