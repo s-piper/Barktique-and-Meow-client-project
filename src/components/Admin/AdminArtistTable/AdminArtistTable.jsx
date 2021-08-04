@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 // import material-ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -96,11 +97,12 @@ function AdminArtistTable() {
                   </Typography>
                   <Typography
                     className={classes.secondaryHeading}
-                    onClick={() => {
-                      handleDelete(artist);
-                    }}
                   >
-                    <Button variant="contained" color="secondary">
+                    <Button 
+                    variant="contained" 
+                    color="secondary"
+                    onClick={() => handleDelete(artist)}
+                    >
                       Delete Artist
                     </Button>
                   </Typography>

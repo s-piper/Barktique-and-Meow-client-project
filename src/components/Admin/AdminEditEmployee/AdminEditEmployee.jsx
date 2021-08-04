@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import AdminHeader from '../AdminHeader/AdminHeader';
+import Swal from 'sweetalert2';
 
 // material-ui imports
 import Button from '@material-ui/core/Button';
@@ -71,6 +72,17 @@ function AdminEditEmployee() {
     };
     dispatch({type: 'UPDATE_EMPLOYEE_ACCESS_LEVEL', payload: { data }})
   }; // end handleSelect
+
+  const handleConfirm = () => {
+    Swal.fire({
+      title: 'Success',
+      text: 'You Have Successfully Edited Artist',
+      icon: 'success',
+      confirmButtonColor: '#000000',
+    }).then(function () {
+      history.push('/admin');
+    });
+  }
 
   useEffect(() => {
     dispatch({ type: 'FETCH_INDIVIDUAL_EMPLOYEE', payload: params.id });
@@ -150,6 +162,17 @@ function AdminEditEmployee() {
                   <MenuItem value={2}>Admin</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid item>
+              <Button
+                className={classes.textField}
+                variant="contained"
+                size="large"
+                color="primary"
+                onClick={handleConfirm}
+              >
+                Confirm
+              </Button>
             </Grid>
           </Grid>
         </>
