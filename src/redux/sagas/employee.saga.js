@@ -11,11 +11,17 @@ function* fetchAllProductOrders() {
     const getAllOrdersResponse = yield axios.get(
       '/api/employee/getAllOrders/v1'
     );
+
+    console.log(
+      `This is the response we get from the server for all orders => `,
+      getAllOrdersResponse
+    );
     // Set our reducer with all orders from database
     yield put({
       type: 'SET_ALL_PRODUCT_ORDERS',
       payload: getAllOrdersResponse.data,
     });
+    yield put({type: 'SET_ORDER_STATE', payload: true})
   } catch (error) {
     console.log('ERROR in fetchAllProductOrders => ', error);
   }
@@ -36,7 +42,7 @@ function* putProductOrderIsStarted(action) {
    */
   try {
     // Inform the backend that employee is ready to start order
-  
+
     const startOrderButtonResponse = yield axios.put(
       `/api/employee/startOrder/v1/${action.payload.data.id}`,
       action.payload.data
@@ -90,7 +96,7 @@ function* putOrderCompleteButton(action) {
    *  id: 'employee id here'
    * }
    */
-   try {
+  try {
     // Inform the backend we have a completed order for them.
     // ${user.id here}/${cus_order_number here}
     const productOrderCompleteResponse = yield axios.put(

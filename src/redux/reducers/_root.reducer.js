@@ -6,6 +6,7 @@ import {productOrderReducer} from './customerProduct.order.reducer'
 import { adminEmployeeInfoReducer, adminSingleEmpInfo } from './admin.reducer';
 import {s3ImageHolderReducer} from './s3.reducer'
 import {adminIssuesReducer} from './admin.issues.reducer'
+import {ordersState} from './reducerState.reducer'
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   adminEmployeeInfoReducer, // Reducer to handle employee info
   adminIssuesReducer, // Reducer to handle admin issues page
   adminSingleEmpInfo, // Reducer to hold onto single employee info
+  ordersState, // Reducer to check loading state
 });
 
 export default rootReducer;

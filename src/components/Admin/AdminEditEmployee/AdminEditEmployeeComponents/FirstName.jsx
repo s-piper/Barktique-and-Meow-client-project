@@ -61,11 +61,12 @@ export const EmployeeFirstName = ({ classes, useStyles }) => {
   return (
     <>
       <TextField
-        className={classes.textField}
+        className={classes.formControl}
         fullWidth
-        placeholder="First Name"
         onClick={handleFirstName}
+        placeholder="First Name"
         value={adminSingleEmpInfo[0]?.employee_first_name}
+        variant="outlined"
       />
     </>
   );

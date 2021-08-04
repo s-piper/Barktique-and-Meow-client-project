@@ -66,9 +66,9 @@ export const EmployeeEmail = ({ classes, useStyles }) => {
   return (
     <>
       <TextField
-        className={classes.textField}
+        className={classes.formControl}
         fullWidth
-        required
+        variant="outlined"
         placeholder="Email"
         onClick={handleEmail}
         value={adminSingleEmpInfo[0]?.username}
