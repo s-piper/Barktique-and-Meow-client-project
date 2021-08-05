@@ -1,3 +1,5 @@
+import { useHistory } from 'react-router-dom';
+
 const userReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':

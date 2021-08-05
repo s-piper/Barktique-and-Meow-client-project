@@ -1,30 +1,21 @@
 import React from 'react';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams, Redirect } from 'react-router-dom';
 
 function UserPage() {
   // this component doesn't do much to start, just renders some user reducer info to the DOM
   const user = useSelector((store) => store.user);
-  const history = useHistory();
+  const params = useParams();
 
-  const adminPush = () => {
-    if (user?.employee_access_level > 1) {
-      history.push('/admin');
-    } else {
-      history.push('/employee');
-    }
-  };
 
-  const employeePush = () => {};
   return (
     <>
       {user?.employee_access_level > 1 ? (
-        <Link to="/admin">Admins</Link>
+        <Redirect to="/admin" />
       ) : (
-        <Link to="/employee">Employees</Link>
+        <Redirect to="/employee" />
       )}
-      {/* <div onLoad={() => adminPush()}>Redirecting</div> */}
     </>
   );
 }
