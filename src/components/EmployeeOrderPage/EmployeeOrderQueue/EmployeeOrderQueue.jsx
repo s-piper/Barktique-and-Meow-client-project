@@ -26,7 +26,7 @@ function EmployeeOrderQueue() {
         <Redirect to="/admin" />
       ) : (
         <>
-          {!ordersState ? (
+          {ordersState == false ? (
             ''
           ) : (
             <>

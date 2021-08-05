@@ -129,26 +129,51 @@ const EmployeeOrderPage = () => {
     const orderComplete = {
       cus_email: productOrderReducer[0]?.cus_email,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
-    }
+    };
     Swal.fire({
       icon: 'question',
       title: 'Are you sure?',
       showCancelButton: true,
       confirmButtonText: 'Complete',
       confirmButtonColor: '#000000',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
-        dispatch({ type: 'POST_COMPLETED_EMAIL', payload: {orderComplete} });
-        Swal.fire({
-          icon: 'success',
-          title: 'Order Complete!',
-          confirmButtonColor: '#000000',
-        });
-      }
-      history.push(`/employee`);
-    });
+    })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          dispatch({
+            type: 'PRODUCT_ORDER_COMPLETE_BUTTON',
+            payload: { data },
+          });
+          dispatch({
+            type: 'POST_COMPLETED_EMAIL',
+            payload: { orderComplete },
+          });
+          dispatch({ type: 'SET_PRODUCT_ORDER', payload: false });
+        } else if (!result.isConfirmed) {
+          return 'not complete';
+        }
+      })
+      .then(async (response) => {
+        console.log(`This is our response `, response);
+        try {
+          if (response == 'not complete') {
+            return;
+          } else {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Order Complete!',
+              confirmButtonColor: '#000000',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                history.push(`/employee`);
+              }
+            });
+          }
+        } catch (error) {
+          console.log(`Didn't make it ... `, error);
+        }
+      });
   };
+
   const downloadImage = (event) => {
     console.log(`download image?`, productOrderReducer[0]?.cus_image);
     fetch(productOrderReducer[0]?.cus_image).then((response) => {
@@ -278,7 +303,7 @@ const EmployeeOrderPage = () => {
         >
           Complete
         </Button>
- 
+
         {/* <Button className={classes.button}
 
           variant="contained"
