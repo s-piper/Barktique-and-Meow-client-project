@@ -197,28 +197,34 @@ function EmployeeOrderTable() {
         ''
       ) : (
         <section>
-          <div style={{ display: 'flex', height: '100%' }}>
-            <div style={{ flexGrow: 1 }}>
-              <div style={{ height: 500, width: '100%' }}>
-                <DataGrid
-                  rows={rows ?? []}
-                  columns={columns}
-                  pageSize={10}
-                  components={{
-                    Toolbar: CustomToolbar,
-                    Toolbar: QuickSearchToolbar,
-                  }}
-                  componentsProps={{
-                    toolbar: {
-                      value: searchText,
-                      onChange: (event) => requestSearch(event.target.value),
-                      clearSearch: () => requestSearch(''),
-                    },
-                  }}
-                />
+          {orders.length == 0 ? (
+            <center>
+              <p>You Don't have any orders yet.</p>
+            </center>
+          ) : (
+            <div style={{ display: 'flex', height: '100%' }}>
+              <div style={{ flexGrow: 1 }}>
+                <div style={{ height: 500, width: '100%' }}>
+                  <DataGrid
+                    rows={rows ?? []}
+                    columns={columns}
+                    pageSize={10}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      Toolbar: QuickSearchToolbar,
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        value: searchText,
+                        onChange: (event) => requestSearch(event.target.value),
+                        clearSearch: () => requestSearch(''),
+                      },
+                    }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </section>
       )}
     </>
