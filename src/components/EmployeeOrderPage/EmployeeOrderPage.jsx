@@ -149,16 +149,21 @@ const EmployeeOrderPage = () => {
       history.push(`/employee`);
     });
   };
-  const downloadImage = (event) => {
+  const downloadImage = () => {
     console.log(`download image?`, productOrderReducer[0]?.cus_image);
     fetch(productOrderReducer[0]?.cus_image).then((response) => {
+      console.log(`This is our response from S3 => `, response)
       response.blob().then((blob) => {
         let url = window.URL.createObjectURL(blob);
         let a = document.createElement('a');
         a.href = url;
         a.download = `Order ${productOrderReducer[0]?.cus_order_number}`;
         a.click();
+      }).catch((error) => {
+        console.log(`response error => `, error)
       });
+    }).catch((error) => {
+      console.log(`This is our error from fetch => `, error)
     });
   };
   const unassignOrder = (event) => {
@@ -241,7 +246,7 @@ const EmployeeOrderPage = () => {
         </div>
 
         <Button
-          onClick={(event) => downloadImage(event)}
+          onClick={() => downloadImage()}
           className={classes.button}
           variant="contained"
           color="primary"
