@@ -284,14 +284,14 @@ const EmployeeOrderPage = () => {
           Complete
         </Button>
  
-        <Button className={classes.button}
+        {/* <Button className={classes.button}
 
           variant="contained"
           color="primary"
           endIcon={<PictureAsPdfIcon />}
         >
           Download
-        </Button>
+        </Button> */}
 
         {productOrderReducer[0]?.user_id_ref !== Number(id) ? (
           ''
