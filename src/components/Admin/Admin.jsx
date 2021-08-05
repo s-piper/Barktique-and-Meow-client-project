@@ -57,7 +57,6 @@ function Admin() {
                 <h3 className="welcome-text">
                   {`Welcome, ${user.employee_first_name}`}
                 </h3>
-                
                 <div>
                   <AdminTabs />
                 </div>
