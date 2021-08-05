@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
   },
 })); // end useStyles
 
-
 function OrderForm() {
   // variable for material-ui classes
   const classes = useStyles();
@@ -96,7 +95,8 @@ function OrderForm() {
   const fileSelected = (event) => {
     event.preventDefault();
     // Clear previous file, if customer choose one before.
-    setFile([]);
+    // setImageUpload([]);
+    console.log(`This is this file that customer has chosen => `, imageUpload);
     const file = event.target.files[0];
     // Below is image to show on DOM.
     setImageUpload({ file: URL.createObjectURL(event.target.files[0]) });
@@ -110,6 +110,7 @@ function OrderForm() {
     // poor quality Image after they've selected
     // a good quality image.
     setQualityPass(false);
+    // setImageUpload([]);
     let img = document.getElementById('imageID');
     let width = img.naturalWidth;
     let height = img.naturalHeight;
@@ -178,7 +179,7 @@ function OrderForm() {
     console.log('newOrder', newOrder);
 
     dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: { newOrder } });
-    dispatch({ type: 'POST_CONFIRMATION_EMAIL', payload: {newOrder} });
+    dispatch({ type: 'POST_CONFIRMATION_EMAIL', payload: { newOrder } });
     //Fires alert and pushes to main website
     Swal.fire({
       title: 'Success',
@@ -256,25 +257,23 @@ function OrderForm() {
               id="icon-button-file"
               onChange={fileSelected}
               type="file"
+              size="large"
             />
             <label htmlFor="icon-button-file">
-              <IconButton
+              <Button
+                className={classes.textField}
+                variant="contained"
                 color="primary"
+                type="submit"
                 aria-label="upload picture"
                 component="span"
                 id="icon-button-file"
+                endIcon={<PhotoCamera />}
+                size="large"
               >
-                <PhotoCamera></PhotoCamera>
-              </IconButton>
+                Upload an Image
+              </Button>
             </label>
-            {/* <Button
-              className={classes.textField}
-              variant="contained"
-              color="primary"
-              type="submit"
-            >
-              Upload an Image
-            </Button> */}
           </form>
 
           <TextField
