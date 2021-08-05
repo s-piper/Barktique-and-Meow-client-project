@@ -129,7 +129,7 @@ const EmployeeOrderPage = () => {
     const orderComplete = {
       cus_email: productOrderReducer[0]?.cus_email,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
-    }
+    };
     Swal.fire({
       icon: 'question',
       title: 'Are you sure?',
@@ -139,7 +139,7 @@ const EmployeeOrderPage = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
-        dispatch({ type: 'POST_COMPLETED_EMAIL', payload: {orderComplete} });
+        dispatch({ type: 'POST_COMPLETED_EMAIL', payload: { orderComplete } });
         Swal.fire({
           icon: 'success',
           title: 'Order Complete!',
@@ -151,7 +151,13 @@ const EmployeeOrderPage = () => {
   };
   const downloadImage = () => {
     console.log(`download image?`, productOrderReducer[0]?.cus_image);
-    fetch(productOrderReducer[0]?.cus_image).then((response) => {
+    // const imageDownload = productOrderReducer[0]?.cus_image;
+    
+    // fetch(imageDownload, {method: 'GET'}).then().catch(error => {
+    //   console.log(`We had an Error`, error)
+    // })
+
+    fetch(productOrderReducer[0]?.cus_image, {method: 'GE'}).then((response) => {
       console.log(`This is our response from S3 => `, response)
       response.blob().then((blob) => {
         let url = window.URL.createObjectURL(blob);
@@ -165,6 +171,8 @@ const EmployeeOrderPage = () => {
     }).catch((error) => {
       console.log(`This is our error from fetch => `, error)
     });
+
+    fetch
   };
   const unassignOrder = (event) => {
     console.log(
@@ -283,7 +291,7 @@ const EmployeeOrderPage = () => {
         >
           Complete
         </Button>
- 
+
         {/* <Button className={classes.button}
 
           variant="contained"
