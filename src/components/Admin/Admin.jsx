@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory, useParams, Redirect } from 'react-router-dom';
 
 import './Admin.css';
 
@@ -22,16 +23,49 @@ function Admin() {
   // Bring some style in here
   const classes = useStyles();
   const user = useSelector((store) => store.user);
-    const dispatch = useDispatch();
-    const ordersState = useSelector((store) => store.ordersState);
-    useEffect(() => {
+  const dispatch = useDispatch();
+  const ordersState = useSelector((store) => store.ordersState);
+  useEffect(() => {
+    dispatch({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
+  }, []);
 
-      dispatch({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
-    }, []);
-    
   return (
     <>
-      {!ordersState ? (
+      {user?.employee_access_level < 2 ? (
+        <Redirect to="/employee" />
+      ) : (
+        <>
+          {!ordersState ? (
+            ''
+          ) : (
+            <div>
+              <section>
+                <div>
+                  <AdminHeader />
+                </div>
+                <Grid
+                  className={classes.buttonGroup}
+                  container
+                  direction="row"
+                  justifyContent="space-around"
+                >
+                  <AdminCreateButton />
+                  <AdminLogOutButton />
+                </Grid>
+              </section>
+              <section>
+                <h2>{`Welcome`}</h2>
+                <h3>{`${user.employee_first_name} ${user.employee_last_name}`}</h3>
+                <div>
+                  <AdminTabs />
+                </div>
+              </section>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* {!ordersState ? (
         ''
       ) : (
         <div>
@@ -57,7 +91,7 @@ function Admin() {
             </div>
           </section>
         </div>
-      )}
+      )} */}
     </>
   );
 }

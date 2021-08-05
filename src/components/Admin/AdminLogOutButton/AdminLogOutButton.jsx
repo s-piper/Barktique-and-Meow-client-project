@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 
 // material-ui imports
 import Button from '@material-ui/core/Button';
@@ -12,8 +12,10 @@ function AdminLogOutButton(props) {
   const dispatch = useDispatch();
 
   const logoutHistoryPush = () => {
-    history.push('/login');
-    dispatch({ type: 'LOGOUT' });
+    
+    // dispatch({ type: 'LOGOUT' })
+    history.push('/logout/true')
+    
   };
 
   return (
