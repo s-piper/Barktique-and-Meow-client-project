@@ -1,11 +1,11 @@
-import EmployeeHeader from "../EmployeeHeader/EmployeeHeader"
+import AdminHeader from '../Admin/AdminHeader/AdminHeader';
 import OrderForm from "../OrderForm/OrderForm"
 function OrderPage () {
 
     return(
 
         <div>
-            <EmployeeHeader />
+            <AdminHeader />
             <OrderForm />
 
         </div>
