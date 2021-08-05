@@ -16,7 +16,7 @@ import Footer from '../Footer/Footer';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import Admin from '../Admin/Admin';
-import AdminEditEmployee from '../Admin/AdminEditEmployee/AdminEditEmployee'
+import AdminEditEmployee from '../Admin/AdminEditEmployee/AdminEditEmployee';
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
@@ -29,36 +29,33 @@ import AdminArtistTable from '../Admin/AdminArtistTable/AdminArtistTable';
 import AdminOrdersTable from '../Admin/AdminOrdersTable/AdminOrdersTable';
 import EmployeeOrderPage from '../EmployeeOrderPage/EmployeeOrderPage';
 import EmployeeOrderQueue from '../EmployeeOrderPage/EmployeeOrderQueue/EmployeeOrderQueue';
+import LogoutPage from '../UserPage/LogoutPage'
 
 import './App.css';
 import { fontWeight } from '@material-ui/system';
 
 const theme = createTheme({
-  root: {
-
-  },
+  root: {},
   palette: {
     primary: {
-      main: "#000000"
+      main: '#000000',
     },
     secondary: {
-      main: "#ef3e47"
-    }
+      main: '#ef3e47',
+    },
   },
   typography: {
     h1: {
-      fontFamily: "Yantramanav",
+      fontFamily: 'Yantramanav',
       fontWeightBold: 700,
     },
     button: {
       textTransform: 'uppercase',
-      fontFamily: "Yantramanav",
+      fontFamily: 'Yantramanav',
       fontWeightBold: 700,
     },
-
   },
-
-})
+});
 
 function App() {
   const dispatch = useDispatch();
@@ -130,16 +127,20 @@ function App() {
               <LoginPage />
             </ProtectedRoute>
 
-            {/* <ProtectedRoute
-            // with authRedirect:
-            // - if logged in, redirects to "/user"
-            // - else shows RegisterPage at "/registration"
-            exact
-            path="/registration"
-            authRedirect="/user"
-          >
-            <RegisterPage />
-          </ProtectedRoute> */}
+            <ProtectedRoute path="/logout/:status">
+              <LogoutPage />
+            </ProtectedRoute>
+
+            <ProtectedRoute
+              // with authRedirect:
+              // - if logged in, redirects to "/user"
+              // - else shows RegisterPage at "/registration"
+              exact
+              path="/registration"
+              authRedirect="/user"
+            >
+              <RegisterPage />
+            </ProtectedRoute>
 
             <ProtectedRoute exact path="/createEmployee">
               <AdminCreateEmployee />
@@ -151,7 +152,7 @@ function App() {
             <ProtectedRoute
               exact
               path="/orderPage/:id/:orderNumber"
-              component={EmployeeOrderPage}
+              // component={EmployeeOrderPage}
             >
               <EmployeeOrderPage />
             </ProtectedRoute>
