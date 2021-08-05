@@ -54,8 +54,9 @@ function Admin() {
                 </Grid>
               </section>
               <section>
-                <h3>{`welcome`}</h3>
-                <h3>{`${user.employee_first_name}`}</h3>
+                <h3 className="welcome-text">
+                  {`Welcome, ${user.employee_first_name}`}
+                </h3>
                 <div>
                   <AdminTabs />
                 </div>
