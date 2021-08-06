@@ -18,3 +18,13 @@ export const singleEmployeeState = (state = false, action) => {
       return state;
   }
 };
+
+export const customerDuplicateOrderNumberState = (state = false, action) => {
+  // Switch it up!
+  switch (action.type) {
+    case 'SET_DUPE_ORDER_STATE':
+      return action.payload;
+    default:
+      return state;
+  }
+}

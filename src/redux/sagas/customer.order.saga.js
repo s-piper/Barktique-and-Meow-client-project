@@ -1,6 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
+
 // POST route to backend
 function* postCustomerOrderFormSaga(action) {
   console.log(`Data coming from client =>`, action.payload.newOrder);
@@ -8,9 +9,18 @@ function* postCustomerOrderFormSaga(action) {
   try {
     // Send back our Order to backend => Database
     const postCustomerOrderResponse = yield axios.post(
-      `/api/customer/order/v1/form/${action.payload.newOrder.cus_order_number}`, action.payload.newOrder)
-    ;
-
+      `/api/customer/order/v1/form/${action.payload.newOrder.cus_order_number}`,
+      action.payload.newOrder
+    );
+    if (postCustomerOrderResponse.data[0] === -1) {
+      console.log(
+        `This is our data from posting customer info => `,
+        postCustomerOrderResponse.data
+      );
+      yield put({ type: 'SET_DUPE_ORDER_STATE', payload: true });
+    } else {
+      console.log(`This order isn't a duplicate.`)
+    }
     // ****** DEV NOTE Need a ok response to boot customer to barktiqueandmeow.com
   } catch (error) {
     console.log(`Hey, We had a problem with Customer Order =>`, error);
@@ -24,12 +34,12 @@ function* getCustomerOrderSaga(action) {
         You got some action for us => `,
     action.payload.data
   );
-    // action.payload.data is only used for the URL params to get
-    // specific order. -- data model doesn't need to go back with
-    // this route.
+  // action.payload.data is only used for the URL params to get
+  // specific order. -- data model doesn't need to go back with
+  // this route.
   try {
     // Grab our Product Order from backend
-    // We need the employee id => table user SET id && 
+    // We need the employee id => table user SET id &&
     // table order_table SET cus_order_number to hit
     // this endpoint.
     const getCustomerOrderResponse = yield axios.get(
@@ -37,7 +47,10 @@ function* getCustomerOrderSaga(action) {
     );
 
     // Set our response to our reducer
-    yield put({type: 'SET_PRODUCT_ORDER', payload: getCustomerOrderResponse.data})
+    yield put({
+      type: 'SET_PRODUCT_ORDER',
+      payload: getCustomerOrderResponse.data,
+    });
   } catch (error) {
     console.log(`Sorry, we couldn't your Product Order... `, error);
   }

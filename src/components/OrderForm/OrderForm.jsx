@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import './OrderForm.css';
@@ -58,6 +58,10 @@ function OrderForm() {
   const [imageUpload, setImageUpload] = useState([]);
   // State to check if quality passed
   const [qualityPass, setQualityPass] = useState(false);
+
+  const customerDuplicateOrderNumberState = useSelector(
+    (store) => store.customerDuplicateOrderNumberState
+  );
 
   async function postImage({ image }) {
     console.log(image);
@@ -175,6 +179,10 @@ function OrderForm() {
 
   // Packages inputs for dispatch then pushes to Barktique webpage
   const saveOrder = async () => {
+    console.log(
+      `This is our reducer state => `,
+      customerDuplicateOrderNumberState
+    );
     // We passed all checks, send to S3 for upload
     // and come back with URL to save to database.
     const result = await postImage({ image: file });
@@ -194,16 +202,42 @@ function OrderForm() {
     console.log('newOrder', newOrder);
 
     dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: { newOrder } });
-    dispatch({ type: 'POST_CONFIRMATION_EMAIL', payload: { newOrder } });
-    //Fires alert and pushes to main website
+
+    let timerInterval;
     Swal.fire({
-      title: 'Success',
-      text: 'Thank You For Your Order',
-      icon: 'success',
-      confirmButtonColor: '#000000',
-    }).then(function () {
-      window.location = 'https://www.barktiqueandmeow.com/';
+      title: 'Checking order number.',
+      html: 'I will close in <b></b> milliseconds.',
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const b = Swal.getHtmlContainer().querySelector('b');
+        timerInterval = setInterval(() => {
+          b.textContent = Swal.getTimerLeft();
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    }).then((result) => {
+      console.log(`This is our result => `, result)
+      /* Read more about handling dismissals below */
+      if (result.dismiss === Swal.DismissReason.timer) {
+        console.log('I was closed by the timer');
+      }
+      console.log(`This is our result => `, result)
     });
+   
+      dispatch({ type: 'POST_CONFIRMATION_EMAIL', payload: { newOrder } });
+    //Fires alert and pushes to main website
+    // Swal.fire({
+    //   title: 'Success',
+    //   text: 'Thank You For Your Order',
+    //   icon: 'success',
+    //   confirmButtonColor: '#000000',
+    // }).then(function () {
+    //   // window.location = 'https://www.barktiqueandmeow.com/';
+    // });
   };
 
   return (
