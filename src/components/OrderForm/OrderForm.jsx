@@ -154,7 +154,22 @@ function OrderForm() {
         confirmButtonColor: '#000000',
       });
     } else {
-      saveOrder();
+      if (
+        order == '' ||
+        firstName == '' ||
+        lastName == '' ||
+        phone == '' ||
+        email == ''
+      ) {
+        Swal.fire({
+          title: 'Sorry',
+          text: 'Need add all required fields',
+          icon: 'error',
+          confirmButtonColor: '#000000',
+        });
+      } else {
+        saveOrder();
+      }
     }
   };
 
