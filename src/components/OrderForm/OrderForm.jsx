@@ -119,10 +119,10 @@ function OrderForm() {
     let area = width * height;
     console.log('area', area);
 
-    if (area < 2_160_000) {
+    if (area < 735_000) {
       Swal.fire({
         title: 'Sorry',
-        text: 'Please select a higher quality image',
+        text: 'Please select a larger image 4x6 in. is a good size.',
         icon: 'error',
         confirmButtonColor: '#000000',
       });
