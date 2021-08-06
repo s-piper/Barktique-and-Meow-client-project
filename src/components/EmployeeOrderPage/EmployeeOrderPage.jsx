@@ -177,6 +177,7 @@ const EmployeeOrderPage = () => {
   const downloadImage = (event) => {
     console.log(`download image?`, productOrderReducer[0]?.cus_image);
     fetch(productOrderReducer[0]?.cus_image).then((response) => {
+      console.log(`This is our response from S3 => `, response);
       response.blob().then((blob) => {
         let url = window.URL.createObjectURL(blob);
         let a = document.createElement('a');
@@ -186,6 +187,13 @@ const EmployeeOrderPage = () => {
       });
     });
   };
+
+  async function createFile() {
+    let response = await fetch(productOrderReducer[0]?.cus_image);
+    console.log(`This is our response`, response)
+  }
+
+
   const unassignOrder = (event) => {
     console.log(
       `click unassign order`,
@@ -254,9 +262,15 @@ const EmployeeOrderPage = () => {
           <p>Email: {productOrderReducer[0]?.cus_email}</p>
         </div>
 
-        <div id="note">
-          <p>Note: {productOrderReducer[0]?.cus_notes}</p>
-        </div>
+        {productOrderReducer[0]?.cus_notes === '' ? (
+          <div id="note">
+            <p>The customer didn't leave a note.</p>
+          </div>
+        ) : (
+          <div id="note">
+            <p>Note: {productOrderReducer[0]?.cus_notes}</p>
+          </div>
+        )}
 
         <div id="image">
           <img
@@ -273,6 +287,15 @@ const EmployeeOrderPage = () => {
         >
           Download Image
         </Button>
+
+        {/* <Button
+          onClick={() => createFile()}
+          className={classes.button}
+          variant="contained"
+          color="primary"
+        >
+          Download Image
+        </Button> */}
 
         {/* Renders button or static message */}
         {productOrderReducer[0]?.cus_error_image ? (
