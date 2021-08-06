@@ -77,6 +77,36 @@ function EmployeeOrderTable() {
     );
   };
 
+  const nameHandler = (config) => {
+    const orderNumber = config.row.cus_order_number; // We need to hit the route with order number, not order_id
+    return (
+      <div
+        onClick={() => {
+          handleOrderNumberClick(orderNumber); // This is how we target the order number click event!
+        }}
+        className="OrderNum-Nav"
+      >
+        {config.row.cus_first_name} {config.row.cus_last_name}
+      </div>
+    );
+  };
+
+  const employeeHandler = (config) => {
+    const orderNumber = config.row.cus_order_number; // We need to hit the route with order number, not order_id
+    return (
+      <>
+        <div
+          onClick={() => {
+            handleOrderNumberClick(orderNumber); // This is how we target the order number click event!
+          }}
+          className="OrderNum-Nav"
+        >
+          {config.row.employee_full_name}
+        </div>
+      </>
+    );
+  };
+
   const handleOrderNumberClick = (orderNumber) => {
     // We clicked this order number
     console.log('clicked handleOrderNumberClick', orderNumber);
@@ -148,8 +178,18 @@ function EmployeeOrderTable() {
       disableClickEventBubbling: true,
       renderCell: orderNumberHandler,
     },
-    { field: 'fullName', headerName: 'Customer', width: 150 },
-    { field: 'employee_full_name', headerName: 'Employee', width: 150 },
+    {
+      field: 'fullName',
+      headerName: 'Customer',
+      width: 150,
+      renderCell: nameHandler,
+    },
+    {
+      field: 'employee_full_name',
+      headerName: 'Employee',
+      width: 150,
+      renderCell: employeeHandler,
+    },
     {
       field: 'cus_progress_status',
       headerName: 'Status',
@@ -197,28 +237,34 @@ function EmployeeOrderTable() {
         ''
       ) : (
         <section>
-          <div style={{ display: 'flex', height: '100%' }}>
-            <div style={{ flexGrow: 1 }}>
-              <div style={{ height: 500, width: '100%' }}>
-                <DataGrid
-                  rows={rows ?? []}
-                  columns={columns}
-                  pageSize={10}
-                  components={{
-                    Toolbar: CustomToolbar,
-                    Toolbar: QuickSearchToolbar,
-                  }}
-                  componentsProps={{
-                    toolbar: {
-                      value: searchText,
-                      onChange: (event) => requestSearch(event.target.value),
-                      clearSearch: () => requestSearch(''),
-                    },
-                  }}
-                />
+          {orders.length == 0 ? (
+            <center>
+              <p>You Don't have any orders yet.</p>
+            </center>
+          ) : (
+            <div style={{ display: 'flex', height: '100%' }}>
+              <div style={{ flexGrow: 1 }}>
+                <div style={{ height: 500, width: '100%' }}>
+                  <DataGrid
+                    rows={rows ?? []}
+                    columns={columns}
+                    pageSize={10}
+                    components={{
+                      Toolbar: CustomToolbar,
+                      Toolbar: QuickSearchToolbar,
+                    }}
+                    componentsProps={{
+                      toolbar: {
+                        value: searchText,
+                        onChange: (event) => requestSearch(event.target.value),
+                        clearSearch: () => requestSearch(''),
+                      },
+                    }}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </section>
       )}
     </>
