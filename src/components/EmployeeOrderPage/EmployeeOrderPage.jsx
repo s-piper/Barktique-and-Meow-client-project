@@ -262,9 +262,15 @@ const EmployeeOrderPage = () => {
           <p>Email: {productOrderReducer[0]?.cus_email}</p>
         </div>
 
-        <div id="note">
-          <p>Note: {productOrderReducer[0]?.cus_notes}</p>
-        </div>
+        {productOrderReducer[0]?.cus_notes === '' ? (
+          <div id="note">
+            <p>The customer didn't leave a note.</p>
+          </div>
+        ) : (
+          <div id="note">
+            <p>Note: {productOrderReducer[0]?.cus_notes}</p>
+          </div>
+        )}
 
         <div id="image">
           <img
@@ -272,7 +278,7 @@ const EmployeeOrderPage = () => {
             style={{ height: 150, width: 150 }}
           />
         </div>
-        
+
         <Button
           onClick={(event) => downloadImage(event)}
           className={classes.button}
