@@ -163,7 +163,7 @@ function OrderForm() {
       ) {
         Swal.fire({
           title: 'Sorry',
-          text: 'Need add all required fields',
+          text: 'Need to add all required fields',
           icon: 'error',
           confirmButtonColor: '#000000',
         });
