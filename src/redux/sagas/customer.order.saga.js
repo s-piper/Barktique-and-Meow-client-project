@@ -56,10 +56,36 @@ function* getCustomerOrderSaga(action) {
   }
 }
 
+// GET route to check for dupe orders
+function* getDupeOrderSaga(action) {
+  console.log(`What order we're looking for => `, action.payload)
+
+  try {
+    // Fire off a axios to the backend, we got stuff to do...
+    const getDupeOrderResponse = yield axios.get(`
+      /api/customer/checkDupeOrder/${action.payload}
+    `)
+
+    console.log(
+      `This is our response for our orders => `,
+      getDupeOrderResponse.data
+    );
+    if (getDupeOrderResponse.data[0] === 'dupe') {
+      yield put({type: 'SET_DUPE_STATE', payload: true})
+    } else if (getDupeOrderResponse.data[0] === 'ok') {
+      yield put({type: 'SET_DUPE_STATE', payload: false})
+    } 
+
+  } catch(error) {
+    console.log(`Sorry, something went wrong ... `, error)
+  }
+} 
+
 // Watcher Saga
 function* customerWatcherSaga() {
   yield takeLatest('POST_CUSTOMER_ORDER_FORM', postCustomerOrderFormSaga);
   yield takeLatest('GET_PRODUCT_ORDER', getCustomerOrderSaga);
+  yield takeLatest('GET_DUPE_ORDERS', getDupeOrderSaga)
 }
 
 export default customerWatcherSaga;

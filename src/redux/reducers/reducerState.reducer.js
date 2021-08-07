@@ -8,7 +8,6 @@ export const ordersState = (state = false, action) => {
   }
 };
 
-
 export const singleEmployeeState = (state = false, action) => {
   // Switch it up!
   switch (action.type) {
@@ -22,9 +21,11 @@ export const singleEmployeeState = (state = false, action) => {
 export const customerDuplicateOrderNumberState = (state = false, action) => {
   // Switch it up!
   switch (action.type) {
-    case 'SET_DUPE_ORDER_STATE':
+    case 'SET_DUPE_STATE':
       return action.payload;
+    case 'FETCH_DUPE_ORDER_STATE':
+      return state;
     default:
       return state;
   }
-}
+};
