@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2';
 import AdminHeader from '../Admin/AdminHeader/AdminHeader';
+import { saveAs } from 'file-saver';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,79 +45,60 @@ const EmployeeOrderPage = () => {
     cus_order_number: orderNumber,
   };
 
-  useEffect(() => {
-    dispatch({ type: 'GET_PRODUCT_ORDER', payload: data });
-  }, []);
-
   //Sends Error Package to Saga
   //Data is error status, order number, user id
 
-  const imageErrorColumn = () => {
-    const data = {
-      cus_error_image: true,
-      cus_order_number: productOrderReducer[0]?.cus_order_number,
-      id: productOrderReducer[0]?.user_id_ref,
-    };
+  const resolveImageError = () => {
+    console.log(`resolveImageError clicked`);
 
-    dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
-  };
-
-  const imageErrorStatus = () => {
-    const data = {
-      cus_progress_status: 'Image Rejected',
-      cus_order_number: productOrderReducer[0]?.cus_order_number,
-      id: productOrderReducer[0]?.user_id_ref,
-    };
-
-    dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
-  };
-
-  useEffect(() => {
-    dispatch({ type: 'GET_PRODUCT_ORDER', payload: data });
-  }, []);
-
-  const imageError = () => {
-    imageErrorColumn();
-    imageErrorStatus();
-    window.location.reload();
-  };
-
-  const imageErrorColumnFixed = () => {
     const data = {
       cus_error_image: false,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
-      id: productOrderReducer[0]?.user_id_ref,
+      cus_progress_status: 'In Progress',
+      id: user.id,
     };
 
     dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
   };
 
-  const imageErrorStatusFixed = () => {
+  const errorWithImage = () => {
+    console.log(`errorWithImage clicked`);
+
     const data = {
-      cus_progress_status: 'In Progress',
+      cus_error_image: true,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
-      id: productOrderReducer[0]?.user_id_ref,
+      cus_progress_status: 'Image Rejected',
+      id: user.id,
     };
 
-    dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
+    dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
   };
 
-  const imageErrorFixed = () => {
-    imageErrorStatusFixed();
-    imageErrorColumnFixed();
-    window.location.reload();
+  const noEmployeeNumberResolve = () => {
+    console.log(`noEmployeeNumberResolve clicked`);
+
+    const data = {
+      cus_error_image: false,
+      cus_order_number: productOrderReducer[0]?.cus_order_number,
+      cus_progress_status: 'In Progress',
+      id: user.id,
+    };
+
+    dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
   };
 
-  const onDownload = (orderNumber) => {
-    // const link = document.createElement("a");
-    //   link.download = `Order ${productOrderReducer[0]?.cus_order_number}.pdf`;
-    //   link.href = `/orderPage/${user.id}/${orderNumber}./download.pdf`;
-    //   link.click();
-    // const toPrint = document.getElementById("orderNumber");
-    // const newWin = window.open();
-    // newWin.document.write(`<div>${toPrint}</div>`);
-    // newWin.print()
+  const noEmployeeNumberError = () => {
+    console.log(`noEmployeeNumberError clicked`);
+    const data = {
+      cus_error_image: true,
+      cus_order_number: productOrderReducer[0]?.cus_order_number,
+      cus_progress_status: 'Image Rejected',
+      id: user.id,
+    };
+
+    dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
   };
+
   //Sends Complete Notification to Saga
   //Data is status, order number, user id
   const setComplete = () => {
@@ -175,24 +157,38 @@ const EmployeeOrderPage = () => {
   };
 
   const downloadImage = (event) => {
-    console.log(`download image?`, productOrderReducer[0]?.cus_image);
-    fetch(productOrderReducer[0]?.cus_image).then((response) => {
-      console.log(`This is our response from S3 => `, response);
-      response.blob().then((blob) => {
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = `Order ${productOrderReducer[0]?.cus_order_number}`;
-        a.click();
-      });
-    });
+    // New way, works like a charm.
+    saveAs(productOrderReducer[0]?.cus_image, 'image.jpg');
+
+    // This way allows you to open the image in a browser,
+    // couldn't get it to download though, chrome's fault???
+
+    // let url = productOrderReducer[0]?.cus_image;
+    // let slicedURL = url.slice(57)
+    // console.log(`This is the sliced url`, slicedURL)
+    //  console.log(`This is the url => `, url);
+    // let a = document.createElement('a');
+    // a.href = url;
+    // console.log(`This is the a.href`, a.href);
+    // a.download = slicedURL;
+    // document.body.appendChild(a)
+    // console.log(`This is the document => `, document.body.appendChild(a));
+    // a.click();
+    // document.body.removeChild(a)
+
+    // This is the old method
+    // console.log(`download image?`, productOrderReducer[0]?.cus_image);
+    // fetch(productOrderReducer[0]?.cus_image).then((response) => {
+    //   console.log(`This is our response from S3 => `, response);
+    //   response.blob().then((blob) => {
+    //     let url = window.URL.createObjectURL(blob);
+    //     let a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = `Order ${productOrderReducer[0]?.cus_order_number}`;
+    //     a.click();
+    //   });
+    // });
   };
-
-  async function createFile() {
-    let response = await fetch(productOrderReducer[0]?.cus_image);
-    console.log(`This is our response`, response)
-  }
-
 
   const unassignOrder = (event) => {
     console.log(
@@ -234,122 +230,152 @@ const EmployeeOrderPage = () => {
         history.push(`/employee`);
       });
   };
+
+  useEffect(() => {
+    dispatch({ type: 'GET_PRODUCT_ORDER', payload: data });
+  }, []);
+
   return (
-    <div>
-      <AdminHeader />
-      <Grid
-        container
-        direction="column"
-        justifyContent="flex-start"
-        alignItems="center"
-      >
-        <div id="orderNumber">
-          <p>Order Number: {productOrderReducer[0]?.cus_order_number}</p>
-        </div>
-
-        <div id="fullName">
-          <p>
-            Name:{' '}
-            {`${productOrderReducer[0]?.cus_first_name} ${productOrderReducer[0]?.cus_last_name}`}
-          </p>
-        </div>
-
-        <div id="phone">
-          <p>Phone: {productOrderReducer[0]?.cus_phone_number}</p>
-        </div>
-
-        <div id="email">
-          <p>Email: {productOrderReducer[0]?.cus_email}</p>
-        </div>
-
-        {productOrderReducer[0]?.cus_notes === '' ? (
-          <div id="note">
-            <p>The customer didn't leave a note.</p>
-          </div>
-        ) : (
-          <div id="note">
-            <p>Note: {productOrderReducer[0]?.cus_notes}</p>
-          </div>
-        )}
-
-        <div id="image">
-          <img
-            src={productOrderReducer[0]?.cus_image}
-            style={{ height: 150, width: 150 }}
-          />
-        </div>
-
-        <Button
-          onClick={(event) => downloadImage(event)}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-        >
-          Download Image
-        </Button>
-
-        {/* <Button
-          onClick={() => createFile()}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-        >
-          Download Image
-        </Button> */}
-
-        {/* Renders button or static message */}
-        {productOrderReducer[0]?.cus_error_image ? (
-          <Button
-            onClick={imageErrorFixed}
-            className={classes.button}
-            variant="contained"
-            color="primary"
+    <>
+      {!productOrderReducer[0] === undefined ? (
+        ''
+      ) : (
+        <div>
+          <AdminHeader />
+          <Grid
+            container
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="center"
           >
-            Resolve Image Error
-          </Button>
-        ) : (
-          <Button
-            onClick={imageError}
-            className={classes.button}
-            variant="contained"
-            color="primary"
-          >
-            Error with Image
-          </Button>
-        )}
+            <div id="orderNumber">
+              <p>Order Number: {productOrderReducer[0]?.cus_order_number}</p>
+            </div>
 
-        <Button
-          onClick={setComplete}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-        >
-          Complete
-        </Button>
+            <div id="fullName">
+              <p>
+                Name:{' '}
+                {`${productOrderReducer[0]?.cus_first_name} ${productOrderReducer[0]?.cus_last_name}`}
+              </p>
+            </div>
 
-        {/* <Button className={classes.button}
+            <div id="phone">
+              <p>Phone: {productOrderReducer[0]?.cus_phone_number}</p>
+            </div>
 
-          variant="contained"
-          color="primary"
-          endIcon={<PictureAsPdfIcon />}
-        >
-          Download
-        </Button> */}
+            <div id="email">
+              <p>Email: {productOrderReducer[0]?.cus_email}</p>
+            </div>
 
-        {productOrderReducer[0]?.user_id_ref !== Number(id) ? (
-          ''
-        ) : (
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="secondary"
-            onClick={unassignOrder}
-          >
-            Unassign
-          </Button>
-        )}
-      </Grid>
-    </div>
+            {productOrderReducer[0]?.cus_notes === '' ? (
+              <div id="note">
+                <p>The customer didn't leave a note.</p>
+              </div>
+            ) : (
+              <div id="note">
+                <p>Note: {productOrderReducer[0]?.cus_notes}</p>
+              </div>
+            )}
+
+            <div id="image">
+              <img
+                src={productOrderReducer[0]?.cus_image}
+                style={{ height: 150, width: 150 }}
+              />
+            </div>
+
+            <Button
+              onClick={(event) => downloadImage(event)}
+              className={classes.button}
+              variant="contained"
+              color="primary"
+            >
+              Download Image
+            </Button>
+
+            {/* productOrderReducer[0]?.user_ref_id !== null */}
+
+            {productOrderReducer[0]?.user_ref_id === null ? (
+              <>
+                {productOrderReducer[0]?.cus_error_image !== false ? (
+                  <Button
+                    onClick={resolveImageError}
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Resolve Image Error
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={errorWithImage}
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Error with Image
+                  </Button>
+                )}
+              </>
+            ) : (
+              <>
+                {productOrderReducer[0]?.cus_error_image !== false ? (
+                  <Button
+                    onClick={noEmployeeNumberResolve}
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Resolve Image Error
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={noEmployeeNumberError}
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Error with Image
+                  </Button>
+                )}
+              </>
+            )}
+
+            {productOrderReducer[0]?.cus_progress_status === 'Not Started' ||
+            productOrderReducer[0]?.cus_progress_status === 'Complete' ||
+            productOrderReducer[0]?.cus_progress_status === 'Image Rejected' ? (
+              ''
+            ) : (
+              <Button
+                onClick={setComplete}
+                className={classes.button}
+                variant="contained"
+                color="primary"
+              >
+                Complete
+              </Button>
+            )}
+
+            {productOrderReducer[0]?.cus_progress_status === 'Complete' ||
+            productOrderReducer[0]?.cus_progress_status === 'Image Rejected' ||
+            productOrderReducer[0]?.user_id_ref === null ? (
+              ''
+            ) : (
+              <>
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  color="secondary"
+                  onClick={unassignOrder}
+                >
+                  Unassign
+                </Button>
+              </>
+            )}
+          </Grid>
+        </div>
+      )}
+    </>
   );
 };
 

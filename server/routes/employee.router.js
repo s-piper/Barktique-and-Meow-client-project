@@ -79,8 +79,8 @@ router.put(
 
     // Query Area
     const updateErrorButton = `
-      UPDATE order_table SET cus_error_image=$1
-      WHERE user_id_ref=$2 and cus_order_number=$3
+      UPDATE order_table SET cus_error_image=$1, cus_progress_status=$2
+      WHERE cus_order_number=$3
     ;`;
 
     // Did you bring your pass to get in?
@@ -90,7 +90,7 @@ router.put(
         await client.query('BEGIN');
         const putErrorButtonResponse = await pool.query(updateErrorButton, [
           req.body.cus_error_image,
-          req.params.employeeID,
+          req.body.cus_progress_status,
           req.params.orderNumber,
         ]);
 

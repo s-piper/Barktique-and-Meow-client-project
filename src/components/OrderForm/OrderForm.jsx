@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import './OrderForm.css';
@@ -10,7 +10,8 @@ import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import { FormControl } from '@material-ui/core';
+import InputLabel from '@material-ui/core';
+import { FormControl, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
@@ -32,6 +33,27 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     display: 'none',
+  },
+  required: {
+    fontStyle: 'italic',
+    color: '#ef3e47',
+    fontFamily: 'Yantramanav',
+    paddingBottom: -20,
+    marginBottom: -8,
+    paddingLeft: 15,
+  },
+  formMargin: {
+    marginTop: 15,
+  },
+  uploadButton: {
+    marginBottom: 17,
+  },
+  labelCenter: {
+    paddingTop: 17,
+    fontFamily: 'Yantramanav',
+  },
+  labelCenter2: {
+    fontFamily: 'Yantramanav',
   },
 })); // end useStyles
 
@@ -58,6 +80,10 @@ function OrderForm() {
   const [imageUpload, setImageUpload] = useState([]);
   // State to check if quality passed
   const [qualityPass, setQualityPass] = useState(false);
+
+  const customerDuplicateOrderNumberState = useSelector(
+    (store) => store.customerDuplicateOrderNumberState
+  );
 
   async function postImage({ image }) {
     console.log(image);
@@ -94,14 +120,24 @@ function OrderForm() {
 
   const fileSelected = (event) => {
     event.preventDefault();
-    // Clear previous file, if customer choose one before.
-    // setImageUpload([]);
-    console.log(`This is this file that customer has chosen => `, imageUpload);
-    const file = event.target.files[0];
-    // Below is image to show on DOM.
-    setImageUpload({ file: URL.createObjectURL(event.target.files[0]) });
-    setFile(file);
-    console.log(`File being chosen => `, file);
+    if (event.target.files[0] === undefined) {
+      console.log(`This happened => `, event.target.files[0]);
+    } else {
+      console.log(`This is the event => `, event.target.files[0]);
+      // setImageUpload([]);
+      // Clear previous file, if customer choose one before.
+      console.log(`This is ImageUpload after cancel => `, imageUpload);
+      console.log(
+        `This is this file that customer has chosen => `,
+        imageUpload
+      );
+      const file = event.target.files[0];
+      // Below is image to show on DOM.
+
+      setImageUpload({ file: URL.createObjectURL(event.target.files[0]) });
+      setFile(file);
+      console.log(`File being chosen => `, file);
+    }
   };
 
   // Validates the image size and alerts yah or nah
@@ -138,6 +174,8 @@ function OrderForm() {
   };
 
   const checkRights = () => {
+    dispatch({ type: 'GET_DUPE_ORDERS', payload: order });
+
     if (rights != true) {
       Swal.fire({
         title: 'Sorry',
@@ -163,11 +201,12 @@ function OrderForm() {
       ) {
         Swal.fire({
           title: 'Sorry',
-          text: 'Need to add all required fields',
+          text: 'Please enter all of your information above.',
           icon: 'error',
           confirmButtonColor: '#000000',
         });
       } else {
+        dispatch({ type: 'FETCH_DUPE_ORDER_STATE' });
         saveOrder();
       }
     }
@@ -175,34 +214,71 @@ function OrderForm() {
 
   // Packages inputs for dispatch then pushes to Barktique webpage
   const saveOrder = async () => {
-    // We passed all checks, send to S3 for upload
-    // and come back with URL to save to database.
-    const result = await postImage({ image: file });
-    console.log(`Our result from AWS => `, result);
-    const newOrder = {
-      cus_order_number: order,
-      cus_first_name: firstName,
-      cus_last_name: lastName,
-      cus_phone_number: phone,
-      cus_email: email,
-      cus_image: result.imagePath,
-      cus_notes: notes,
-      cus_image_owner_rights: rights,
-      cus_social_permission: social,
-    };
+    console.log(
+      `This is our reducer state => `,
+      customerDuplicateOrderNumberState
+    );
 
-    console.log('newOrder', newOrder);
-
-    dispatch({ type: 'POST_CUSTOMER_ORDER_FORM', payload: { newOrder } });
-    dispatch({ type: 'POST_CONFIRMATION_EMAIL', payload: { newOrder } });
-    //Fires alert and pushes to main website
-    Swal.fire({
-      title: 'Success',
-      text: 'Thank You For Your Order',
-      icon: 'success',
+    await Swal.fire({
+      title: 'Please Wait!',
+      html: `Checking on Order ${order}`,
+      allowOutsideClick: false,
       confirmButtonColor: '#000000',
-    }).then(function () {
-      window.location = 'https://www.barktiqueandmeow.com/';
+    }).then(async () => {
+      if (customerDuplicateOrderNumberState === true) {
+        await Swal.fire({
+          title: 'Sorry',
+          html: `Looks like this Order # ${order} already exists.<br>Please contact us at<br>contactus@barktiqueandmeow.com`,
+          icon: 'warning',
+          confirmButtonColor: '#000000',
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            window.location = 'https://www.barktiqueandmeow.com/';
+          } else {
+            return;
+          }
+        });
+      } else if (customerDuplicateOrderNumberState === false) {
+        dispatch({ type: 'SET_DUPE_STATE', payload: true });
+        const result = await postImage({ image: file });
+        console.log(`Our result from AWS => `, result);
+        const newOrder = {
+          cus_order_number: order,
+          cus_first_name: firstName,
+          cus_last_name: lastName,
+          cus_phone_number: phone,
+          cus_email: email,
+          cus_image: result.imagePath,
+          cus_notes: notes,
+          cus_image_owner_rights: rights,
+          cus_social_permission: social,
+        };
+
+        console.log('newOrder', newOrder);
+
+        dispatch({
+          type: 'POST_CUSTOMER_ORDER_FORM',
+          payload: { newOrder },
+        });
+
+        dispatch({
+          type: 'POST_CONFIRMATION_EMAIL',
+          payload: { newOrder },
+        });
+
+        await Swal.fire({
+          title: 'Success',
+          text: 'Thank You For Your Order',
+          icon: 'success',
+          confirmButtonColor: '#000000',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location = 'https://www.barktiqueandmeow.com/';
+          } else {
+            return;
+          }
+        });
+      }
     });
   };
 
@@ -216,17 +292,21 @@ function OrderForm() {
       >
         {/* User Inputs */}
         <FormControl variant="outlined" className={classes.formControl}>
+          <Grid item>
+            <Typography className={classes.required}>Required *</Typography>
+          </Grid>
           <TextField
             onChange={(event) => setOrder(event.target.value)}
-            id="outline-basic"
+            // className="outline-basic"
             variant="outlined"
             label="Order Number"
             className={classes.textField}
             required
+            inputProps={{ 'aria-label': 'Order Number' }}
           />
           <TextField
             onChange={(event) => setFirstName(event.target.value)}
-            id="outline-basic"
+            // className="outline-basic"
             variant="outlined"
             label="First Name"
             className={classes.textField}
@@ -234,7 +314,7 @@ function OrderForm() {
           />
           <TextField
             onChange={(event) => setLastName(event.target.value)}
-            id="outline-basic"
+            // className="outline-basic"
             variant="outlined"
             label="Last Name"
             className={classes.textField}
@@ -242,7 +322,7 @@ function OrderForm() {
           />
           <TextField
             onChange={(event) => setPhone(event.target.value)}
-            id="outline-basic"
+            // className="outline-basic"
             variant="outlined"
             label="Phone Number"
             className={classes.textField}
@@ -250,7 +330,7 @@ function OrderForm() {
           />
           <TextField
             onChange={(event) => setEmail(event.target.value)}
-            id="outline-basic"
+            // id="outline-basic"
             variant="outlined"
             label="Email"
             className={classes.textField}
@@ -262,10 +342,10 @@ function OrderForm() {
             id="imageID"
             onLoad={validateImage}
             src={imageUpload.file}
-            class="center"
+            className="center"
           />
           {/* Upload Button and State Setter*/}
-          <form>
+          <form className={classes.uploadButton}>
             <input
               accept="image/*"
               className={classes.input}
@@ -285,6 +365,7 @@ function OrderForm() {
                 id="icon-button-file"
                 endIcon={<PhotoCamera />}
                 size="large"
+                onClick={() => setImageUpload([])}
               >
                 Upload an Image
               </Button>
@@ -302,6 +383,7 @@ function OrderForm() {
           {/* Creates the checkboxes for social. Still needs check box logic */}
           {/* Image Rights */}
           <FormControlLabel
+            className={classes.formMargin}
             control={
               <Checkbox
                 onChange={rightsCheck}
@@ -309,14 +391,25 @@ function OrderForm() {
                 color="primary"
               />
             }
-            label="Yes, I own the rights to the image I am submitting and I give permission to Barktique + Meow 
-                    to use the file in order to produce the product"
+            label={
+              <Typography className={classes.labelCenter}>
+                Yes, I own the rights to the image I am submitting and I give
+                permission to Barktique + Meow to use the file in order to
+                produce the product
+              </Typography>
+            }
           />
 
           {/* Social Permission */}
           <FormControlLabel
+            className={classes.formMargin}
             control={<Checkbox onChange={socialCheck} color="primary" />}
-            label="Yes, I give permission to Barktique + Meow to use my pet photo on their social media and website"
+            label={
+              <Typography className={classes.labelCenter2}>
+                Yes, I give permission to Barktique + Meow to use my pet photo
+                on their social media and website
+              </Typography>
+            }
           />
 
           {/* Submit Button customer form*/}

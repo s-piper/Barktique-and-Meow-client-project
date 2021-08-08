@@ -1,13 +1,39 @@
 import React from 'react';
 import './Footer.css';
-import Typography from '@material-ui/core/Typography';
-// This is one of our simplest components
-// It doesn't have local state, so it can be a function component.
-// It doesn't dispatch any redux actions or display any part of redux state
-// or even care what the redux state is, so it doesn't need 'connect()'
+import { Grid, Typography } from '@material-ui/core/';
+import { makeStyles } from '@material-ui/core/styles';
+
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
+
+const useStyles = makeStyles((theme) => ({
+  footer: {
+    fontFamily: 'Yantramanav',
+  },
+}));
 
 function Footer() {
-  return <footer>&copy; 2020 Barktique and Meow. ALL RIGHTS RESERVED</footer>;
+  const classes = useStyles();
+
+  return (
+    <>
+      <footer>
+        <FacebookIcon
+          onClick={() =>
+            window.open('https://www.facebook.com/BarktiqueandMeow', '_blank')
+          }
+        />
+        <InstagramIcon
+          onClick={() =>
+            window.open('https://instagram.com/barktiqueandmeow', '_blank')
+          }
+        />
+        <Typography className={classes.footer}>
+          &copy; 2020 Barktique and Meow. ALL RIGHTS RESERVED
+        </Typography>
+      </footer>
+    </>
+  );
 }
 
 export default Footer;
