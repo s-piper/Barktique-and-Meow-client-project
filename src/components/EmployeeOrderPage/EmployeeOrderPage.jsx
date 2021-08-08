@@ -56,58 +56,67 @@ const EmployeeOrderPage = () => {
     const data = {
       cus_error_image: true,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
-      id: productOrderReducer[0]?.user_id_ref,
+      cus_progress_status: 'Image Rejected',
+      id: user.id,
     };
 
     dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
   };
 
-  const imageErrorStatus = () => {
+  const noEmployeeNumberColumn = () => {
     const data = {
-      cus_progress_status: 'Image Rejected',
+      cus_error_image: true,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
-      id: productOrderReducer[0]?.user_id_ref,
+      cus_progress_status: 'Image Rejected',
+      id: user.id,
     };
 
-    dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
+    dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
   };
-
-  useEffect(() => {
-    dispatch({ type: 'GET_PRODUCT_ORDER', payload: data });
-  }, []);
 
   const imageError = () => {
     imageErrorColumn();
-    imageErrorStatus();
-    window.location.reload();
+    // imageErrorStatus();
+    // window.location.reload();
+  };
+
+  const noEmployeeImageError = () => {
+    noEmployeeNumberColumn();
+    // window.location.reload();
+  };
+
+  const noEmployeeNumberColumnFix = () => {
+    const data = {
+      cus_error_image: false,
+      cus_order_number: productOrderReducer[0]?.cus_order_number,
+      cus_progress_status: 'Not Started',
+      id: user.id,
+    };
+
+    dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
+  };
+
+  const noEmployeeNumberImageErrorFixed = () => {
+    noEmployeeNumberColumnFix();
+    // window.location.reload();
   };
 
   const imageErrorColumnFixed = () => {
     const data = {
       cus_error_image: false,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
-      id: productOrderReducer[0]?.user_id_ref,
+      cus_progress_status: 'In Progress',
+      id: user.id,
     };
 
     dispatch({ type: 'IMAGE_ERROR_BUTTON', payload: { data } });
   };
 
-  const imageErrorStatusFixed = () => {
-    const data = {
-      cus_progress_status: 'In Progress',
-      cus_order_number: productOrderReducer[0]?.cus_order_number,
-      id: productOrderReducer[0]?.user_id_ref,
-    };
-
-    dispatch({ type: 'PRODUCT_ORDER_COMPLETE_BUTTON', payload: { data } });
-  };
-
   const imageErrorFixed = () => {
-    imageErrorStatusFixed();
+    // imageErrorStatusFixed();
     imageErrorColumnFixed();
-    window.location.reload();
+    // window.location.reload();
   };
-
 
   //Sends Complete Notification to Saga
   //Data is status, order number, user id
@@ -167,10 +176,8 @@ const EmployeeOrderPage = () => {
   };
 
   const downloadImage = (event) => {
-
     // New way, works like a charm.
     saveAs(productOrderReducer[0]?.cus_image, 'image.jpg');
-
 
     // This way allows you to open the image in a browser,
     // couldn't get it to download though, chrome's fault???
@@ -188,9 +195,7 @@ const EmployeeOrderPage = () => {
     // a.click();
     // document.body.removeChild(a)
 
-
     // This is the old method
-    // a.click();
     // console.log(`download image?`, productOrderReducer[0]?.cus_image);
     // fetch(productOrderReducer[0]?.cus_image).then((response) => {
     //   console.log(`This is our response from S3 => `, response);
@@ -203,11 +208,6 @@ const EmployeeOrderPage = () => {
     //   });
     // });
   };
-
-  async function createFile() {
-    let response = await fetch(productOrderReducer[0]?.cus_image);
-    console.log(`This is our response`, response);
-  }
 
   const unassignOrder = (event) => {
     console.log(
@@ -249,6 +249,7 @@ const EmployeeOrderPage = () => {
         history.push(`/employee`);
       });
   };
+
   return (
     <div>
       <AdminHeader />
@@ -303,29 +304,57 @@ const EmployeeOrderPage = () => {
           Download Image
         </Button>
 
-        {/* Renders button or static message */}
-        {productOrderReducer[0]?.cus_error_image ? (
-          <Button
-            onClick={imageErrorFixed}
-            className={classes.button}
-            variant="contained"
-            color="primary"
-          >
-            Resolve Image Error
-          </Button>
+        {/* productOrderReducer[0]?.user_ref_id !== null */}
+
+        {productOrderReducer[0]?.user_ref_id === null ? (
+          <>
+            {productOrderReducer[0]?.cus_error_image !== false ? (
+              <Button
+                onClick={imageErrorFixed}
+                className={classes.button}
+                variant="contained"
+                color="primary"
+              >
+                Resolve Image Error
+              </Button>
+            ) : (
+              <Button
+                onClick={imageError}
+                className={classes.button}
+                variant="contained"
+                color="primary"
+              >
+                Error with Image
+              </Button>
+            )}
+          </>
         ) : (
-          <Button
-            onClick={imageError}
-            className={classes.button}
-            variant="contained"
-            color="primary"
-          >
-            Error with Image
-          </Button>
+          <>
+            {productOrderReducer[0]?.cus_error_image !== false ? (
+              <Button
+                onClick={noEmployeeNumberImageErrorFixed}
+                className={classes.button}
+                variant="contained"
+                color="primary"
+              >
+                Resolve Image Error
+              </Button>
+            ) : (
+              <Button
+                onClick={noEmployeeImageError}
+                className={classes.button}
+                variant="contained"
+                color="primary"
+              >
+                Error with Image
+              </Button>
+            )}
+          </>
         )}
 
         {productOrderReducer[0]?.cus_progress_status === 'Not Started' ||
-        productOrderReducer[0]?.cus_progress_status === 'Complete' ? (
+        productOrderReducer[0]?.cus_progress_status === 'Complete' ||
+        productOrderReducer[0]?.cus_progress_status === 'Image Rejected' ? (
           ''
         ) : (
           <Button
@@ -338,16 +367,9 @@ const EmployeeOrderPage = () => {
           </Button>
         )}
 
-        {/* <Button
-          onClick={setComplete}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-        >
-          Complete
-        </Button> */}
-
-        {productOrderReducer[0]?.user_id_ref !== Number(id) ? (
+        {productOrderReducer[0]?.cus_progress_status === 'Complete' ||
+        productOrderReducer[0]?.cus_progress_status === "Image Rejected" ||
+         productOrderReducer[0]?.user_id_ref === null ? (
           ''
         ) : (
           <>
