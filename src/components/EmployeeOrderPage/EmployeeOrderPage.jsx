@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Swal from 'sweetalert2';
 import AdminHeader from '../Admin/AdminHeader/AdminHeader';
+import { saveAs } from 'file-saver';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -107,16 +108,7 @@ const EmployeeOrderPage = () => {
     window.location.reload();
   };
 
-  const onDownload = (orderNumber) => {
-    // const link = document.createElement("a");
-    //   link.download = `Order ${productOrderReducer[0]?.cus_order_number}.pdf`;
-    //   link.href = `/orderPage/${user.id}/${orderNumber}./download.pdf`;
-    //   link.click();
-    // const toPrint = document.getElementById("orderNumber");
-    // const newWin = window.open();
-    // newWin.document.write(`<div>${toPrint}</div>`);
-    // newWin.print()
-  };
+
   //Sends Complete Notification to Saga
   //Data is status, order number, user id
   const setComplete = () => {
@@ -175,24 +167,47 @@ const EmployeeOrderPage = () => {
   };
 
   const downloadImage = (event) => {
-    console.log(`download image?`, productOrderReducer[0]?.cus_image);
-    fetch(productOrderReducer[0]?.cus_image).then((response) => {
-      console.log(`This is our response from S3 => `, response);
-      response.blob().then((blob) => {
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement('a');
-        a.href = url;
-        a.download = `Order ${productOrderReducer[0]?.cus_order_number}`;
-        a.click();
-      });
-    });
+
+    // New way, works like a charm.
+    saveAs(productOrderReducer[0]?.cus_image, 'image.jpg');
+
+
+    // This way allows you to open the image in a browser,
+    // couldn't get it to download though, chrome's fault???
+
+    // let url = productOrderReducer[0]?.cus_image;
+    // let slicedURL = url.slice(57)
+    // console.log(`This is the sliced url`, slicedURL)
+    //  console.log(`This is the url => `, url);
+    // let a = document.createElement('a');
+    // a.href = url;
+    // console.log(`This is the a.href`, a.href);
+    // a.download = slicedURL;
+    // document.body.appendChild(a)
+    // console.log(`This is the document => `, document.body.appendChild(a));
+    // a.click();
+    // document.body.removeChild(a)
+
+
+    // This is the old method
+    // a.click();
+    // console.log(`download image?`, productOrderReducer[0]?.cus_image);
+    // fetch(productOrderReducer[0]?.cus_image).then((response) => {
+    //   console.log(`This is our response from S3 => `, response);
+    //   response.blob().then((blob) => {
+    //     let url = window.URL.createObjectURL(blob);
+    //     let a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = `Order ${productOrderReducer[0]?.cus_order_number}`;
+    //     a.click();
+    //   });
+    // });
   };
 
   async function createFile() {
     let response = await fetch(productOrderReducer[0]?.cus_image);
-    console.log(`This is our response`, response)
+    console.log(`This is our response`, response);
   }
-
 
   const unassignOrder = (event) => {
     console.log(
@@ -288,15 +303,6 @@ const EmployeeOrderPage = () => {
           Download Image
         </Button>
 
-        {/* <Button
-          onClick={() => createFile()}
-          className={classes.button}
-          variant="contained"
-          color="primary"
-        >
-          Download Image
-        </Button> */}
-
         {/* Renders button or static message */}
         {productOrderReducer[0]?.cus_error_image ? (
           <Button
@@ -318,35 +324,42 @@ const EmployeeOrderPage = () => {
           </Button>
         )}
 
-        <Button
+        {productOrderReducer[0]?.cus_progress_status === 'Not Started' ||
+        productOrderReducer[0]?.cus_progress_status === 'Complete' ? (
+          ''
+        ) : (
+          <Button
+            onClick={setComplete}
+            className={classes.button}
+            variant="contained"
+            color="primary"
+          >
+            Complete
+          </Button>
+        )}
+
+        {/* <Button
           onClick={setComplete}
           className={classes.button}
           variant="contained"
           color="primary"
         >
           Complete
-        </Button>
-
-        {/* <Button className={classes.button}
-
-          variant="contained"
-          color="primary"
-          endIcon={<PictureAsPdfIcon />}
-        >
-          Download
         </Button> */}
 
         {productOrderReducer[0]?.user_id_ref !== Number(id) ? (
           ''
         ) : (
-          <Button
-            className={classes.button}
-            variant="contained"
-            color="secondary"
-            onClick={unassignOrder}
-          >
-            Unassign
-          </Button>
+          <>
+            <Button
+              className={classes.button}
+              variant="contained"
+              color="secondary"
+              onClick={unassignOrder}
+            >
+              Unassign
+            </Button>
+          </>
         )}
       </Grid>
     </div>

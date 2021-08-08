@@ -20,6 +20,7 @@ function* postCustomerOrderFormSaga(action) {
       yield put({ type: 'SET_DUPE_ORDER_STATE', payload: true });
     } else {
       console.log(`This order isn't a duplicate.`)
+      yield put({type: 'FETCH_ALL_PRODUCT_ORDERS'})
     }
     // ****** DEV NOTE Need a ok response to boot customer to barktiqueandmeow.com
   } catch (error) {
