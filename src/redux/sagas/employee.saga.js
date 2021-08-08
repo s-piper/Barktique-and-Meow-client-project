@@ -22,7 +22,7 @@ function* fetchAllProductOrders() {
       type: 'SET_ALL_PRODUCT_ORDERS',
       payload: getAllOrdersResponse.data,
     });
-    yield put({type: 'SET_ORDER_STATE', payload: true})
+    yield put({ type: 'SET_ORDER_STATE', payload: true });
   } catch (error) {
     console.log('ERROR in fetchAllProductOrders => ', error);
   }
@@ -48,9 +48,9 @@ function* putProductOrderIsStarted(action) {
       `/api/employee/startOrder/v1/${action.payload.data.id}`,
       action.payload.data
     );
-     yield put({
-      type: 'SET_PRODUCT_ORDER',
-      payload: startOrderButtonResponse.data,
+    yield put({
+      type: 'GET_PRODUCT_ORDER',
+      payload: action.payload.data,
     });
     // Need to do a GET request to get updated info for DOM
     // stating that this order is started
@@ -82,7 +82,7 @@ function* putImageErrorButton(action) {
     // Need to do a GET request to get updated info for DOM
     // stating that this order had an Error
     yield put({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
-    yield put({type: 'GET_PRODUCT_ORDER', payload: action.payload.data})
+    yield put({ type: 'GET_PRODUCT_ORDER', payload: action.payload.data });
     // ***** DEVELOPER NOTE, need to let error reducer know we got a problem here!
   } catch (error) {
     console.log(`Hey, we couldn't process that error button... `, error);
