@@ -295,7 +295,7 @@ const EmployeeOrderPage = () => {
 
             {/* productOrderReducer[0]?.user_ref_id !== null */}
 
-            {productOrderReducer[0]?.user_ref_id === null ? (
+            {!productOrderReducer[0]?.user_ref_id != null ? (
               <>
                 {productOrderReducer[0]?.cus_error_image !== false ? (
                   <Button

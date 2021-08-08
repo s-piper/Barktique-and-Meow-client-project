@@ -38,6 +38,7 @@ export const EmployeeLastName = ({ classes, useStyles }) => {
     if (lastName) {
       Swal.fire({
         text: `Last Name Changed to ${lastName}`,
+        confirmButtonColor: '#000000',
       });
       // Dispatch Users lastName and their id to Saga.
       dispatch({
