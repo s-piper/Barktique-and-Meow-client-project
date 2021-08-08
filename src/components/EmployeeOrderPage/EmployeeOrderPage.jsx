@@ -295,9 +295,9 @@ const EmployeeOrderPage = () => {
 
             {/* productOrderReducer[0]?.user_ref_id !== null */}
 
-            {!productOrderReducer[0]?.user_ref_id != null ? (
+            {productOrderReducer[0]?.user_id_ref !== null ? (
               <>
-                {productOrderReducer[0]?.cus_error_image !== false ? (
+                {productOrderReducer[0]?.cus_error_image !== false  ? (
                   <Button
                     onClick={resolveImageError}
                     className={classes.button}
