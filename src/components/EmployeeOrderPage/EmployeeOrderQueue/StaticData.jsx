@@ -14,4 +14,4 @@ export const COLORS = [
 
 //status options 
 
-export const STATUS_OPTIONS = ['Not Started', 'In Progress', 'Complete', 'Image Rejected']
+export const STATUS_OPTIONS = ['Not Started', 'Image Rejected', 'In Progress', 'Complete', ]
