@@ -186,6 +186,11 @@ function EmployeeOrderTable() {
       renderCell: employeeHandler,
     },
     {
+      field: "date",
+      headerName: "Date Received",
+      width: 180,
+    },
+    {
       field: "cus_progress_status",
       headerName: "Status",
       width: 150,
@@ -197,11 +202,7 @@ function EmployeeOrderTable() {
       type: "singleSelect",
       sort: "desc",
     },
-    {
-      field: "date",
-      headerName: "Date Received",
-      width: 180,
-    },
+   
   ];
 
   const [searchText, setSearchText] = useState("");
@@ -212,7 +213,8 @@ function EmployeeOrderTable() {
   //       field: 'cus_progress_status',
   //       sort: 'desc'
   //     },
-  //  ])  used if we want to default the sort to always this column, disables the rest of the sort though
+  //  ])
+  //  used if we want to default the sort to always this column, disables the rest of the sort though
 
   const requestSearch = (searchValue) => {
     console.log(`This is searchText >`, searchText);
