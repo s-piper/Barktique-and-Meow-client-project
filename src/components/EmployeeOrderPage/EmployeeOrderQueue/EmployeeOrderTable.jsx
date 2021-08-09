@@ -160,6 +160,7 @@ function EmployeeOrderTable() {
   };
   useEffect(() => {
     dispatch({ type: 'FETCH_ALL_PRODUCT_ORDERS' });
+    dispatch({ type: 'CLEAR_PRODUCT_ORDER' });
   }, []);
 
   //data grid table

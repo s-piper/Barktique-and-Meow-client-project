@@ -49,6 +49,7 @@ export const EmployeePhoneNumber = ({ classes, useStyles }) => {
     if (phoneNumber) {
       Swal.fire({
         text: `Phone Number Changed to ${phoneNumber}`,
+        confirmButtonColor: '#000000',
       });
       // Dispatch Users phoneNumber and their id to Saga.
       dispatch({
