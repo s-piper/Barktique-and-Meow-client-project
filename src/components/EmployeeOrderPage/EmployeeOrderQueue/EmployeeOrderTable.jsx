@@ -200,7 +200,7 @@ function EmployeeOrderTable() {
       renderCell: renderStatus,
       renderEditCell: renderEditStatus,
       type: "singleSelect",
-      sort: "desc",
+      
     },
    
   ];
@@ -208,13 +208,6 @@ function EmployeeOrderTable() {
   const [searchText, setSearchText] = useState("");
   const [rows, setRows] = useState(orderInfoMap);
   const [loading, setLoading] = useState(true);
-  //   const [sortModel, setSortModel] = useState ([
-  //     {
-  //       field: 'cus_progress_status',
-  //       sort: 'desc'
-  //     },
-  //  ])
-  //  used if we want to default the sort to always this column, disables the rest of the sort though
 
   const requestSearch = (searchValue) => {
     console.log(`This is searchText >`, searchText);
@@ -257,10 +250,13 @@ function EmployeeOrderTable() {
                   <DataGrid
                     rows={rows ?? []}
                     columns={columns}
-                    // sortingOrder={['desc', 'asc']}
-                    // sortModel={sortModel}
-
                     pageSize={20}
+                    sortModel = {[
+                      {
+                       field: "cus_progress_status",
+                       sort: 'desc'
+                      }
+                    ]}
                     components={{
                       Toolbar: QuickSearchToolbar,
                     }}
