@@ -151,8 +151,10 @@ function EmployeeOrderTable() {
   //csv export toolbar
   const CustomToolbar = () => {
     return (
-      <GridToolbarContainer>
+      <GridToolbarContainer style = {{display: "flex", justifyContent: "space-between"}}>
+        <QuickSearchToolbar/>
         <GridToolbarExport csvOptions={{ allColumns: true }} />
+
       </GridToolbarContainer>
     );
   };
@@ -244,14 +246,14 @@ function EmployeeOrderTable() {
           ) : (
             <div style={{ display: 'flex', height: '100%' }}>
               <div style={{ flexGrow: 1 }}>
-                <div style={{ height: 500, width: '100%' }}>
+                <div style={{ height: 700, width: '100%' }}>
                   <DataGrid
                     rows={rows ?? []}
                     columns={columns}
-                    pageSize={10}
+                    pageSize={20}
                     components={{
                       Toolbar: CustomToolbar,
-                      Toolbar: QuickSearchToolbar,
+                      
                     }}
                     componentsProps={{
                       toolbar: {
