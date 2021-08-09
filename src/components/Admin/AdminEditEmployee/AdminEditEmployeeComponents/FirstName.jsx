@@ -38,6 +38,7 @@ export const EmployeeFirstName = ({ classes, useStyles }) => {
     if (firstName) {
       Swal.fire({
         text: `First Name Changed to ${firstName}`,
+        confirmButtonColor: '#000000',
       });
       // Dispatch Users firstName and their id to Saga.
       dispatch({

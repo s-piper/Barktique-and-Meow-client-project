@@ -46,6 +46,7 @@ export const EmployeeEmail = ({ classes, useStyles }) => {
     if (email) {
       Swal.fire({
         text: `Email Changed to ${email}`,
+        confirmButtonColor: '#000000',
       });
       // Dispatch Users email and their id to Saga.
       dispatch({

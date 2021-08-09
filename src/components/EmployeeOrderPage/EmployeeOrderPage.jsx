@@ -80,7 +80,7 @@ const EmployeeOrderPage = () => {
     const data = {
       cus_error_image: false,
       cus_order_number: productOrderReducer[0]?.cus_order_number,
-      cus_progress_status: 'In Progress',
+      cus_progress_status: 'Not Started',
       id: user.id,
     };
 
@@ -295,9 +295,9 @@ const EmployeeOrderPage = () => {
 
             {/* productOrderReducer[0]?.user_ref_id !== null */}
 
-            {productOrderReducer[0]?.user_ref_id === null ? (
+            {productOrderReducer[0]?.user_id_ref !== null ? (
               <>
-                {productOrderReducer[0]?.cus_error_image !== false ? (
+                {productOrderReducer[0]?.cus_error_image !== false  ? (
                   <Button
                     onClick={resolveImageError}
                     className={classes.button}
@@ -343,7 +343,8 @@ const EmployeeOrderPage = () => {
 
             {productOrderReducer[0]?.cus_progress_status === 'Not Started' ||
             productOrderReducer[0]?.cus_progress_status === 'Complete' ||
-            productOrderReducer[0]?.cus_progress_status === 'Image Rejected' ? (
+            productOrderReducer[0]?.cus_progress_status === 'Image Rejected' ||
+            productOrderReducer[0]?.user_id_ref === null ? (
               ''
             ) : (
               <Button
